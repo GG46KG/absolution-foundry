@@ -1,0 +1,30 @@
+name: Create Release on Tag
+
+on:
+  push: 
+    tags:
+      - v**
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set zip name
+      run: echo "ZIP_NAME=absolution" >> $GITHUB_ENV
+
+    - name: Zip files
+      run: zip ${{ env.ZIP_NAME }}.zip *
+      
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: ${{ env.ZIP_NAME }}.zip,system.json
+        tag: ${{ env.GITHUB_REF_NAME }}
+        allowUpdates: true
+        omitDraftDuringUpdate: true
+        omitPrereleaseDuringUpdate: true
