@@ -80,7 +80,7 @@
       "thumbnail": "systems/absolution/assets/anvil-impact.png"
     }
   ],
-  "version": "0.1.0",
+  "version": "0.1.2",
   "compatibility": {
     "minimum": "12.328",
     "verified": "12.328"
