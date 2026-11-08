@@ -5,6 +5,55 @@
 .indicators {
   margin-top: 8px;
   gap: 8px;
+
+  // Resources and Morale: a smaller row under Stamina and Wounds
+  &.secondary {
+    .indicator-value input {
+      width: 56px;
+      height: 34px;
+      font-size: 20px;
+    }
+
+    .indicator-max {
+      font-size: 18px;
+    }
+
+    // Same height for plain labels and the editable one, so values line up
+    .indicator-label {
+      display: block;
+      line-height: 1.4em;
+    }
+
+    // The second resource's name is editable, but sits and reads like the
+    // other labels; an underline shows on hover and focus
+    input.label-input {
+      width: 100%;
+      height: 1.4em;
+      min-height: 0;
+      margin: 0;
+      padding: 0;
+      border: none;
+      border-bottom: 1px dashed transparent;
+      border-radius: 0;
+      outline: none;
+      box-shadow: none;
+      background: none;
+      color: inherit;
+      font-family: inherit;
+      line-height: 1.4em;
+      text-align: center;
+
+      &::placeholder {
+        color: inherit;
+        opacity: 1;
+      }
+
+      &:hover,
+      &:focus {
+        border-bottom-color: currentColor;
+      }
+    }
+  }
 }
 
 .indicator {
@@ -534,8 +583,22 @@
 
 .weapon-flags {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
-  gap: 12px;
+  gap: 4px 12px;
+
+  // Keep each checkbox and its label together on one line
+  label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+}
+
+// Armor trait checkboxes take a full row of the header grid
+.armor-traits {
+  grid-column: 1 / -1;
 }
 
 // Armor rows reuse the weapons table's name, tag and rearrange styles
@@ -592,15 +655,18 @@
   }
 }
 
-// Character tab: armor- and Defender-adjusted values next to the base ones
+// Character tab: armor- and Defender-adjusted values in an indented row
+// under the base ones, marked like ornaments under their weapon
 .stat-row {
-  .derived.adjusted {
-    flex: 0 0 auto;
+  &.modified {
+    min-height: 22px;
+    padding-left: 8px;
     font-size: 13px;
 
-    i {
-      font-size: 10px;
-      opacity: 0.7;
+    .sub-entry-marker {
+      margin-right: 2px;
+      font-size: 11px;
+      opacity: 0.6;
     }
   }
 
@@ -622,5 +688,58 @@
 
   input {
     width: 60px;
+  }
+}
+
+// -----------------------------------------
+// Damage Reduction table (Character tab, under Defenses)
+// -----------------------------------------
+
+.damage-reduction {
+  .dr-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 28px;
+  }
+
+  .dr-header {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .dr-value {
+    flex: 0 0 44px;
+    text-align: center;
+  }
+
+  .dr-type {
+    flex: 3;
+    min-width: 0;
+  }
+
+  .dr-source {
+    flex: 2;
+    min-width: 0;
+  }
+
+  .dr-controls {
+    flex: 0 0 20px;
+    text-align: center;
+  }
+
+  // Worked out from Armor Rating: read only
+  .dr-auto {
+    font-size: 13px;
+
+    .dr-type,
+    .dr-source {
+      padding: 0 4px;
+    }
+
+    .dr-controls {
+      font-size: 10px;
+      opacity: 0.6;
+    }
   }
 }

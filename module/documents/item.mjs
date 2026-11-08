@@ -1,4 +1,5 @@
 import { promptCheck, rollCheck } from '../helpers/check.mjs';
+import { createChatMessage } from '../helpers/chat.mjs';
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -45,14 +46,12 @@ export class AbsolutionItem extends Item {
 
     // Initialize chat data.
     const speaker = ChatMessage.getSpeaker({ actor: this.actor });
-    const rollMode = game.settings.get('core', 'rollMode');
     const label = `[${item.type}] ${item.name}`;
 
     // If there's no roll data, send a chat message.
     if (!this.system.formula) {
-      ChatMessage.create({
+      createChatMessage({
         speaker: speaker,
-        rollMode: rollMode,
         flavor: label,
         content: item.system.description ?? '',
       });
@@ -68,7 +67,6 @@ export class AbsolutionItem extends Item {
       // const result = await roll.evaluate();
       roll.toMessage({
         speaker: speaker,
-        rollMode: rollMode,
         flavor: label,
       });
       return roll;
@@ -112,10 +110,7 @@ export class AbsolutionItem extends Item {
       ${flavor ? `<hr/><div class="card-quote">${escape(flavor)}</div>` : ''}
     </div>`;
 
-    const cls = foundry.utils.getDocumentClass('ChatMessage');
-    const msg = new cls({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), content });
-    msg.applyMode(game.settings.get('core', 'messageMode'));
-    return cls.create(msg);
+    return createChatMessage({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), content });
   }
 
   /**
@@ -133,7 +128,7 @@ export class AbsolutionItem extends Item {
       const roll = new Roll(formula, this.actor?.getRollData() ?? {});
       if (roll.isDeterministic) {
         const dice = Math.trunc(roll.evaluateSync().total);
-        const check = { actor: this.actor, label: this.name, dice };
+        const check = { actor: this.actor, label: this.name, subtitle: this.#subtitle(), dice };
         return quick ? rollCheck(check) : promptCheck(check);
       }
       await roll.evaluate();
@@ -150,21 +145,44 @@ export class AbsolutionItem extends Item {
   }
 
   /**
+   * Attack Attribute Damage: half (rounded down) of the owner's attribute used
+   * to attack with this weapon. 0 for unowned weapons and ornaments.
+   * @type {number}
+   */
+  get attributeDamage() {
+    if (this.type !== 'weapon' || this.system.isOrnament) return 0;
+    const value = this.actor?.system?.attributes?.[this.system.attackAttribute]?.value ?? 0;
+    return Math.max(0, Math.floor(value / 2));
+  }
+
+  /**
    * Roll this weapon's damage for a normal attack, noting the properties that
-   * change how it lands. On a critical attack, Precise adds 1d6.
+   * change how it lands: weapon damage + Attack Attribute Damage, plus 1d6
+   * from Precise on a critical attack. Defender halves the total (minimum 1).
    * @param {object} [options]
    * @param {boolean} [options.critical]   Was the attack a Critical Success?
    * @returns {Promise<ChatMessage|null>}
    */
   async rollDamage({ critical = false } = {}) {
-    let formula = this.system.damage?.formula;
-    if (!formula) return null;
+    const damage = this.system.damage;
+    if (!damage?.formula) return null;
     const p = this.system.properties;
+    const attribute = game.i18n.localize(
+      `ABSOLUTION.Attribute.${this.system.attackAttribute === 'faith' ? 'Faith' : 'Power'}`
+    );
+    const attributeDamage = this.attributeDamage;
     const precise = critical && p.precise;
-    if (precise) formula = `${formula} + 1d6`;
+    // Inside Defender's halving the attribute isn't tagged with its name
+    const parts = [damage.formula];
+    if (attributeDamage) parts.push(damage.halved ? String(attributeDamage) : `${attributeDamage}[${attribute}]`);
+    if (precise) parts.push('1d6');
+    let formula = parts.join(' + ');
+    if (damage.halved) formula = `max(floor((${formula}) / 2), 1)`;
     const roll = new Roll(formula, this.actor?.getRollData() ?? {});
     await roll.evaluate();
     const notes = [
+      attributeDamage && game.i18n.format('ABSOLUTION.Weapon.Notes.AttributeDamage', { attribute, damage: attributeDamage }),
+      attributeDamage && this.system.weight === 'offHand' && 'ABSOLUTION.Weapon.Notes.OffHandFastAttack',
       critical && 'ABSOLUTION.Weapon.Notes.Critical',
       p.piercing && 'ABSOLUTION.Weapon.Notes.Piercing',
       precise ? 'ABSOLUTION.Weapon.Notes.PreciseApplied' : p.precise && 'ABSOLUTION.Weapon.Notes.Precise',

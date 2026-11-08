@@ -38,6 +38,16 @@ export default class AbsolutionActorBase extends foundry.abstract
       }),
     });
 
+    // Damage Reduction from Traits, Vow features, ornaments, meals and so on,
+    // e.g. 2 (Fire) or 1 (Physical/Nature). Armor Rating's is worked out.
+    schema.damageReductions = new fields.ArrayField(
+      new fields.SchemaField({
+        value: new fields.NumberField({ ...requiredInteger, initial: 1, min: 0 }),
+        type: new fields.StringField({ required: true, blank: true }),
+        source: new fields.StringField({ required: true, blank: true }),
+      })
+    );
+
     schema.biography = new fields.HTMLField();
 
     return schema;
@@ -71,6 +81,26 @@ export default class AbsolutionActorBase extends foundry.abstract
     else this.evasionTotal = this.evasion + (armor?.evasionBonus ?? 0);
     this.resistance =
       1 + Math.floor(this.attributes.fortitude.value / 2) + this.evasionTotal;
+
+    // Damage Reduction from Armor Rating: half the total Armor Rating against
+    // all damage except Psychic, Holy and Unholy. Plated armor raises the
+    // Physical part to the full Armor Rating. In Ironheart Stance it is the
+    // full Armor Rating against all damage instead.
+    const localize = (key) => game.i18n.localize(key);
+    const ironheart = this.parent?.statuses?.has('ironheart') ?? false;
+    const half = Math.floor(this.armorTotal / 2);
+    const source = localize('ABSOLUTION.DamageReduction.FromArmorRating');
+    this.armorReductions = [];
+    if (ironheart && this.armorTotal > 0) {
+      this.armorReductions.push({ value: this.armorTotal, type: localize('ABSOLUTION.DamageReduction.Ironheart'), source });
+    } else if (armor?.plated && this.armorTotal > 0) {
+      this.armorReductions.push(
+        { value: this.armorTotal, type: localize('ABSOLUTION.DamageType.Physical'), source },
+        { value: half, type: localize('ABSOLUTION.DamageReduction.AllButPhysical'), source }
+      );
+    } else if (half > 0) {
+      this.armorReductions.push({ value: half, type: localize('ABSOLUTION.DamageReduction.All'), source });
+    }
   }
 
   getRollData() {

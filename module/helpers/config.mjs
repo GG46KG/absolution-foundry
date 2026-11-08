@@ -257,6 +257,27 @@ ABSOLUTION.engravedSlots = {
 };
 
 /**
+ * Traits armor can be made for, ticked on the armor's sheet. A trait with a
+ * weight only applies to armor of that weight.
+ * @type {Object}
+ */
+ABSOLUTION.armorTraits = {
+  lightArmorMastery: { label: 'ABSOLUTION.Armor.Trait.LightArmorMastery', weight: 'light' },
+  mediumArmorMastery: { label: 'ABSOLUTION.Armor.Trait.MediumArmorMastery', weight: 'medium' },
+  bespokeEquipment: { label: 'ABSOLUTION.Armor.Trait.BespokeEquipment' },
+};
+
+/**
+ * Extra modifications armor can be crafted with, each allowed by an armor
+ * trait (see ABSOLUTION.armorTraits).
+ * @type {Object}
+ */
+ABSOLUTION.extraArmorModifications = {
+  mastery: { trait: 'lightArmorMastery', label: 'ABSOLUTION.Armor.Extra.Mastery' },
+  bespoke: { trait: 'bespokeEquipment', label: 'ABSOLUTION.Armor.Extra.Bespoke' },
+};
+
+/**
  * Ornament kinds (Equipment rules, "Special Ornament Types" and "Clockwork
  * Ornaments"). Discharge ornaments track charges; the rest that get used up
  * track whether they're spent, under their own name for it.
@@ -305,7 +326,8 @@ ABSOLUTION.attunementLimit = 2;
 
 /**
  * Token status effects: the Conditions and Status Effects from the core
- * rules, plus Incapacitated and Dead from Knockout Rolls. Conditions can be
+ * rules, plus Incapacitated and Dead from Knockout Rolls, Ironheart Stance,
+ * and markers for vow features and hostile (monster) effects. Conditions can be
  * cleared by effects that clear Conditions; Status Effects can't. Names and
  * descriptions are localization keys.
  * @type {Object[]}
@@ -316,7 +338,7 @@ ABSOLUTION.statusEffects = [
   ['stagger', 'condition', 'daze'],
   ['blind', 'condition', 'blind'],
   ['immobilized', 'condition', 'trap'],
-  ['impairment', 'condition', 'degen'],
+  ['impairment', 'condition', 'downgrade'],
   ['hemorrhage', 'condition', 'blood'],
   ['invisible', 'condition', 'invisible'],
   ['burn', 'condition', 'fire'],
@@ -333,6 +355,14 @@ ABSOLUTION.statusEffects = [
   ['exposed', 'status', 'paralysis'],
   ['grappled', 'status', 'anchor'],
   ['prone', 'status', 'falling'],
+  // Trackers for effects with no rules of their own here: Ironheart Stance,
+  // a vow feature's lingering effect, and up to four monster effects
+  ['ironheart', 'stance', 'holy-shield'],
+  ['vowFeature', 'other', 'angel'],
+  ['hostileEffect1', 'status', 'hazard'],
+  ['hostileEffect2', 'status', 'eye'],
+  ['hostileEffect3', 'status', 'target'],
+  ['hostileEffect4', 'status', 'acid'],
   ['incapacitated', 'status', 'unconscious'],
   ['dead', 'status', 'skull'],
 ].map(([id, kind, icon], order) => {
@@ -346,3 +376,18 @@ ABSOLUTION.statusEffects = [
     flags: { absolution: { kind } },
   };
 });
+
+/**
+ * Damage types (core rules, "Damage Types").
+ * @type {Object}
+ */
+ABSOLUTION.damageTypes = {
+  physical: 'ABSOLUTION.DamageType.Physical',
+  fire: 'ABSOLUTION.DamageType.Fire',
+  frost: 'ABSOLUTION.DamageType.Frost',
+  nature: 'ABSOLUTION.DamageType.Nature',
+  shock: 'ABSOLUTION.DamageType.Shock',
+  psychic: 'ABSOLUTION.DamageType.Psychic',
+  holy: 'ABSOLUTION.DamageType.Holy',
+  unholy: 'ABSOLUTION.DamageType.Unholy',
+};

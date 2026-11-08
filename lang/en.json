@@ -191,6 +191,30 @@
         "Name": "Prone",
         "Description": "Status Effect. Ranged attacks against them have Disadvantage; Melee attacks against them have Advantage. Each space moved costs 2. Dropping Prone is a Free Action; standing up takes the Standard Movement or a Half Action."
       },
+      "Ironheart": {
+        "Name": "Ironheart",
+        "Description": "Stance. In Ironheart Stance, Armor Rating grants Damage Reduction (All) equal to the full Armor Rating."
+      },
+      "VowFeature": {
+        "Name": "Vow Feature",
+        "Description": "A vow feature's effect is active. See the feature for what it does."
+      },
+      "HostileEffect1": {
+        "Name": "Hostile Effect 1",
+        "Description": "Status Effect. A monster's effect is active. Monster effects are Status Effects unless they say they're Conditions."
+      },
+      "HostileEffect2": {
+        "Name": "Hostile Effect 2",
+        "Description": "Status Effect. A monster's effect is active. Monster effects are Status Effects unless they say they're Conditions."
+      },
+      "HostileEffect3": {
+        "Name": "Hostile Effect 3",
+        "Description": "Status Effect. A monster's effect is active. Monster effects are Status Effects unless they say they're Conditions."
+      },
+      "HostileEffect4": {
+        "Name": "Hostile Effect 4",
+        "Description": "Status Effect. A monster's effect is active. Monster effects are Status Effects unless they say they're Conditions."
+      },
       "Incapacitated": {
         "Name": "Incapacitated",
         "Description": "Status Effect. Knocked out by their injuries and unable to act."
@@ -199,6 +223,29 @@
         "Name": "Dead",
         "Description": "Status Effect. Killed by their Wounds."
       }
+    },
+    "DamageType": {
+      "Physical": "Physical",
+      "Fire": "Fire",
+      "Frost": "Frost",
+      "Nature": "Nature",
+      "Shock": "Shock",
+      "Psychic": "Psychic",
+      "Holy": "Holy",
+      "Unholy": "Unholy"
+    },
+    "DamageReduction": {
+      "Title": "Damage Reduction",
+      "Amount": "DR",
+      "Type": "Type",
+      "Source": "Source",
+      "Add": "Add Damage Reduction",
+      "Delete": "Delete Damage Reduction",
+      "TypePlaceholder": "e.g. Fire, or Physical/Nature",
+      "FromArmorRating": "Armor Rating",
+      "All": "All except Psychic, Holy and Unholy",
+      "AllButPhysical": "All except Physical, Psychic, Holy and Unholy",
+      "Ironheart": "All (Ironheart)"
     },
     "ActionType": {
       "Interrupt": "Interrupt",
@@ -284,6 +331,17 @@
         "full": "Full",
         "half": "Halved",
         "none": "None"
+      },
+      "Extra": {
+        "Mastery": "Light Armor Mastery Modification",
+        "Bespoke": "Bespoke Modification"
+      },
+      "MediumMastery": "Medium Armor Mastery",
+      "MediumMasteryEffect": "Medium Armor Mastery: +1 Armor Rating and no Speed penalty.",
+      "Trait": {
+        "LightArmorMastery": "Light Armor Mastery",
+        "MediumArmorMastery": "Medium Armor Mastery",
+        "BespokeEquipment": "Bespoke Equipment"
       }
     },
     "OrnamentKind": {
@@ -324,9 +382,11 @@
       "AttackWith": "Attacks with",
       "RollDamage": "Roll damage",
       "Notes": {
+        "AttributeDamage": "Attack Attribute Damage: +{damage} (half {attribute}).",
+        "OffHandFastAttack": "Off-Hand: no Attack Attribute Damage if this was the off-hand attack of a Fast Attack.",
         "Piercing": "Piercing: ignores Damage Reduction.",
         "Precise": "Precise: deals an extra 1d6 Physical damage on a critical attack.",
-        "Defender": "Defender: half damage (minimum 1) on normal attacks.",
+        "Defender": "Defender: total damage halved (minimum 1).",
         "Focus": "Focus: normal attacks are Improvised and deal 1 Physical damage.",
         "Broken": "This weapon is Broken and provides no benefits.",
         "Critical": "Critical attack.",
@@ -346,22 +406,29 @@
       }
     },
     "Combat": {
-      "HandOff": "Act next",
-      "StartRound": "Act first in round {round}",
-      "Acted": "Has acted this round",
-      "ActedUndo": "Has acted this round. Click to undo.",
+      "HandOff": "Act Next",
+      "Acted": "Has used all activations this round",
+      "ActedUndo": "Has used all activations this round. Click to undo the last one.",
       "ChooseTitle": "Popcorn Initiative",
       "ChooseNext": "Who acts next?",
-      "ChooseFirst": "Everyone has acted. Who acts first in round {round}?",
-      "Choose": "Choose"
+      "Choose": "Choose",
+      "Activations": "Acts {count} times each round",
+      "AddActivation": "Add Activation",
+      "RemoveActivation": "Remove Activation",
+      "UndoActivation": "Undo Activation"
     },
     "Check": {
       "Title": "{label} Check",
-      "Heading": "{label} Check",
+      "Check": "Check",
+      "SkillCheck": "Skill Check",
+      "AttributeCheck": "Attribute Check",
+      "Attack": "Attack",
       "Difficulty": "Difficulty",
       "NoDifficulty": "None",
       "Edge": "Edge",
-      "Mode": "Roll with",
+      "Morale": "Morale",
+      "MoraleAvailable": "{morale} available",
+      "MoraleSpent": "{morale} Morale spent",
       "Normal": "Normal",
       "Advantage": "Advantage",
       "Disadvantage": "Disadvantage",
@@ -582,6 +649,7 @@
       "NewWeapon": "New Weapon",
       "NewBelonging": "New Belonging",
       "NewArmor": "New Armor",
+      "ModifiedByArmor": "Modified by Armor",
       "Wearing": "Wearing {name}",
       "WearingMany": "(only one set of armor counts)"
     },
@@ -693,6 +761,21 @@
           },
           "worn": {
             "label": "Worn"
+          },
+          "masteryModification": {
+            "label": "Light Armor Mastery Modification"
+          },
+          "bespokeModification": {
+            "label": "Bespoke Modification"
+          },
+          "lightArmorMastery": {
+            "label": "Light Armor Mastery"
+          },
+          "mediumArmorMastery": {
+            "label": "Medium Armor Mastery"
+          },
+          "bespokeEquipment": {
+            "label": "Bespoke Equipment"
           }
         }
       }

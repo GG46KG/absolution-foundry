@@ -39,6 +39,8 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
       weaponDamage: this._onWeaponDamage,
       addOrnament: this._onAddOrnament,
       addConnection: this._addConnection,
+      addDamageReduction: this._addDamageReduction,
+      deleteDamageReduction: this._deleteDamageReduction,
       deleteConnection: this._deleteConnection,
     },
     // Custom property that's merged into `this.options`
@@ -144,6 +146,8 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
       actionTypes: CONFIG.ABSOLUTION.actionTypes,
       weaponCategories: CONFIG.ABSOLUTION.weaponCategories,
     };
+    // Suggestions for the Damage Reduction table's Type column
+    context.damageTypes = Object.values(CONFIG.ABSOLUTION.damageTypes).map((key) => game.i18n.localize(key));
     if (context.isCharacter) {
       // Uses the derived labels, so Leszhoth see Psychokinesis
       context.choices.skills = Object.fromEntries(
@@ -276,6 +280,14 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
     const config = CONFIG.ABSOLUTION;
     const localize = (key) => (key ? game.i18n.localize(key) : '');
     const { rows, armorRows, attuned } = nestOrnaments(context.weapon, context.armor);
+    // A weapon's damage with Attack Attribute Damage, e.g. "1d8+1 +2", or for
+    // Defender weapons, whose total is halved, "½ (1d6 +2)"
+    const damageLabel = (item) => {
+      const damage = item.system.damage;
+      if (item.type !== 'weapon' || !damage) return '';
+      const total = item.attributeDamage ? `${damage.formula} +${item.attributeDamage}` : damage.formula;
+      return damage.halved ? `½ (${total})` : total;
+    };
     // Labels shared by weapon, armor and ornament rows
     const label = (row) => {
       const s = row.item.system;
@@ -286,6 +298,7 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
           row.item.type === 'armor' ? config.armorWeights[s.weight]?.label : config.weaponWeights[s.weight]?.label
         ),
         categoryLabel: localize(config.weaponCategories[s.category]),
+        damageLabel: damageLabel(row.item),
         slotLabel: localize(config.slotTypes[row.slot]?.label),
         problemLabel: row.problem ? localize(`ABSOLUTION.Ornament.Problem.${row.problem}`) : '',
         slotIcons: (row.slots ?? []).map((sl) => ({
@@ -298,8 +311,13 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
         tracksSpent: kind?.tracks === 'spent',
         spentLabel: localize(kind?.spentLabel),
         rarityLabel: localize(config.ornamentRarities[s.rarity]),
-        // Armor: modification and the Evasion it allows
-        modificationLabel: localize(config.armorModifications[s.modification]),
+        // Armor: the modifications that count, e.g. "Banded, Banded, Engraved"
+        modificationLabel: [
+          ...(s.modificationList ?? []).map((m) => localize(config.armorModifications[m.modification])),
+          s.mediumMastery ? localize('ABSOLUTION.Armor.MediumMastery') : '',
+        ]
+          .filter(Boolean)
+          .join(', '),
       };
     };
     context.weapon = rows.map(label);
@@ -472,6 +490,9 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
         const check = {
           actor: this.actor,
           label: stat.label,
+          subtitle: game.i18n.localize(
+            dataset.rollType === 'attribute' ? 'ABSOLUTION.Check.AttributeCheck' : 'ABSOLUTION.Check.SkillCheck'
+          ),
           dice: Math.max(1, dataset.rollType === 'attribute' ? stat.value : stat.aptitude),
         };
         // Shift-click rolls with no modifiers
@@ -486,7 +507,6 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
       await roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: label,
-        rollMode: game.settings.get('core', 'rollMode'),
       });
       return roll;
     }
@@ -522,6 +542,7 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
     const check = {
       actor: this.actor,
       label: weapon.name,
+      subtitle: game.i18n.localize('ABSOLUTION.Check.Attack'),
       dice: Math.max(1, this.actor.system.attributes[attackAttribute]?.value ?? 1),
       edge: attackEdge,
       weapon,
@@ -640,6 +661,34 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
     );
     connections.push({});
     await this.actor.update({ 'system.connections': connections });
+  }
+
+  /**
+   * Add an empty row to the Damage Reduction table.
+   *
+   * @this AbsolutionActorSheet
+   * @param {PointerEvent} event   The originating click event
+   * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
+   * @protected
+   */
+  static async _addDamageReduction(event, target) {
+    const rows = foundry.utils.deepClone(this.actor.system._source.damageReductions);
+    rows.push({});
+    await this.actor.update({ 'system.damageReductions': rows });
+  }
+
+  /**
+   * Remove a row from the Damage Reduction table.
+   *
+   * @this AbsolutionActorSheet
+   * @param {PointerEvent} event   The originating click event
+   * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
+   * @protected
+   */
+  static async _deleteDamageReduction(event, target) {
+    const rows = foundry.utils.deepClone(this.actor.system._source.damageReductions);
+    rows.splice(Number(target.dataset.index), 1);
+    await this.actor.update({ 'system.damageReductions': rows });
   }
 
   /**

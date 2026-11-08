@@ -122,6 +122,27 @@
             </select>
           </div>
         {{/if}}
+        <div class='resource weapon-flags armor-traits'>
+          {{#each armorTraits as |trait|}}
+            <label><input type='checkbox' name='system.{{trait.key}}' {{checked trait.checked}} /> {{localize trait.label}}</label>
+          {{/each}}
+        </div>
+        {{#each extraModifications as |extra|}}
+          <div class='resource'>
+            <label class='resource-label'>{{localize extra.label}}</label>
+            <select name='system.{{extra.key}}Modification'>
+              {{selectOptions @root.choices.armorModifications selected=extra.modification localize=true blank=(localize 'ABSOLUTION.ArmorModification.None')}}
+            </select>
+          </div>
+          {{#if (eq extra.modification 'engraved')}}
+            <div class='resource'>
+              <label class='resource-label'>{{localize 'ABSOLUTION.Item.Armor.FIELDS.engravedSlot.label'}}</label>
+              <select name='system.{{extra.key}}EngravedSlot'>
+                {{selectOptions @root.choices.engravedSlots selected=extra.engravedSlot localize=true}}
+              </select>
+            </div>
+          {{/if}}
+        {{/each}}
         <div class='resource weapon-flags'>
           <label><input type='checkbox' name='system.worn' {{checked system.worn}} /> {{localize 'ABSOLUTION.Item.Armor.FIELDS.worn.label'}}</label>
           <label><input type='checkbox' name='system.broken' {{checked system.broken}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.broken.label'}}</label>

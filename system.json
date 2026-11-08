@@ -5,19 +5,6 @@
   "authors": [
     {
       "name": "GG46KG"
-    },
-    {
-      "name": "Asacolips",
-      "discord": "asacolips"
-    },
-    {
-      "name": "Lee Talman",
-      "discord": ".pizzaWizard"
-    },
-    {
-      "name": "Joseph M.",
-      "url": "https://joseph-meehan.carrd.co/",
-      "discord": "chaosos"
     }
   ],
   "documentTypes": {
@@ -118,9 +105,9 @@
   "download": "https://github.com/GG46KG/absolution-foundry/releases/latest/download/absolution.zip",
   "background": "systems/absolution/assets/anvil-impact.png",
   "grid": {
-    "type": 1,
-    "distance": 5,
-    "units": "ft",
+    "type": 2,
+    "distance": 1,
+    "units": "sp",
     "diagonals": 0
   },
   "primaryTokenAttribute": "stamina",

@@ -103,6 +103,26 @@ export class AbsolutionItemSheet extends api.HandlebarsApplicationMixin(
 
     // Ornaments: the name of this kind's used-up state, e.g. "Shattered"
     context.spentLabel = CONFIG.ABSOLUTION.ornamentKinds[this.item.system.kind]?.spentLabel ?? null;
+    if (this.item.type === 'armor') {
+      const system = this.item.system;
+      const config = CONFIG.ABSOLUTION;
+      const fitsWeight = (trait) => !config.armorTraits[trait].weight || config.armorTraits[trait].weight === system.weight;
+      // Checkboxes for the armor traits that fit this armor's weight
+      context.armorTraits = Object.entries(config.armorTraits)
+        .filter(([key]) => fitsWeight(key))
+        .map(([key, trait]) => ({ key, label: trait.label, checked: system[key] }));
+      // An extra modification for each ticked trait that allows one
+      context.extraModifications = Object.entries(config.extraArmorModifications)
+        .filter(([, extra]) => system[extra.trait] && fitsWeight(extra.trait))
+        .map(([key, extra]) => ({
+          key,
+          label: extra.label,
+          modification: system[`${key}Modification`],
+          engravedSlot: system[`${key}EngravedSlot`],
+        }));
+      // Rules text for each modification, once each
+      context.modificationEffects = [...new Set(system.modificationList.map((m) => m.modification))];
+    }
 
     // Weapon properties and slots, as rows for the weapon sheet
     if (this.item.type === 'weapon' && !this.item.system.isOrnament) {

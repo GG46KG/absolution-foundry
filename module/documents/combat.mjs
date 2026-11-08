@@ -1,31 +1,96 @@
 /**
  * Popcorn initiative. Nobody rolls: whoever is acting picks who goes next from
- * the combatants that haven't acted this round. Once everyone has acted, the
- * last to act picks who starts the next round, themselves included. The GM
- * picks who starts the first round.
+ * the combatants that still have an activation left this round. Once everyone
+ * has used theirs, ending the last turn starts a new round with nobody acting
+ * and every activation available again. The GM picks who starts each round.
+ *
+ * Combatants get one activation per round; the GM can give one more (a boss
+ * acting twice, say) or take it away, and undo an activation used by mistake.
  * @extends {Combat}
  */
 export class AbsolutionCombat extends Combat {
   /**
-   * Has this combatant taken its turn this round?
+   * How many times this combatant acts each round.
+   * @param {Combatant} combatant
+   * @returns {number}
+   */
+  activations(combatant) {
+    return Math.max(1, combatant.getFlag('absolution', 'activations') ?? 1);
+  }
+
+  /**
+   * How many activations this combatant has used this round. Turns marked
+   * before activations were counted read as one.
+   * @param {Combatant} combatant
+   * @returns {number}
+   */
+  activationsUsed(combatant) {
+    if (combatant.getFlag('absolution', 'actedRound') !== this.round) return 0;
+    return combatant.getFlag('absolution', 'actedCount') ?? 1;
+  }
+
+  /**
+   * Activations this combatant has left this round.
+   * @param {Combatant} combatant
+   * @returns {number}
+   */
+  activationsLeft(combatant) {
+    return Math.max(0, this.activations(combatant) - this.activationsUsed(combatant));
+  }
+
+  /**
+   * Has this combatant used all its activations this round?
    * @param {Combatant} combatant
    * @returns {boolean}
    */
   hasActed(combatant) {
-    return combatant.getFlag('absolution', 'actedRound') === this.round;
+    return this.activationsLeft(combatant) === 0;
   }
 
   /**
-   * The combatants the turn can be passed to, and whether passing it starts a
-   * new round.
-   * @returns {{targets: Combatant[], newRound: boolean}}
+   * Give a combatant one more (or one fewer) activation each round. GM only.
+   * @param {Combatant} combatant
+   * @param {number} change   +1 or -1
+   * @returns {Promise<Combatant|undefined>}
+   */
+  async changeActivations(combatant, change) {
+    if (!game.user.isGM) return;
+    const activations = Math.max(1, this.activations(combatant) + change);
+    return combatant.setFlag('absolution', 'activations', activations);
+  }
+
+  /**
+   * Take back the last activation this combatant used this round. GM only.
+   * @param {Combatant} combatant
+   * @returns {Promise<Combatant|undefined>}
+   */
+  async undoActivation(combatant) {
+    if (!game.user.isGM) return;
+    const used = this.activationsUsed(combatant);
+    if (!used) return;
+    if (used === 1) {
+      return combatant.update({
+        'flags.absolution.-=actedRound': null,
+        'flags.absolution.-=actedCount': null,
+      });
+    }
+    return combatant.setFlag('absolution', 'actedCount', used - 1);
+  }
+
+  /**
+   * The combatants the turn can be passed to. The acting combatant can only
+   * take another activation in a row when nobody else has one left. None
+   * means the round is over.
+   * @returns {{targets: Combatant[]}}
    */
   getHandOffTargets() {
     const current = this.combatant;
     const active = this.turns.filter((c) => !c.isDefeated);
     const waiting = active.filter((c) => c !== current && !this.hasActed(c));
-    if (waiting.length || !current) return { targets: waiting, newRound: false };
-    return { targets: active, newRound: true };
+    if (waiting.length || !current) return { targets: waiting };
+    // The activation being finished counts as used
+    if (this.activationsLeft(current) > 1) return { targets: [current] };
+    return { targets: [] };
   }
 
   /**
@@ -46,22 +111,24 @@ export class AbsolutionCombat extends Combat {
    * @returns {Promise<this>}
    */
   async handOff(combatant) {
-    const { targets, newRound } = this.getHandOffTargets();
+    const { targets } = this.getHandOffTargets();
     if (!this.canHandOff() || !targets.includes(combatant)) return this;
 
     const current = this.combatant;
-    if (current && !newRound) {
-      await current.setFlag('absolution', 'actedRound', this.round);
+    if (current) {
+      await current.update({
+        'flags.absolution.actedRound': this.round,
+        'flags.absolution.actedCount': this.activationsUsed(current) + 1,
+      });
     }
 
-    const round = newRound ? this.round + 1 : this.round;
     const turn = this.turns.indexOf(combatant);
-    const updateData = { round, turn };
+    const updateData = { round: this.round, turn };
     const updateOptions = {
       direction: 1,
-      worldTime: { delta: this.getTimeDelta(this.round, this.turn, round, turn) },
+      worldTime: { delta: this.getTimeDelta(this.round, this.turn, this.round, turn) },
     };
-    Hooks.callAll(newRound ? 'combatRound' : 'combatTurn', this, updateData, updateOptions);
+    Hooks.callAll('combatTurn', this, updateData, updateOptions);
     await this.update(updateData, updateOptions);
     return this;
   }
@@ -71,17 +138,14 @@ export class AbsolutionCombat extends Combat {
    * @returns {Promise<Combatant|null>}   The chosen combatant, or null if the dialog was closed
    */
   async promptHandOff() {
-    const { targets, newRound } = this.getHandOffTargets();
+    const { targets } = this.getHandOffTargets();
     if (!targets.length) return null;
     const options = targets
       .map((c) => `<option value="${c.id}">${foundry.utils.escapeHTML(c.name)}</option>`)
       .join('');
     const id = await foundry.applications.api.DialogV2.wait({
       window: { title: 'ABSOLUTION.Combat.ChooseTitle' },
-      content: `<p>${game.i18n.format(
-        newRound ? 'ABSOLUTION.Combat.ChooseFirst' : 'ABSOLUTION.Combat.ChooseNext',
-        { round: this.round + 1 }
-      )}</p><select name="combatant">${options}</select>`,
+      content: `<p>${game.i18n.localize('ABSOLUTION.Combat.ChooseNext')}</p><select name="combatant">${options}</select>`,
       buttons: [
         {
           action: 'choose',
@@ -118,12 +182,14 @@ export class AbsolutionCombat extends Combat {
   }
 
   /**
-   * The tracker's "next turn" and "end turn" buttons ask who goes next.
+   * The tracker's "next turn" and "end turn" buttons ask who goes next, or
+   * start the next round once nobody has an activation left.
    * @override
    */
   async nextTurn() {
     if (!this.started) return this.startCombat();
     if (!this.canHandOff()) return this;
+    if (!this.getHandOffTargets().targets.length) return this.nextRound();
     const combatant = await this.promptHandOff();
     if (combatant) await this.handOff(combatant);
     return this;

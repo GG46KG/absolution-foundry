@@ -27,55 +27,79 @@
         <div class='stat-row'>
           <label>{{localize 'ABSOLUTION.Actor.base.FIELDS.speed.label'}}</label>
           <input type='number' name='system.speed' value='{{system.speed}}' min='0' />
-          {{#if (ne system.speedTotal system.speed)}}<span class='derived adjusted'><i class='fa-solid fa-arrow-right'></i> {{system.speedTotal}}</span>{{/if}}
         </div>
+        {{#if (ne system.speedTotal system.speed)}}
+          <div class='stat-row sub-entry modified'>
+            <i class='fa-solid fa-turn-up fa-rotate-90 sub-entry-marker'></i>
+            <label>{{localize 'ABSOLUTION.Actor.ModifiedByArmor'}}</label>
+            <span class='derived'>{{system.speedTotal}}</span>
+          </div>
+        {{/if}}
         <div class='stat-row'>
           <label>{{localize 'ABSOLUTION.Actor.base.FIELDS.armor.label'}}</label>
           <input type='number' name='system.armor' value='{{system.armor}}' min='0' />
-          {{#if (ne system.armorTotal system.armor)}}<span class='derived adjusted'><i class='fa-solid fa-arrow-right'></i> {{system.armorTotal}}</span>{{/if}}
         </div>
+        {{#if (ne system.armorTotal system.armor)}}
+          <div class='stat-row sub-entry modified'>
+            <i class='fa-solid fa-turn-up fa-rotate-90 sub-entry-marker'></i>
+            <label>{{localize 'ABSOLUTION.Actor.ModifiedByArmor'}}</label>
+            <span class='derived'>{{system.armorTotal}}</span>
+          </div>
+        {{/if}}
         <div class='stat-row'>
           <label>{{localize 'ABSOLUTION.Actor.base.FIELDS.evasion.label'}}</label>
           <input type='number' name='system.evasion' value='{{system.evasion}}' />
-          {{#if (ne system.evasionTotal system.evasion)}}<span class='derived adjusted'><i class='fa-solid fa-arrow-right'></i> {{system.evasionTotal}}</span>{{/if}}
         </div>
+        {{#if (ne system.evasionTotal system.evasion)}}
+          <div class='stat-row sub-entry modified'>
+            <i class='fa-solid fa-turn-up fa-rotate-90 sub-entry-marker'></i>
+            <label>{{localize 'ABSOLUTION.Actor.ModifiedByArmor'}}</label>
+            <span class='derived'>{{system.evasionTotal}}</span>
+          </div>
+        {{/if}}
         <div class='stat-row'>
           <label>{{localize 'ABSOLUTION.Actor.Resistance'}}</label>
           <span class='derived'>{{system.resistance}}</span>
         </div>
       </fieldset>
 
-      {{#if isCharacter}}
-        <fieldset>
-          <legend>{{localize 'ABSOLUTION.Actor.Sections.Resources'}}</legend>
-          <div class='stat-row'>
-            <label>{{system.resource.label}}</label>
-            <div class='pair'>
-              <input type='number' name='system.resource.value' value='{{system.resource.value}}' min='0' />
-              <span>/</span>
-              <input type='number' name='system.resource.max' value='{{system.resource.max}}' min='0' />
-            </div>
+      <fieldset class='damage-reduction'>
+        <legend>{{localize 'ABSOLUTION.DamageReduction.Title'}}</legend>
+        <div class='dr-row dr-header'>
+          <span class='dr-value'>{{localize 'ABSOLUTION.DamageReduction.Amount'}}</span>
+          <span class='dr-type'>{{localize 'ABSOLUTION.DamageReduction.Type'}}</span>
+          <span class='dr-source'>{{localize 'ABSOLUTION.DamageReduction.Source'}}</span>
+          <span class='dr-controls'>
+            {{#if editable}}
+              <a data-action='addDamageReduction' aria-label='{{localize "ABSOLUTION.DamageReduction.Add"}}'><i class='fas fa-plus'></i></a>
+            {{/if}}
+          </span>
+        </div>
+        {{! Worked out from Armor Rating; change Armor Rating or armor to change these }}
+        {{#each system.armorReductions as |row|}}
+          <div class='dr-row dr-auto'>
+            <span class='dr-value'>{{row.value}}</span>
+            <span class='dr-type'>{{row.type}}</span>
+            <span class='dr-source'>{{row.source}}</span>
+            <span class='dr-controls'><i class='fa-solid fa-lock'></i></span>
           </div>
-          <div class='stat-row'>
-            <input
-              type='text'
-              class='label-input'
-              name='system.otherResource.label'
-              value='{{system.otherResource.label}}'
-              placeholder='{{localize "ABSOLUTION.Actor.Character.FIELDS.otherResource.label.label"}}'
-            />
-            <div class='pair'>
-              <input type='number' name='system.otherResource.value' value='{{system.otherResource.value}}' min='0' />
-              <span>/</span>
-              <input type='number' name='system.otherResource.max' value='{{system.otherResource.max}}' min='0' />
-            </div>
+        {{/each}}
+        {{#each system.damageReductions as |row index|}}
+          <div class='dr-row'>
+            <input class='dr-value' type='number' name='system.damageReductions.{{index}}.value' value='{{row.value}}' min='0' />
+            <input class='dr-type' type='text' name='system.damageReductions.{{index}}.type' value='{{row.type}}' list='absolution-damage-types' placeholder='{{localize "ABSOLUTION.DamageReduction.TypePlaceholder"}}' />
+            <input class='dr-source' type='text' name='system.damageReductions.{{index}}.source' value='{{row.source}}' />
+            <span class='dr-controls'>
+              {{#if @root.editable}}
+                <a data-action='deleteDamageReduction' data-index='{{index}}' aria-label='{{localize "ABSOLUTION.DamageReduction.Delete"}}'><i class='fas fa-trash'></i></a>
+              {{/if}}
+            </span>
           </div>
-          <div class='stat-row'>
-            <label>{{localize 'ABSOLUTION.Actor.Character.FIELDS.morale.label'}}</label>
-            <input type='number' name='system.morale' value='{{system.morale}}' />
-          </div>
-        </fieldset>
-      {{/if}}
+        {{/each}}
+        <datalist id='absolution-damage-types'>
+          {{#each damageTypes as |label|}}<option value='{{label}}'></option>{{/each}}
+        </datalist>
+      </fieldset>
     </div>
 
     <div class='stats-column'>

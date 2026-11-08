@@ -7,7 +7,11 @@ import { AbsolutionActorSheet } from './sheets/actor-sheet.mjs';
 import { AbsolutionItemSheet } from './sheets/item-sheet.mjs';
 // Import helper/utility classes and constants.
 import { ABSOLUTION } from './helpers/config.mjs';
-import { renderPopcornControls } from './helpers/popcorn.mjs';
+import {
+  renderPopcornControls,
+  popcornContextOptions,
+  popcornCombatContextOptions,
+} from './helpers/popcorn.mjs';
 // Import DataModel classes
 import * as models from './data/_module.mjs';
 
@@ -106,6 +110,9 @@ Hooks.once('i18nInit', () => {
 });
 
 Hooks.on('renderCombatTracker', renderPopcornControls);
+// Combatant right-click menu; the hook is named after the tracker class
+Hooks.on('getCombatTrackerContextOptions', popcornContextOptions);
+Hooks.on('getCombatContextOptions', popcornCombatContextOptions);
 
 // Roll Damage buttons on weapon attack messages. The button records whether
 // the attack was critical, so Precise can add its extra 1d6.

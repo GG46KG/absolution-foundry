@@ -92,18 +92,16 @@ export default class AbsolutionWeapon extends AbsolutionItemBase {
     const honed = this.weight === 'offHand' ? Math.floor(p.honed / 2) : p.honed;
     const total = step > 0 ? bonus + honed : 0;
     const base = dice ? (total ? `${dice}+${total}` : dice) : String(total);
-    // Normal attacks: Focus weapons deal 1; Defender weapons deal half (min 1)
-    let formula = base;
-    let label = base;
-    if (p.focus) formula = label = '1';
-    else if (p.defender) {
-      formula = dice ? `max(floor((${base}) / 2), 1)` : String(Math.max(Math.floor(total / 2), total ? 1 : 0));
-      label = dice ? `½ (${base})` : formula;
-    }
-    this.damage = { base, formula, label };
+    // Normal attacks: Focus weapons deal 1. Defender weapons halve the
+    // attack's total damage (minimum 1), so the halving is applied when
+    // damage is rolled, after Attack Attribute Damage and the rest are added.
+    const formula = p.focus ? '1' : base;
+    const halved = p.defender > 0;
+    this.damage = { base, formula, halved, label: halved ? `½ (${formula})` : formula };
 
-    // Attacks use Faith if Consecrated, otherwise Power
-    this.attackAttribute = p.consecrated ? 'faith' : 'power';
+    // Attacks use Faith if Consecrated, otherwise Power. Focus weapons make
+    // Improvised Attacks, which always use Power.
+    this.attackAttribute = p.consecrated && !p.focus ? 'faith' : 'power';
     this.attackEdge = p.quality - p.heavy - (p.archaeotech ? 1 : 0);
 
     // Slots, including Focus's innate Spinel slots (two on Two-Hand weapons)

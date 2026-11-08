@@ -10,8 +10,11 @@
       &middot; {{localize 'ABSOLUTION.Actor.base.FIELDS.speed.label'}} <strong>{{#if system.speedPenalty}}&minus;{{system.speedPenalty}}{{else}}0{{/if}}</strong>
       &middot; {{localize 'ABSOLUTION.Actor.base.FIELDS.evasion.label'}} <strong>{{localize (concat 'ABSOLUTION.Armor.Evasion.' system.evasion)}}{{#if system.evasionBonus}} +{{system.evasionBonus}}{{/if}}</strong>
     </div>
-    {{#if system.modification}}
-      <p class='weapon-summary item-detail-text'>{{localize (concat 'ABSOLUTION.ArmorModification.Effect.' system.modification)}}</p>
+    {{#each modificationEffects as |mod|}}
+      <p class='weapon-summary item-detail-text'>{{localize (concat 'ABSOLUTION.ArmorModification.Effect.' mod)}}</p>
+    {{/each}}
+    {{#if system.mediumMastery}}
+      <p class='weapon-summary item-detail-text'>{{localize 'ABSOLUTION.Armor.MediumMasteryEffect'}}</p>
     {{/if}}
   {{/if}}
   {{#if weaponProperties}}

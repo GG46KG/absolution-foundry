@@ -51,8 +51,8 @@
         </div>
       </div>
     {{/if}}
-    {{! Large indicators. These edit the same fields as the Character tab,
-        through data-field rather than name, see AbsolutionActorSheet#onFieldChange }}
+    {{! Large indicators. These name their field in data-field rather than name,
+        so they update the actor directly, see AbsolutionActorSheet#onFieldChange }}
     <div class='indicators grid grid-2col'>
       <div class='indicator'>
         <div class='indicator-item'>
@@ -88,5 +88,43 @@
         </div>
       </div>
     </div>
+    {{#if isCharacter}}
+      <div class='indicators secondary grid grid-3col'>
+        <div class='indicator'>
+          <div class='indicator-item'>
+            <label class='indicator-label'>{{system.resource.label}}</label>
+            <div class='indicator-value'>
+              <input type='number' data-field='system.resource.value' value='{{system.resource.value}}' min='0' />
+              <span class='indicator-max'>/</span>
+              <input type='number' data-field='system.resource.max' value='{{system.resource.max}}' min='0' />
+            </div>
+          </div>
+        </div>
+        <div class='indicator'>
+          <div class='indicator-item'>
+            <input
+              type='text'
+              class='indicator-label label-input'
+              data-field='system.otherResource.label'
+              value='{{system.otherResource.label}}'
+              placeholder='{{localize "ABSOLUTION.Actor.Character.FIELDS.otherResource.label.label"}}'
+            />
+            <div class='indicator-value'>
+              <input type='number' data-field='system.otherResource.value' value='{{system.otherResource.value}}' min='0' />
+              <span class='indicator-max'>/</span>
+              <input type='number' data-field='system.otherResource.max' value='{{system.otherResource.max}}' min='0' />
+            </div>
+          </div>
+        </div>
+        <div class='indicator'>
+          <div class='indicator-item'>
+            <label class='indicator-label'>{{localize 'ABSOLUTION.Actor.Character.FIELDS.morale.label'}}</label>
+            <div class='indicator-value'>
+              <input type='number' data-field='system.morale' value='{{system.morale}}' />
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
   </div>
 </header>

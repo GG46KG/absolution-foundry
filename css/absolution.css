@@ -232,18 +232,29 @@
   opacity: 0.55;
 }
 
-.absolution-check h3 {
-  margin: 0 0 2px;
+.combat-tracker .combatant .token-initiative {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
 }
+.combat-tracker .combatant .token-initiative .popcorn-activations {
+  font-size: var(--font-size-12, 12px);
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
 .absolution-check .absolution-check-details {
   margin: 0;
   font-size: var(--font-size-12, 12px);
+  text-align: center;
   opacity: 0.8;
 }
 
 .absolution-check-outcome {
   margin: 4px 0 0;
   font-weight: bold;
+  text-align: center;
 }
 .absolution-check-outcome.success {
   color: var(--color-level-success, #2e7d32);
@@ -307,9 +318,49 @@
   width: 100%;
   height: var(--input-height, 2rem);
 }
+.application.absolution-check-dialog .check-steppers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0.25rem 0 0.75rem;
+}
+.application.absolution-check-dialog .stepper-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+.application.absolution-check-dialog .stepper-group > label {
+  font-weight: bold;
+}
+.application.absolution-check-dialog .stepper-hint {
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+.application.absolution-check-dialog .stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  height: var(--input-height, 2rem);
+}
+.application.absolution-check-dialog .stepper input {
+  width: 3.5rem;
+  height: 100%;
+  text-align: center;
+}
+.application.absolution-check-dialog .stepper .step {
+  flex: 0 0 2rem;
+  width: 2rem;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  line-height: 1;
+}
 .application.absolution-check-dialog .mode-toggle {
   display: flex;
   height: var(--input-height, 2rem);
+  margin: 0 0 0.75rem;
 }
 .application.absolution-check-dialog .mode-toggle .mode-option {
   display: flex;
@@ -659,6 +710,42 @@
 .absolution .indicators {
   margin-top: 8px;
   gap: 8px;
+}
+.absolution .indicators.secondary .indicator-value input {
+  width: 56px;
+  height: 34px;
+  font-size: 20px;
+}
+.absolution .indicators.secondary .indicator-max {
+  font-size: 18px;
+}
+.absolution .indicators.secondary .indicator-label {
+  display: block;
+  line-height: 1.4em;
+}
+.absolution .indicators.secondary input.label-input {
+  width: 100%;
+  height: 1.4em;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-bottom: 1px dashed transparent;
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  line-height: 1.4em;
+  text-align: center;
+}
+.absolution .indicators.secondary input.label-input::placeholder {
+  color: inherit;
+  opacity: 1;
+}
+.absolution .indicators.secondary input.label-input:hover, .absolution .indicators.secondary input.label-input:focus {
+  border-bottom-color: currentColor;
 }
 .absolution .indicator {
   display: flex;
@@ -1073,8 +1160,18 @@
 }
 .absolution .weapon-flags {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
-  gap: 12px;
+  gap: 4px 12px;
+}
+.absolution .weapon-flags label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.absolution .armor-traits {
+  grid-column: 1/-1;
 }
 .absolution .armor-list .name-stack {
   display: flex;
@@ -1118,13 +1215,15 @@
   margin-right: 4px;
   opacity: 0.7;
 }
-.absolution .stat-row .derived.adjusted {
-  flex: 0 0 auto;
+.absolution .stat-row.modified {
+  min-height: 22px;
+  padding-left: 8px;
   font-size: 13px;
 }
-.absolution .stat-row .derived.adjusted i {
-  font-size: 10px;
-  opacity: 0.7;
+.absolution .stat-row.modified .sub-entry-marker {
+  margin-right: 2px;
+  font-size: 11px;
+  opacity: 0.6;
 }
 .absolution .stat-row.armor-worn {
   font-size: 12px;
@@ -1140,4 +1239,41 @@
 }
 .absolution .charges-pair input {
   width: 60px;
+}
+.absolution .damage-reduction .dr-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 28px;
+}
+.absolution .damage-reduction .dr-header {
+  font-size: 12px;
+  font-weight: bold;
+}
+.absolution .damage-reduction .dr-value {
+  flex: 0 0 44px;
+  text-align: center;
+}
+.absolution .damage-reduction .dr-type {
+  flex: 3;
+  min-width: 0;
+}
+.absolution .damage-reduction .dr-source {
+  flex: 2;
+  min-width: 0;
+}
+.absolution .damage-reduction .dr-controls {
+  flex: 0 0 20px;
+  text-align: center;
+}
+.absolution .damage-reduction .dr-auto {
+  font-size: 13px;
+}
+.absolution .damage-reduction .dr-auto .dr-type,
+.absolution .damage-reduction .dr-auto .dr-source {
+  padding: 0 4px;
+}
+.absolution .damage-reduction .dr-auto .dr-controls {
+  font-size: 10px;
+  opacity: 0.6;
 }
