@@ -2,7 +2,7 @@ name: Create Prerelease on Commit
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -23,9 +23,10 @@ jobs:
     - name: Set zip name
       run: echo "ZIP_NAME=absolution_$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
 
+    # Only the files Foundry needs, with their folders (-r); not src/, prototype/ or .github/
     - name: Zip files
-      run: zip ${{ env.ZIP_NAME }}.zip *
-      
+      run: zip -r ${{ env.ZIP_NAME }}.zip system.json module templates lang css assets packs LICENSE.txt README.md CHANGELOG.md
+
     - uses: ncipollo/release-action@v1
       with:
         artifacts: ${{ env.ZIP_NAME }}.zip,system.json

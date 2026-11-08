@@ -1,7 +1,7 @@
 name: Create Release on Tag
 
 on:
-  push: 
+  push:
     tags:
       - v**
 
@@ -15,16 +15,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set zip name
-      run: echo "ZIP_NAME=absolution" >> $GITHUB_ENV
+    # The tag (v0.2.0) sets the version Foundry sees (0.2.0), so the two can't drift
+    - name: Set version from tag
+      run: |
+        jq --arg version "${GITHUB_REF_NAME#v}" '.version = $version' system.json > system.tmp.json
+        mv system.tmp.json system.json
 
+    # Only the files Foundry needs, with their folders (-r); not src/, prototype/ or .github/
     - name: Zip files
-      run: zip ${{ env.ZIP_NAME }}.zip *
-      
+      run: zip -r absolution.zip system.json module templates lang css assets packs LICENSE.txt README.md CHANGELOG.md
+
     - uses: ncipollo/release-action@v1
       with:
-        artifacts: ${{ env.ZIP_NAME }}.zip,system.json
-        tag: ${{ env.GITHUB_REF_NAME }}
+        artifacts: absolution.zip,system.json
+        tag: ${{ github.ref_name }}
         allowUpdates: true
         omitDraftDuringUpdate: true
         omitPrereleaseDuringUpdate: true
