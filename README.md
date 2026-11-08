@@ -2,15 +2,7 @@
 
 A game system for [Foundry Virtual Tabletop](https://foundryvtt.com/).
 
-Scaffolded from the [Boilerplate system](https://github.com/asacolips-projects/boilerplate) by Asacolips (`v12` branch, DataModel variant). The actor types, item types, abilities and sheets are still the generic Boilerplate examples.
-
 ## Development
-
-Foundry requires the system folder to match the `id` in `system.json`, so this repo must appear in your Foundry data folder as `systems/absolution`, not `systems/absolution-foundry`. Link it from PowerShell, replacing the path with your own Foundry user data path:
-
-```powershell
-New-Item -ItemType Junction -Path "<FoundryData>\Data\systems\absolution" -Target "C:\Code\absolution-foundry"
-```
 
 Styles are written in SCSS and compiled to `css/absolution.css`:
 
