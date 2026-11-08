@@ -1,0 +1,37 @@
+name: Create Prerelease on Commit
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Move latest tag
+      run: |
+        git push origin :latest
+        git tag latest
+        git push origin latest
+
+    - name: Set zip name
+      run: echo "ZIP_NAME=absolution_$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
+
+    - name: Zip files
+      run: zip ${{ env.ZIP_NAME }}.zip *
+      
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: ${{ env.ZIP_NAME }}.zip,system.json
+        prerelease: true
+        tag: "latest"
+        allowUpdates: true
+        removeArtifacts: true # These are indexed to git SHA, so axe the previous ones
+        omitDraftDuringUpdate: true
+        omitPrereleaseDuringUpdate: true
