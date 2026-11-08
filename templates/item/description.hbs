@@ -1,0 +1,61 @@
+{{! Description Tab }}
+<section
+  class='tab {{tab.cssClass}}'
+  data-group='primary'
+  data-tab='description'
+>
+  {{#if (eq item.type 'armor')}}
+    <div class='weapon-summary'>
+      {{localize 'ABSOLUTION.Actor.base.FIELDS.armor.label'}} <strong>+{{system.armorRating}}</strong>
+      &middot; {{localize 'ABSOLUTION.Actor.base.FIELDS.speed.label'}} <strong>{{#if system.speedPenalty}}&minus;{{system.speedPenalty}}{{else}}0{{/if}}</strong>
+      &middot; {{localize 'ABSOLUTION.Actor.base.FIELDS.evasion.label'}} <strong>{{localize (concat 'ABSOLUTION.Armor.Evasion.' system.evasion)}}{{#if system.evasionBonus}} +{{system.evasionBonus}}{{/if}}</strong>
+    </div>
+    {{#if system.modification}}
+      <p class='weapon-summary item-detail-text'>{{localize (concat 'ABSOLUTION.ArmorModification.Effect.' system.modification)}}</p>
+    {{/if}}
+  {{/if}}
+  {{#if weaponProperties}}
+    <div class='weapon-summary'>
+      {{localize 'ABSOLUTION.Weapon.Damage'}}: <strong>{{system.damage.label}}</strong>
+      &middot; {{localize 'ABSOLUTION.Weapon.AttackWith'}} <strong>{{localize (concat 'ABSOLUTION.Attribute.' (ifThen (eq system.attackAttribute 'faith') 'Faith' 'Power'))}}</strong>
+      &middot; {{localize 'ABSOLUTION.Check.Edge'}} <strong>{{system.attackEdge}}</strong>
+    </div>
+    <fieldset class='weapon-grid'>
+      <legend>{{localize 'ABSOLUTION.Weapon.Properties'}}</legend>
+      {{#each weaponProperties}}
+        <label class='weapon-grid-item'>
+          {{#if this.rated}}
+            <input type='number' name='system.properties.{{this.key}}' value='{{this.value}}' min='0' />
+          {{else}}
+            <input type='checkbox' name='system.properties.{{this.key}}' {{checked this.value}} />
+          {{/if}}
+          <span>{{localize this.label}}{{#if this.rated}} X{{/if}}</span>
+        </label>
+      {{/each}}
+    </fieldset>
+    <fieldset class='weapon-grid'>
+      <legend>{{localize 'ABSOLUTION.Weapon.Slots'}}</legend>
+      {{#each slotTypes}}
+        <label class='weapon-grid-item'>
+          <input type='number' name='system.slots.{{this.key}}' value='{{this.value}}' min='0' />
+          <span>{{localize this.label}}</span>
+        </label>
+      {{/each}}
+    </fieldset>
+  {{/if}}
+  <label class='resource-label item-description-label'>{{localize 'ABSOLUTION.Item.base.FIELDS.description.label'}}</label>
+  {{! Editors must receive enriched text data from getData to properly handle rolls, UUID links, etc. }}
+  {{#if editable}}
+    <prose-mirror name="system.description" data-document-u-u-i-d="{{item.uuid}}" value="{{system.description}}" collaborate="true" toggled="true">
+      {{{enrichedDescription}}}
+    </prose-mirror>
+  {{else}} {{{enrichedDescription}}}
+  {{/if}}
+
+  {{#if (or (eq item.type 'feature') (eq item.type 'trait') (eq item.type 'equipment'))}}
+    <div class='resource item-flavor'>
+      <label class='resource-label'>{{localize 'ABSOLUTION.Item.Feature.FIELDS.flavor.label'}}</label>
+      <input type='text' name='system.flavor' value='{{system.flavor}}' />
+    </div>
+  {{/if}}
+</section>

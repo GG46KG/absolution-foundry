@@ -1,0 +1,76 @@
+// Check results in chat
+.absolution-check {
+  h3 {
+    margin: 0 0 2px;
+  }
+
+  .absolution-check-details {
+    margin: 0;
+    font-size: var(--font-size-12, 12px);
+    opacity: 0.8;
+  }
+}
+
+.absolution-check-outcome {
+  margin: 4px 0 0;
+  font-weight: bold;
+
+  &.success {
+    color: var(--color-level-success, #2e7d32);
+  }
+
+  &.failure {
+    color: var(--color-level-error, #a3231d);
+  }
+
+  &.critical {
+    color: var(--color-level-warning, #c08a00);
+  }
+}
+
+// Chat cards: Knockout rolls and features. Matches the layout of the
+// prototype Knockout macro.
+.absolution-card {
+  h2 {
+    margin: 10px 0 0;
+    font-size: 24px;
+    text-align: center;
+    border: none;
+  }
+
+  .card-subtitle {
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-style: italic;
+    text-align: center;
+  }
+
+  .card-box {
+    margin-top: 10px;
+    padding: 6px;
+    border: 2px solid currentColor;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  .card-box-title {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+  }
+
+  .card-quote {
+    margin-bottom: 10px;
+    padding: 0 4px;
+    font-size: 12px;
+    font-style: italic;
+    font-family: serif;
+    text-align: center;
+  }
+}
+
+// Roll Damage button on weapon attack messages
+.absolution-damage-button {
+  margin-top: 6px;
+  width: 100%;
+}

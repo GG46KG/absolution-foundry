@@ -1,0 +1,24 @@
+{{! Inventory Tab }}
+<section class='tab inventory {{tab.cssClass}}' data-group='primary' data-tab='inventory'>
+  {{> 'systems/absolution/templates/actor/parts/action-list.hbs'
+    listId='equipment'
+    type='equipment'
+    newLabel='ABSOLUTION.Actor.NewEquipment'
+    nameLabel='ABSOLUTION.Actor.Sections.Equipment'
+    items=equipment
+    fieldKey='uses'
+    fieldLabel='ABSOLUTION.Item.Equipment.FIELDS.uses.label'
+  }}
+  {{> 'systems/absolution/templates/actor/parts/weapon-list.hbs' items=weapon attunement=attunement}}
+  {{> 'systems/absolution/templates/actor/parts/armor-list.hbs' items=armor}}
+  {{> 'systems/absolution/templates/actor/parts/item-list.hbs'
+    type='belonging'
+    newLabel='ABSOLUTION.Actor.NewBelonging'
+    items=belonging
+    title='ABSOLUTION.Actor.Sections.Belongings'
+    summaryLabel='ABSOLUTION.Item.base.FIELDS.description.label'
+    fieldKey='quantity'
+    fieldLabel='ABSOLUTION.Item.Belonging.FIELDS.quantity.label'
+    fieldType='number'
+  }}
+</section>

@@ -1,0 +1,47 @@
+{{! Backstory Tab }}
+<section
+  class='tab biography {{tab.cssClass}}'
+  data-group='primary'
+  data-tab='biography'
+>
+  {{#if isCharacter}}
+    <ol class='items-list connections'>
+      <li class='item flexrow items-header'>
+        <div class='connection-name'>{{localize 'ABSOLUTION.Actor.Sections.Connections'}}</div>
+        <div class='connection-relationship'>{{localize 'ABSOLUTION.Actor.Character.FIELDS.connections.element.relationship.label'}}</div>
+        <div class='connection-notes'>{{localize 'ABSOLUTION.Actor.Character.FIELDS.connections.element.notes.label'}}</div>
+        <div class='item-controls'>
+          {{#if editable}}
+            <a class='item-control' title='{{localize "ABSOLUTION.Actor.AddConnection"}}' data-action='addConnection'>
+              <i class='fas fa-plus'></i>
+              {{localize 'ABSOLUTION.Actor.AddConnection'}}
+            </a>
+          {{/if}}
+        </div>
+      </li>
+      {{#each system.connections as |connection index|}}
+        <li class='item flexrow'>
+          <input class='connection-name' type='text' name='system.connections.{{index}}.name' value='{{connection.name}}' placeholder='{{localize "ABSOLUTION.Actor.Character.FIELDS.connections.element.name.label"}}' />
+          <input class='connection-relationship' type='text' name='system.connections.{{index}}.relationship' value='{{connection.relationship}}' />
+          <input class='connection-notes' type='text' name='system.connections.{{index}}.notes' value='{{connection.notes}}' />
+          <div class='item-controls'>
+            {{#if @root.editable}}
+              <a class='item-control' title='{{localize "ABSOLUTION.Actor.DeleteConnection"}}' data-action='deleteConnection' data-index='{{index}}'>
+                <i class='fas fa-trash'></i>
+              </a>
+            {{/if}}
+          </div>
+        </li>
+      {{/each}}
+    </ol>
+  {{/if}}
+
+  <label class='resource-label item-description-label'>{{localize 'ABSOLUTION.Actor.base.FIELDS.biography.label'}}</label>
+  {{! Editors must receive enriched text data from getData to properly handle rolls, UUID links, etc. }}
+  {{#if editable}}
+    <prose-mirror name="system.biography" data-document-u-u-i-d="{{actor.uuid}}" value="{{system.biography}}" collaborate="true" toggled="true">
+      {{{enrichedBiography}}}
+    </prose-mirror>
+  {{else}} {{{enrichedBiography}}}
+  {{/if}}
+</section>

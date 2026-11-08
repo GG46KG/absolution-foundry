@@ -1,0 +1,90 @@
+{{!
+  A table of items that post a chat card and can be rolled: vow features and
+  traits, or equipment.
+  Parameters:
+    listId      'features' or 'equipment', for the Rearrange toggle
+    type        Item type created by the add button
+    newLabel    Label of the add button
+    items       [{item, sourceLabel, actionLabel}] from AbsolutionActorSheet#_prepareItems
+    nameLabel   Optional heading of the name column; defaults to Name
+    showSource  Show the Source column
+    fieldKey    Optional system field shown as an editable column, e.g. 'uses'
+    fieldLabel  Heading of that column
+}}
+<ol class='items-list action-list {{#if (lookup @root.rearranging listId)}}rearranging{{/if}}'>
+  <li class='item flexrow items-header'>
+    <div class='item-name'>{{#if nameLabel}}{{localize nameLabel}}{{else}}{{localize 'ABSOLUTION.Actor.Name'}}{{/if}}</div>
+    {{#if showSource}}<div class='item-source'>{{localize 'ABSOLUTION.Item.Feature.FIELDS.source.label'}}</div>{{/if}}
+    <div class='item-action-type'>{{localize 'ABSOLUTION.Item.Feature.FIELDS.actionType.label'}}</div>
+    {{#if fieldKey}}<div class='item-field'>{{localize fieldLabel}}</div>{{/if}}
+    <div class='item-buttons'></div>
+    <div class='item-controls'>
+      {{#if @root.editable}}
+        <a
+          class='item-control item-create'
+          title='{{localize newLabel}}'
+          data-action='createDoc'
+          data-document-class='Item'
+          data-type='{{type}}'
+        >
+          <i class='fas fa-plus'></i>
+          {{localize newLabel}}
+        </a>
+        <a
+          class='item-control rearrange-toggle {{#if (lookup @root.rearranging listId)}}active{{/if}}'
+          data-action='toggleRearrange'
+          data-list='{{listId}}'
+          aria-label='{{localize "ABSOLUTION.Actor.Rearrange"}}'
+          aria-pressed='{{#if (lookup @root.rearranging listId)}}true{{else}}false{{/if}}'
+        >
+          <i class='fa-solid fa-arrows-up-down'></i>
+        </a>
+      {{/if}}
+    </div>
+  </li>
+  {{#each items as |entry|}}
+    <li
+      class='item flexrow'
+      data-item-id='{{entry.item.id}}'
+      data-drag='true'
+      data-document-class='Item'
+    >
+      <div class='item-name'>
+        {{#if (lookup @root.rearranging ../listId)}}<i class='fa-solid fa-grip-vertical drag-handle'></i>{{/if}}
+        <div>{{entry.item.name}}</div>
+      </div>
+      {{#if ../showSource}}<div class='item-source'>{{entry.sourceLabel}}</div>{{/if}}
+      <div class='item-action-type'>{{entry.actionLabel}}</div>
+      {{#if ../fieldKey}}
+        <div class='item-field'>
+          <input
+            type='text'
+            data-item-field='system.{{../fieldKey}}'
+            value='{{lookup entry.item.system ../fieldKey}}'
+            {{#unless @root.editable}}disabled{{/unless}}
+          />
+        </div>
+      {{/if}}
+      <div class='item-buttons'>
+        <a class='item-control' data-action='chatItem' aria-label='{{localize "ABSOLUTION.Item.Feature.ToChat"}}'>
+          <i class='fa-solid fa-comment'></i>
+        </a>
+        {{#if entry.item.system.dice}}
+          <a class='item-control roll-die' data-action='rollItem' aria-label='{{localize "ABSOLUTION.Check.Roll"}}'>
+            <i class='fa-solid fa-dice-d6'></i>
+          </a>
+        {{/if}}
+      </div>
+      <div class='item-controls'>
+        <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=entry.item.name}}' data-action='viewDoc'>
+          <i class='fas fa-edit'></i>
+        </a>
+        {{#if @root.editable}}
+          <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=entry.item.name}}' data-action='deleteDoc'>
+            <i class='fas fa-trash'></i>
+          </a>
+        {{/if}}
+      </div>
+    </li>
+  {{/each}}
+</ol>

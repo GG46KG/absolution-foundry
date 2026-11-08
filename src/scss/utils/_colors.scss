@@ -1,0 +1,39 @@
+// Light values. `.theme-light` repeats them so a sheet set to the light theme
+// inside a dark interface still gets light-theme colors.
+:root,
+.theme-light {
+  --absolution-c-text: #191813;
+  --absolution-c-dark: #191813;
+  --absolution-c-faint: #c9c7b8;
+  --absolution-c-beige: #b5b3a4;
+  --absolution-c-tan: #444444;
+  --absolution-c-white: #ffffff;
+  --absolution-c-black: #000000;
+  --absolution-c-groove: #eeede0;
+  --absolution-c-red: #a3231d;
+}
+
+.theme-dark {
+  --absolution-c-text: #e7e5d8;
+  --absolution-c-dark: #c9c7b8;
+  --absolution-c-faint: #191813;
+  --absolution-c-beige: #444444;
+  --absolution-c-tan: #b5b3a4;
+  --absolution-c-white: #000000;
+  --absolution-c-black: #ffffff;
+  --absolution-c-groove: #11121f;
+  --absolution-c-red: #e0584f;
+}
+
+$c-text: var(--absolution-c-text);
+
+$c-white: var(--absolution-c-white);
+$c-black: var(--absolution-c-black);
+
+$c-dark: var(--absolution-c-dark);
+$c-faint: var(--absolution-c-faint);
+$c-beige: var(--absolution-c-beige);
+$c-tan: var(--absolution-c-tan);
+
+$c-groove: var(--absolution-c-groove);
+$c-red: var(--absolution-c-red);

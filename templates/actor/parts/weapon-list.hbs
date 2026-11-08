@@ -1,0 +1,102 @@
+{{!
+  Weapons and Ornaments (Equipment rules). Each weapon is followed by the
+  ornaments attached to it.
+  Parameters:
+    items       Rows from AbsolutionActorSheet#_prepareItems: weapons with
+                slotIcons, slotsUsed and slotsTotal; ornaments with subEntry,
+                slotLabel and problemLabel
+    attunement  {count, limit, over}
+}}
+<ol class='items-list weapon-list {{#if @root.rearranging.weapons}}rearranging{{/if}}'>
+  <li class='item flexrow items-header'>
+    <div class='item-name'>{{localize 'ABSOLUTION.Actor.Sections.WeaponsAndOrnaments'}}</div>
+    <div class='col-1'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.weight.label'}}</div>
+    <div class='col-2'>{{localize 'ABSOLUTION.Weapon.Damage'}}</div>
+    <div class='col-3 slot-icons'>{{localize 'ABSOLUTION.Weapon.Slots'}}</div>
+    <div class='weapon-attuned {{#if attunement.over}}over-limit{{/if}}'>
+      {{localize 'ABSOLUTION.Item.Weapon.FIELDS.attuned.label'}} {{attunement.count}}/{{attunement.limit}}
+    </div>
+    <div class='weapon-wielding'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.wielding.label'}}</div>
+    <div class='item-buttons'></div>
+    <div class='item-controls'>
+      {{#if @root.editable}}
+        <a class='item-control item-create' data-action='createDoc' data-document-class='Item' data-type='weapon' data-system.category='weapon'>
+          <i class='fas fa-plus'></i>
+          {{localize 'ABSOLUTION.Actor.NewWeapon'}}
+        </a>
+        <a
+          class='item-control rearrange-toggle {{#if @root.rearranging.weapons}}active{{/if}}'
+          data-action='toggleRearrange'
+          data-list='weapons'
+          aria-label='{{localize "ABSOLUTION.Actor.Rearrange"}}'
+          aria-pressed='{{#if @root.rearranging.weapons}}true{{else}}false{{/if}}'
+        >
+          <i class='fa-solid fa-arrows-up-down'></i>
+        </a>
+      {{/if}}
+    </div>
+  </li>
+  {{#each items as |entry|}}
+    {{#if entry.item.system.isOrnament}}
+      {{> 'systems/absolution/templates/actor/parts/ornament-row.hbs' entry=entry listId='weapons'}}
+    {{else}}
+      <li
+        class='item flexrow weapon {{#if entry.item.system.broken}}broken{{/if}}'
+        data-item-id='{{entry.item.id}}'
+        data-drag='true'
+        data-document-class='Item'
+      >
+        <div class='item-name'>
+          {{#if @root.rearranging.weapons}}<i class='fa-solid fa-grip-vertical drag-handle'></i>{{/if}}
+          <div class='name-stack'>
+            <div>
+              {{entry.item.name}}
+              {{#if entry.item.system.broken}}<span class='broken-tag'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.broken.label'}}</span>{{/if}}
+            </div>
+            {{#if entry.item.system.propertyLabels.length}}
+              <div class='item-detail'>{{#each entry.item.system.propertyLabels}}{{#unless @first}}, {{/unless}}{{this}}{{/each}}</div>
+            {{/if}}
+          </div>
+        </div>
+        <div class='col-1'>{{entry.weightLabel}}</div>
+        <div class='col-2'>{{entry.item.system.damage.label}}</div>
+        <div class='col-3 slot-icons'>
+          {{#each entry.slotIcons}}
+            <i class='fa-{{#if this.filled}}solid{{else}}regular{{/if}} fa-gem slot-icon' title='{{this.title}}'></i>
+          {{else}}
+            <span class='item-detail'>&ndash;</span>
+          {{/each}}
+        </div>
+        <div class='weapon-attuned'>
+          <input type='checkbox' data-item-field='system.attuned' {{checked entry.item.system.attuned}} {{#unless @root.editable}}disabled{{/unless}} />
+        </div>
+        <div class='weapon-wielding'>
+          <input type='checkbox' data-item-field='system.wielding' {{checked entry.item.system.wielding}} {{#unless @root.editable}}disabled{{/unless}} />
+        </div>
+        <div class='item-buttons'>
+          <a class='item-control roll-die' data-action='weaponAttack' aria-label='{{localize "ABSOLUTION.Weapon.Attack"}}'>
+            <i class='fa-solid fa-dice-d6'></i>
+          </a>
+          <a class='item-control' data-action='weaponDamage' aria-label='{{localize "ABSOLUTION.Weapon.RollDamage"}}'>
+            <i class='fa-solid fa-burst'></i>
+          </a>
+        </div>
+        <div class='item-controls'>
+          {{#if @root.editable}}
+            <a class='item-control add-ornament' data-action='addOrnament' aria-label='{{localize "ABSOLUTION.Weapon.AddOrnament"}}'>
+              <i class='fas fa-plus'></i>
+            </a>
+          {{/if}}
+          <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=entry.item.name}}' data-action='viewDoc'>
+            <i class='fas fa-edit'></i>
+          </a>
+          {{#if @root.editable}}
+            <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=entry.item.name}}' data-action='deleteDoc'>
+              <i class='fas fa-trash'></i>
+            </a>
+          {{/if}}
+        </div>
+      </li>
+    {{/if}}
+  {{/each}}
+</ol>

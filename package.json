@@ -1,0 +1,18 @@
+{
+  "name": "absolution",
+  "version": "0.1.0",
+  "description": "CSS compiler for the Absolution system",
+  "scripts": {
+    "build": "sass src/scss/absolution.scss css/absolution.css --style=expanded --no-source-map",
+    "watch": "sass src/scss/absolution.scss css/absolution.css --style=expanded --source-map --watch"
+  },
+  "browserslist": [
+    "last 3 versions"
+  ],
+  "author": "Asacolips",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "sass": "^1.53.0"
+  }
+}

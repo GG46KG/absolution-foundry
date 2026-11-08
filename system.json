@@ -1,0 +1,128 @@
+{
+  "id": "absolution",
+  "title": "Absolution",
+  "description": "The Absolution system for FoundryVTT!",
+  "authors": [
+    {
+      "name": "GG46KG"
+    },
+    {
+      "name": "Asacolips",
+      "discord": "asacolips"
+    },
+    {
+      "name": "Lee Talman",
+      "discord": ".pizzaWizard"
+    },
+    {
+      "name": "Joseph M.",
+      "url": "https://joseph-meehan.carrd.co/",
+      "discord": "chaosos"
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "character": {
+        "htmlFields": [
+          "biography"
+        ]
+      },
+      "npc": {
+        "htmlFields": [
+          "biography"
+        ]
+      }
+    },
+    "Item": {
+      "feature": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "trait": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "equipment": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "weapon": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "belonging": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "armor": {
+        "htmlFields": [
+          "description"
+        ]
+      }
+    }
+  },
+  "flags": {
+    "hotReload": {
+      "extensions": [
+        "css",
+        "html",
+        "hbs",
+        "json"
+      ],
+      "paths": [
+        "css",
+        "lang",
+        "templates"
+      ]
+    }
+  },
+  "url": "https://github.com/GG46KG/absolution-foundry",
+  "license": "LICENSE.txt",
+  "readme": "README.md",
+  "bugs": "https://github.com/GG46KG/absolution-foundry/issues",
+  "changelog": "CHANGELOG.md",
+  "media": [
+    {
+      "type": "setup",
+      "url": "systems/absolution/assets/anvil-impact.png",
+      "thumbnail": "systems/absolution/assets/anvil-impact.png"
+    }
+  ],
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "12.328",
+    "verified": "12.328"
+  },
+  "esmodules": [
+    "module/absolution.mjs"
+  ],
+  "styles": [
+    "css/absolution.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "packs": [],
+  "packFolders": [],
+  "socket": false,
+  "manifest": "https://github.com/GG46KG/absolution-foundry/releases/latest/download/system.json",
+  "download": "https://github.com/GG46KG/absolution-foundry/releases/latest/download/absolution.zip",
+  "background": "systems/absolution/assets/anvil-impact.png",
+  "grid": {
+    "type": 1,
+    "distance": 5,
+    "units": "ft",
+    "diagonals": 0
+  },
+  "primaryTokenAttribute": "stamina",
+  "secondaryTokenAttribute": "resource"
+}

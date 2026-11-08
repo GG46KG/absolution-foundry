@@ -1,0 +1,1143 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+:root,
+.theme-light {
+  --absolution-c-text: #191813;
+  --absolution-c-dark: #191813;
+  --absolution-c-faint: #c9c7b8;
+  --absolution-c-beige: #b5b3a4;
+  --absolution-c-tan: #444444;
+  --absolution-c-white: #ffffff;
+  --absolution-c-black: #000000;
+  --absolution-c-groove: #eeede0;
+  --absolution-c-red: #a3231d;
+}
+
+.theme-dark {
+  --absolution-c-text: #e7e5d8;
+  --absolution-c-dark: #c9c7b8;
+  --absolution-c-faint: #191813;
+  --absolution-c-beige: #444444;
+  --absolution-c-tan: #b5b3a4;
+  --absolution-c-white: #000000;
+  --absolution-c-black: #ffffff;
+  --absolution-c-groove: #11121f;
+  --absolution-c-red: #e0584f;
+}
+
+/* Global styles */
+.window-app {
+  font-family: "Roboto", sans-serif;
+}
+
+.rollable:hover, .rollable:focus {
+  color: var(--absolution-c-black);
+  text-shadow: 0 0 10px red;
+  cursor: pointer;
+}
+
+.grid,
+.grid-2col {
+  display: grid;
+  grid-column: span 2/span 2;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0;
+  padding: 0;
+}
+
+.grid-3col {
+  grid-column: span 3/span 3;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-4col {
+  grid-column: span 4/span 4;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-5col {
+  grid-column: span 5/span 5;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.grid-6col {
+  grid-column: span 6/span 6;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.grid-7col {
+  grid-column: span 7/span 7;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.grid-8col {
+  grid-column: span 8/span 8;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+
+.grid-9col {
+  grid-column: span 9/span 9;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+}
+
+.grid-10col {
+  grid-column: span 10/span 10;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+}
+
+.grid-11col {
+  grid-column: span 11/span 11;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+}
+
+.grid-12col {
+  grid-column: span 12/span 12;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.grid-start-2 {
+  grid-column-start: 2;
+}
+
+.grid-start-3 {
+  grid-column-start: 3;
+}
+
+.grid-start-4 {
+  grid-column-start: 4;
+}
+
+.grid-start-5 {
+  grid-column-start: 5;
+}
+
+.grid-start-6 {
+  grid-column-start: 6;
+}
+
+.grid-start-7 {
+  grid-column-start: 7;
+}
+
+.grid-start-8 {
+  grid-column-start: 8;
+}
+
+.grid-start-9 {
+  grid-column-start: 9;
+}
+
+.grid-start-10 {
+  grid-column-start: 10;
+}
+
+.grid-start-11 {
+  grid-column-start: 11;
+}
+
+.grid-start-12 {
+  grid-column-start: 12;
+}
+
+.grid-span-2 {
+  grid-column-end: span 2;
+}
+
+.grid-span-3 {
+  grid-column-end: span 3;
+}
+
+.grid-span-4 {
+  grid-column-end: span 4;
+}
+
+.grid-span-5 {
+  grid-column-end: span 5;
+}
+
+.grid-span-6 {
+  grid-column-end: span 6;
+}
+
+.grid-span-7 {
+  grid-column-end: span 7;
+}
+
+.grid-span-8 {
+  grid-column-end: span 8;
+}
+
+.grid-span-9 {
+  grid-column-end: span 9;
+}
+
+.grid-span-10 {
+  grid-column-end: span 10;
+}
+
+.grid-span-11 {
+  grid-column-end: span 11;
+}
+
+.grid-span-12 {
+  grid-column-end: span 12;
+}
+
+.flex-group-center,
+.flex-group-left,
+.flex-group-right {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.flex-group-left {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.flex-group-right {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.flexshrink {
+  flex: 0;
+}
+
+.flex-between {
+  justify-content: space-between;
+}
+
+.flexlarge {
+  flex: 2;
+}
+
+.align-left {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.align-right {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.align-center {
+  justify-content: center;
+  text-align: center;
+}
+
+.combat-tracker .combatant.popcorn-acted {
+  opacity: 0.55;
+}
+
+.absolution-check h3 {
+  margin: 0 0 2px;
+}
+.absolution-check .absolution-check-details {
+  margin: 0;
+  font-size: var(--font-size-12, 12px);
+  opacity: 0.8;
+}
+
+.absolution-check-outcome {
+  margin: 4px 0 0;
+  font-weight: bold;
+}
+.absolution-check-outcome.success {
+  color: var(--color-level-success, #2e7d32);
+}
+.absolution-check-outcome.failure {
+  color: var(--color-level-error, #a3231d);
+}
+.absolution-check-outcome.critical {
+  color: var(--color-level-warning, #c08a00);
+}
+
+.absolution-card h2 {
+  margin: 10px 0 0;
+  font-size: 24px;
+  text-align: center;
+  border: none;
+}
+.absolution-card .card-subtitle {
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-style: italic;
+  text-align: center;
+}
+.absolution-card .card-box {
+  margin-top: 10px;
+  padding: 6px;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  text-align: center;
+}
+.absolution-card .card-box-title {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+}
+.absolution-card .card-quote {
+  margin-bottom: 10px;
+  padding: 0 4px;
+  font-size: 12px;
+  font-style: italic;
+  font-family: serif;
+  text-align: center;
+}
+
+.absolution-damage-button {
+  margin-top: 6px;
+  width: 100%;
+}
+
+.application.absolution-check-dialog .form-group {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+}
+.application.absolution-check-dialog .form-group > label {
+  white-space: nowrap;
+}
+.application.absolution-check-dialog .form-group > input {
+  width: 100%;
+  height: var(--input-height, 2rem);
+}
+.application.absolution-check-dialog .mode-toggle {
+  display: flex;
+  height: var(--input-height, 2rem);
+}
+.application.absolution-check-dialog .mode-toggle .mode-option {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+.application.absolution-check-dialog .mode-toggle .mode-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.application.absolution-check-dialog .mode-toggle .mode-option span {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid var(--color-border, #7a7971);
+  background: var(--color-cool-4, rgba(0, 0, 0, 0.1));
+}
+.application.absolution-check-dialog .mode-toggle .mode-option:first-child span {
+  border-radius: 4px 0 0 4px;
+}
+.application.absolution-check-dialog .mode-toggle .mode-option:last-child span {
+  border-radius: 0 4px 4px 0;
+}
+.application.absolution-check-dialog .mode-toggle .mode-option + .mode-option span {
+  border-left: none;
+}
+.application.absolution-check-dialog .mode-toggle .mode-option input:checked + span {
+  background: var(--color-warm-2, #c9593f);
+  color: var(--color-light-1, #fff);
+  font-weight: bold;
+}
+.application.absolution-check-dialog .mode-toggle .mode-option input:focus-visible + span {
+  outline: 2px solid var(--color-warm-1, #ee9b3a);
+}
+.application.absolution-check-dialog .check-note {
+  margin: 0 0 8px;
+  font-style: italic;
+}
+
+/* Styles limited to absolution sheets */
+.absolution {
+  color: var(--absolution-c-text);
+  --input-text-color: var(--absolution-c-text);
+}
+.absolution label,
+.absolution legend {
+  color: var(--absolution-c-text);
+}
+.absolution select option {
+  color: var(--absolution-c-text);
+  background: var(--absolution-c-white);
+}
+.absolution .item-form {
+  font-family: "Roboto", sans-serif;
+}
+.absolution .sheet-header {
+  flex: 0 0 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+.absolution .sheet-header .profile-img {
+  flex: 0 0 100px;
+  height: 100px;
+  margin-right: 10px;
+}
+.absolution .sheet-header .header-fields {
+  flex: 1;
+}
+.absolution .sheet-tabs {
+  flex: 0 0 auto;
+}
+.absolution .window-content > .tab {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-top: 20px;
+}
+.absolution .sheet-body,
+.absolution .sheet-body .tab,
+.absolution .sheet-body .tab .editor {
+  height: 100%;
+}
+.absolution .tab.biography {
+  flex: 1;
+}
+.absolution .tab.biography .editor {
+  height: 100%;
+}
+.absolution .tox .tox-editor-container {
+  background: var(--absolution-c-white);
+}
+.absolution .tox .tox-edit-area {
+  padding: 0 8px;
+}
+.absolution .window-content > .tab.active[data-tab=description] {
+  display: flex;
+  flex-direction: column;
+}
+.absolution .window-content > .tab.active[data-tab=description] prose-mirror {
+  flex: 1;
+  min-height: 150px;
+}
+.absolution .item-description-label {
+  flex: 0 0 auto;
+  margin-bottom: 4px;
+}
+.absolution .item-flavor {
+  flex: 0 0 auto;
+  margin-top: 8px;
+}
+.absolution .item-flavor input {
+  width: 100%;
+}
+.absolution .resource-label {
+  font-weight: bold;
+}
+.absolution .ability {
+  margin-bottom: 2px;
+}
+.absolution .ability-score,
+.absolution .ability-mod {
+  flex: 0 0 44px;
+}
+.absolution .items-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px groove var(--absolution-c-groove);
+  font-weight: bold;
+}
+.absolution .items-header > * {
+  font-size: 14px;
+  text-align: center;
+}
+.absolution .items-header .item-name {
+  font-weight: bold;
+  padding-left: 5px;
+  text-align: left;
+  display: flex;
+}
+.absolution .items-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  color: var(--absolution-c-tan);
+}
+.absolution .items-list .item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.absolution .items-list .item-name {
+  flex: 2;
+  margin: 0;
+  overflow: hidden;
+  font-size: 13px;
+  text-align: left;
+  align-items: center;
+  display: flex;
+}
+.absolution .items-list .item-name h3, .absolution .items-list .item-name h4 {
+  margin: 0;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+.absolution .items-list .item-controls {
+  display: flex;
+  flex: 0 0 100px;
+  justify-content: flex-end;
+}
+.absolution .items-list .item-controls a {
+  font-size: 12px;
+  text-align: center;
+  margin: 0 6px;
+}
+.absolution .items-list .item {
+  align-items: center;
+  padding: 0 2px;
+  border-bottom: 1px solid var(--absolution-c-faint);
+}
+.absolution .items-list .item:last-child {
+  border-bottom: none;
+}
+.absolution .items-list .item .item-name {
+  color: var(--absolution-c-dark);
+}
+.absolution .items-list .item .item-name .item-image {
+  flex: 0 0 30px;
+  height: 30px;
+  background-size: 30px;
+  border: none;
+  margin-right: 5px;
+}
+.absolution .items-list .item-prop {
+  text-align: center;
+  border-left: 1px solid #c9c7b8;
+  border-right: 1px solid #c9c7b8;
+  font-size: 12px;
+}
+.absolution .items-list .items-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px groove var(--absolution-c-groove);
+  font-weight: bold;
+}
+.absolution .items-list .items-header > * {
+  font-size: 12px;
+  text-align: center;
+}
+.absolution .items-list .items-header .item-name {
+  padding-left: 5px;
+  text-align: left;
+}
+.absolution .item-formula {
+  flex: 0 0 200px;
+  padding: 0 8px;
+}
+.absolution .effects-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px groove var(--absolution-c-groove);
+  font-weight: bold;
+}
+.absolution .effects-header > * {
+  font-size: 14px;
+  text-align: center;
+}
+.absolution .effects-header .effect-name {
+  font-weight: bold;
+  padding-left: 5px;
+  text-align: left;
+  display: flex;
+}
+.absolution .effects-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  color: var(--absolution-c-tan);
+}
+.absolution .effects-list .effect-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.absolution .effects-list .effect-name {
+  flex: 2;
+  margin: 0;
+  overflow: hidden;
+  font-size: 13px;
+  text-align: left;
+  align-items: center;
+  display: flex;
+}
+.absolution .effects-list .effect-name h3, .absolution .effects-list .effect-name h4 {
+  margin: 0;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+.absolution .effects-list .effect-controls {
+  display: flex;
+  flex: 0 0 100px;
+  justify-content: flex-end;
+}
+.absolution .effects-list .effect-controls a {
+  font-size: 12px;
+  text-align: center;
+  margin: 0 6px;
+}
+.absolution .effects-list .effect {
+  align-items: center;
+  padding: 0 2px;
+  border-bottom: 1px solid var(--absolution-c-faint);
+}
+.absolution .effects-list .effect:last-child {
+  border-bottom: none;
+}
+.absolution .effects-list .effect .effect-name {
+  color: var(--absolution-c-dark);
+}
+.absolution .effects-list .effect .effect-name .effect-image {
+  flex: 0 0 30px;
+  height: 30px;
+  background-size: 30px;
+  border: none;
+  margin-right: 5px;
+}
+.absolution .effects-list .effect-prop {
+  text-align: center;
+  border-left: 1px solid #c9c7b8;
+  border-right: 1px solid #c9c7b8;
+  font-size: 12px;
+}
+.absolution .effects-list .effects-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px groove var(--absolution-c-groove);
+  font-weight: bold;
+}
+.absolution .effects-list .effects-header > * {
+  font-size: 12px;
+  text-align: center;
+}
+.absolution .effects-list .effects-header .effect-name {
+  padding-left: 5px;
+  text-align: left;
+}
+.absolution .effect-formula {
+  flex: 0 0 200px;
+  padding: 0 8px;
+}
+.absolution .effects .item .effect-source,
+.absolution .effects .item .effect-duration,
+.absolution .effects .item .effect-controls {
+  text-align: center;
+  border-left: 1px solid #c9c7b8;
+  border-right: 1px solid #c9c7b8;
+  font-size: 12px;
+}
+.absolution .effects .item .effect-controls {
+  border: none;
+}
+.absolution .indicators {
+  margin-top: 8px;
+  gap: 8px;
+}
+.absolution .indicator {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  padding: 4px 8px 6px;
+  border: 2px groove var(--absolution-c-groove);
+  border-radius: 4px;
+}
+.absolution .indicator .indicator-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.absolution .indicator .indicator-label {
+  white-space: nowrap;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 12px;
+}
+.absolution .indicator .indicator-value {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+}
+.absolution .indicator .indicator-value input {
+  width: 72px;
+  height: 44px;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+}
+.absolution .indicator .knockout-roll {
+  flex: 0 0 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  font-size: 24px;
+}
+.absolution .indicator .indicator-max {
+  font-size: 24px;
+  font-weight: bold;
+  opacity: 0.8;
+}
+.absolution .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  align-items: start;
+}
+.absolution .stats-column {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.absolution .stats fieldset {
+  margin: 0;
+  padding: 4px 6px 6px;
+  border: 2px groove var(--absolution-c-groove);
+}
+.absolution .stats fieldset legend {
+  font-weight: bold;
+  padding: 0 4px;
+}
+.absolution .stat-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 28px;
+}
+.absolution .stat-row > label,
+.absolution .stat-row > .label-input {
+  flex: 1;
+  min-width: 0;
+}
+.absolution .stat-row > input[type=number] {
+  flex: 0 0 52px;
+  text-align: center;
+}
+.absolution .stat-row > select {
+  flex: 0 0 auto;
+  max-width: 55%;
+}
+.absolution .stat-row .pair {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+.absolution .stat-row .pair input {
+  width: 44px;
+  text-align: center;
+}
+.absolution .roll-die {
+  flex: 0 0 18px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0.75;
+}
+.absolution .roll-die:hover, .absolution .roll-die:focus {
+  opacity: 1;
+  text-shadow: 0 0 6px var(--absolution-c-red);
+}
+.absolution .derived {
+  flex: 0 0 52px;
+  text-align: center;
+  font-weight: bold;
+}
+.absolution .derived.negative {
+  color: var(--absolution-c-red);
+}
+.absolution .skill-row {
+  display: grid;
+  grid-template-columns: 18px 32px minmax(0, 1fr) 44px 36px;
+  align-items: center;
+  gap: 4px;
+  min-height: 26px;
+}
+.absolution .skill-row.skill-header {
+  font-size: 11px;
+  font-weight: bold;
+  min-height: 18px;
+}
+.absolution .skill-row .skill-attribute {
+  font-size: 10px;
+  opacity: 0.7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.absolution .skill-row .skill-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.absolution .skill-row .skill-ranks,
+.absolution .skill-row .skill-aptitude {
+  text-align: center;
+}
+.absolution .features .items-list + .items-list,
+.absolution .inventory .items-list + .items-list {
+  margin-top: 8px;
+}
+.absolution .items-list .item-choice {
+  flex: 0 0 120px;
+  padding: 0 4px;
+}
+.absolution .items-list .item-summary {
+  flex: 3;
+  min-width: 0;
+  padding: 0 4px;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.absolution .items-list .item-field {
+  flex: 0 0 90px;
+  padding: 0 4px;
+}
+.absolution .items-list .item-field input {
+  width: 100%;
+  text-align: center;
+}
+.absolution .items-list.connections {
+  margin: 0 0 12px;
+}
+.absolution .items-list.connections .connection-name,
+.absolution .items-list.connections .connection-relationship {
+  flex: 1;
+  margin-right: 4px;
+}
+.absolution .items-list.connections .connection-notes {
+  flex: 2;
+}
+.absolution .items-list .item-controls {
+  flex: 0 0 150px;
+  align-items: center;
+}
+.absolution .items-list .items-header {
+  height: auto;
+  min-height: 30px;
+  align-items: stretch;
+}
+.absolution .items-list .items-header > div,
+.absolution .items-list .items-header .item-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  text-align: center;
+  white-space: nowrap;
+}
+.absolution .items-list .items-header .item-controls {
+  gap: 6px;
+}
+.absolution .items-list .items-header .item-controls a {
+  margin: 0;
+  white-space: nowrap;
+}
+.absolution .items-list .item:not(.items-header) {
+  min-height: 32px;
+}
+.absolution .items-list .item:not(.items-header) .item-name {
+  padding-left: 6px;
+}
+.absolution .items-list .item:not(.items-header) input,
+.absolution .items-list .item:not(.items-header) select {
+  height: 26px;
+  padding: 0 4px;
+  font-size: 13px;
+}
+.absolution .action-list .item-source {
+  flex: 0 0 100px;
+  padding: 0 4px;
+  font-size: 12px;
+  text-align: center;
+}
+.absolution .action-list .item-action-type {
+  flex: 0 0 120px;
+  padding: 0 4px;
+  font-size: 12px;
+  text-align: center;
+}
+.absolution .action-list .item-buttons {
+  display: flex;
+  flex: 0 0 56px;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+}
+.absolution .action-list .item-buttons .roll-die {
+  flex: 0 0 auto;
+}
+.absolution .action-list .rearrange-toggle {
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+.absolution .action-list .rearrange-toggle.active {
+  background: var(--absolution-c-red);
+  color: var(--absolution-c-white);
+}
+.absolution .action-list.rearranging .item:not(.items-header) {
+  cursor: grab;
+}
+.absolution .action-list .drag-handle {
+  flex: 0 0 14px;
+  margin-right: 4px;
+  opacity: 0.7;
+}
+.absolution .items-list .item.sub-entry .item-name {
+  padding-left: 22px;
+}
+.absolution .items-list .item.sub-entry .sub-entry-marker {
+  margin-right: 6px;
+  font-size: 11px;
+  opacity: 0.6;
+}
+.absolution .weapon-list .col-1,
+.absolution .armor-list .col-1 {
+  flex: 0 0 84px;
+  font-size: 12px;
+  text-align: center;
+}
+.absolution .weapon-list .col-2,
+.absolution .armor-list .col-2 {
+  flex: 0 0 72px;
+  font-size: 12px;
+  text-align: center;
+}
+.absolution .weapon-list .col-3,
+.absolution .armor-list .col-3 {
+  flex: 0 0 96px;
+  font-size: 12px;
+  text-align: center;
+}
+.absolution .weapon-list .col-3 .slot-icon,
+.absolution .armor-list .col-3 .slot-icon {
+  margin: 0 1px;
+  font-size: 11px;
+}
+.absolution .weapon-list .col-spacer,
+.absolution .armor-list .col-spacer {
+  flex: 0 0 152px;
+}
+.absolution .weapon-list .item-buttons,
+.absolution .armor-list .item-buttons {
+  display: flex;
+  flex: 0 0 56px;
+  gap: 8px;
+  align-items: center;
+}
+.absolution .weapon-list .ornament-state,
+.absolution .armor-list .ornament-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+.absolution .weapon-list .ornament-state input[type=number],
+.absolution .armor-list .ornament-state input[type=number] {
+  width: 36px;
+}
+.absolution .weapon-list .ornament-state .spent-toggle,
+.absolution .armor-list .ornament-state .spent-toggle {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+}
+.absolution .weapon-list .item.ornament.spent .name-stack,
+.absolution .armor-list .item.ornament.spent .name-stack {
+  opacity: 0.55;
+}
+.absolution .armor-list .armor-speed {
+  flex: 0 0 60px;
+  font-size: 12px;
+  text-align: center;
+}
+.absolution .armor-list .armor-evasion {
+  flex: 0 0 72px;
+  font-size: 12px;
+  text-align: center;
+}
+.absolution .armor-list .armor-worn {
+  flex: 0 0 76px;
+  display: flex;
+  justify-content: center;
+}
+.absolution .weapon-list .weapon-attuned,
+.absolution .weapon-list .weapon-wielding {
+  flex: 0 0 76px;
+  display: flex;
+  justify-content: center;
+}
+.absolution .weapon-list .weapon-attuned.over-limit,
+.absolution .weapon-list .weapon-wielding.over-limit {
+  color: var(--absolution-c-red);
+}
+.absolution .weapon-list .name-stack {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.absolution .weapon-list .item-detail {
+  font-size: 11px;
+  opacity: 0.75;
+  white-space: normal;
+}
+.absolution .weapon-list .broken-tag {
+  margin-left: 4px;
+  padding: 0 4px;
+  border-radius: 3px;
+  font-size: 10px;
+  text-transform: uppercase;
+  background: var(--absolution-c-red);
+  color: var(--absolution-c-white);
+}
+.absolution .weapon-list .item.broken .name-stack,
+.absolution .weapon-list .item.broken .col-2 {
+  opacity: 0.55;
+}
+.absolution .weapon-list .slot-problem {
+  color: var(--absolution-c-red);
+}
+.absolution .weapon-list .rearrange-toggle {
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+.absolution .weapon-list .rearrange-toggle.active {
+  background: var(--absolution-c-red);
+  color: var(--absolution-c-white);
+}
+.absolution .weapon-list.rearranging .item:not(.items-header) {
+  cursor: grab;
+}
+.absolution .weapon-list .drag-handle {
+  flex: 0 0 14px;
+  margin-right: 4px;
+  opacity: 0.7;
+}
+.absolution .weapon-summary {
+  flex: 0 0 auto;
+  margin-bottom: 6px;
+}
+.absolution .weapon-grid {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px 12px;
+  margin: 0 0 8px;
+  padding: 4px 8px 8px;
+  border: 2px groove var(--absolution-c-groove);
+}
+.absolution .weapon-grid legend {
+  font-weight: bold;
+  padding: 0 4px;
+}
+.absolution .weapon-grid .weapon-grid-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.absolution .weapon-grid .weapon-grid-item input[type=number] {
+  width: 44px;
+  flex: 0 0 44px;
+  text-align: center;
+}
+.absolution .weapon-flags {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+.absolution .armor-list .name-stack {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.absolution .armor-list .item-detail {
+  font-size: 11px;
+  opacity: 0.75;
+  white-space: normal;
+}
+.absolution .armor-list .broken-tag {
+  margin-left: 4px;
+  padding: 0 4px;
+  border-radius: 3px;
+  font-size: 10px;
+  text-transform: uppercase;
+  background: var(--absolution-c-red);
+  color: var(--absolution-c-white);
+}
+.absolution .armor-list .item.broken .name-stack,
+.absolution .armor-list .item.broken .col-2 {
+  opacity: 0.55;
+}
+.absolution .armor-list .slot-problem {
+  color: var(--absolution-c-red);
+}
+.absolution .armor-list .rearrange-toggle {
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+.absolution .armor-list .rearrange-toggle.active {
+  background: var(--absolution-c-red);
+  color: var(--absolution-c-white);
+}
+.absolution .armor-list.rearranging .item:not(.items-header) {
+  cursor: grab;
+}
+.absolution .armor-list .drag-handle {
+  flex: 0 0 14px;
+  margin-right: 4px;
+  opacity: 0.7;
+}
+.absolution .stat-row .derived.adjusted {
+  flex: 0 0 auto;
+  font-size: 13px;
+}
+.absolution .stat-row .derived.adjusted i {
+  font-size: 10px;
+  opacity: 0.7;
+}
+.absolution .stat-row.armor-worn {
+  font-size: 12px;
+  font-style: italic;
+}
+.absolution .stat-row.armor-worn.warning {
+  color: var(--absolution-c-red);
+}
+.absolution .charges-pair {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.absolution .charges-pair input {
+  width: 60px;
+}

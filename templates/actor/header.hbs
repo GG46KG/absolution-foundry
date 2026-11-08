@@ -1,0 +1,92 @@
+{{! Sheet Header }}
+<header class='sheet-header'>
+  <img
+    class='profile-img'
+    src='{{actor.img}}'
+    data-edit='img'
+    data-action='onEditImage'
+    title='{{actor.name}}'
+    height='100'
+    width='100'
+  />
+  <div class='header-fields'>
+    <div class='document-name'>
+      <input
+        name='name'
+        type='text'
+        value='{{actor.name}}'
+        placeholder='Name'
+      />
+    </div>
+    {{#if isCharacter}}
+      <div class='resources grid grid-3col'>
+        <div class='resource flex-group-center'>
+          <label class='resource-label'>{{localize 'ABSOLUTION.Actor.Character.FIELDS.lineage.label'}}</label>
+          <select name='system.lineage'>
+            {{selectOptions choices.lineages selected=system.lineage localize=true blank=(localize 'ABSOLUTION.Actor.SelectLineage')}}
+          </select>
+        </div>
+        <div class='resource flex-group-center'>
+          <label class='resource-label'>{{localize 'ABSOLUTION.Actor.Character.FIELDS.vow.label'}}</label>
+          <select name='system.vow'>
+            {{selectOptions choices.vows selected=system.vow localize=true blank=(localize 'ABSOLUTION.Actor.SelectVow')}}
+          </select>
+        </div>
+        <div class='resource flex-group-center'>
+          <label class='resource-label'>{{localize 'ABSOLUTION.Actor.Character.FIELDS.level.label'}}</label>
+          <input type='number' name='system.level' value='{{system.level}}' min='1' />
+        </div>
+      </div>
+    {{else}}
+      <div class='resources grid grid-3col'>
+        <div class='resource flex-group-center'>
+          <label class='resource-label'>
+            {{localize 'ABSOLUTION.Actor.NPC.FIELDS.cr.label'}} / {{localize 'ABSOLUTION.Actor.NPC.xp.label'}}
+          </label>
+          <div class='resource-content flexrow flex-center flex-between'>
+            <input type='number' name='system.cr' value='{{system.cr}}' />
+            <span></span>
+            <input type='number' disabled value='{{system.xp}}' />
+          </div>
+        </div>
+      </div>
+    {{/if}}
+    {{! Large indicators. These edit the same fields as the Character tab,
+        through data-field rather than name, see AbsolutionActorSheet#onFieldChange }}
+    <div class='indicators grid grid-2col'>
+      <div class='indicator'>
+        <div class='indicator-item'>
+          <label class='indicator-label'>{{localize 'ABSOLUTION.Actor.Sections.Stamina'}}</label>
+          <div class='indicator-value'>
+            <input type='number' data-field='system.stamina.value' value='{{system.stamina.value}}' min='0' />
+            <span class='indicator-max'>/ {{system.stamina.max}}</span>
+          </div>
+        </div>
+        <div class='indicator-item'>
+          <label class='indicator-label'>{{localize 'ABSOLUTION.Actor.base.FIELDS.barrier.label'}}</label>
+          <div class='indicator-value'>
+            <input type='number' data-field='system.barrier' value='{{system.barrier}}' min='0' />
+          </div>
+        </div>
+      </div>
+      <div class='indicator'>
+        <div class='indicator-item'>
+          <label class='indicator-label'>{{localize 'ABSOLUTION.Actor.base.FIELDS.wounds.normal.label'}}</label>
+          <div class='indicator-value'>
+            <input type='number' data-field='system.wounds.normal' value='{{system.wounds.normal}}' min='0' />
+          </div>
+        </div>
+        <div class='indicator-item'>
+          <label class='indicator-label'>{{localize 'ABSOLUTION.Actor.base.FIELDS.wounds.grievous.label'}}</label>
+          <div class='indicator-value'>
+            <input type='number' data-field='system.wounds.grievous' value='{{system.wounds.grievous}}' min='0' />
+          </div>
+        </div>
+        <div class='indicator-item'>
+          <label class='indicator-label'>{{localize 'ABSOLUTION.Knockout.Label'}}</label>
+          <a class='roll-die knockout-roll' data-action='knockout' aria-label='{{localize "ABSOLUTION.Knockout.Roll"}}'><i class='fa-solid fa-dice-d6'></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

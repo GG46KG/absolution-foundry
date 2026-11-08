@@ -1,0 +1,88 @@
+{{!
+  Armor (Equipment rules). Each set of armor is followed by the ornaments in
+  its Engraved slot. Columns line up with the weapons table so ornament rows
+  match in both.
+  Parameters:
+    items   Rows from AbsolutionActorSheet#_prepareItems: armor with slotIcons,
+            weightLabel and modificationLabel; ornaments with subEntry
+}}
+<ol class='items-list armor-list {{#if @root.rearranging.armor}}rearranging{{/if}}'>
+  <li class='item flexrow items-header'>
+    <div class='item-name'>{{localize 'ABSOLUTION.Actor.Sections.Armor'}}</div>
+    <div class='col-1'>{{localize 'ABSOLUTION.Item.Armor.FIELDS.weight.label'}}</div>
+    <div class='col-2'>{{localize 'ABSOLUTION.Actor.base.FIELDS.armor.label'}}</div>
+    <div class='col-3 slot-icons'>{{localize 'ABSOLUTION.Weapon.Slots'}}</div>
+    <div class='armor-speed'>{{localize 'ABSOLUTION.Actor.base.FIELDS.speed.label'}}</div>
+    <div class='armor-evasion'>{{localize 'ABSOLUTION.Actor.base.FIELDS.evasion.label'}}</div>
+    <div class='armor-worn'>{{localize 'ABSOLUTION.Item.Armor.FIELDS.worn.label'}}</div>
+    <div class='item-controls'>
+      {{#if @root.editable}}
+        <a class='item-control item-create' data-action='createDoc' data-document-class='Item' data-type='armor'>
+          <i class='fas fa-plus'></i>
+          {{localize 'ABSOLUTION.Actor.NewArmor'}}
+        </a>
+        <a
+          class='item-control rearrange-toggle {{#if @root.rearranging.armor}}active{{/if}}'
+          data-action='toggleRearrange'
+          data-list='armor'
+          aria-label='{{localize "ABSOLUTION.Actor.Rearrange"}}'
+          aria-pressed='{{#if @root.rearranging.armor}}true{{else}}false{{/if}}'
+        >
+          <i class='fa-solid fa-arrows-up-down'></i>
+        </a>
+      {{/if}}
+    </div>
+  </li>
+  {{#each items as |entry|}}
+    {{#if entry.item.system.isOrnament}}
+      {{> 'systems/absolution/templates/actor/parts/ornament-row.hbs' entry=entry listId='armor'}}
+    {{else}}
+      <li
+        class='item flexrow armor {{#if entry.item.system.broken}}broken{{/if}}'
+        data-item-id='{{entry.item.id}}'
+        data-drag='true'
+        data-document-class='Item'
+      >
+        <div class='item-name'>
+          {{#if @root.rearranging.armor}}<i class='fa-solid fa-grip-vertical drag-handle'></i>{{/if}}
+          <div class='name-stack'>
+            <div>
+              {{entry.item.name}}
+              {{#if entry.item.system.broken}}<span class='broken-tag'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.broken.label'}}</span>{{/if}}
+            </div>
+            {{#if entry.modificationLabel}}<div class='item-detail'>{{entry.modificationLabel}}</div>{{/if}}
+          </div>
+        </div>
+        <div class='col-1'>{{entry.weightLabel}}</div>
+        <div class='col-2'>+{{entry.item.system.armorRating}}</div>
+        <div class='col-3 slot-icons'>
+          {{#each entry.slotIcons}}
+            <i class='fa-{{#if this.filled}}solid{{else}}regular{{/if}} fa-gem slot-icon' title='{{this.title}}'></i>
+          {{else}}
+            <span class='item-detail'>&ndash;</span>
+          {{/each}}
+        </div>
+        <div class='armor-speed'>{{#if entry.item.system.speedPenalty}}&minus;{{entry.item.system.speedPenalty}}{{else}}&ndash;{{/if}}</div>
+        <div class='armor-evasion'>{{localize (concat 'ABSOLUTION.Armor.Evasion.' entry.item.system.evasion)}}{{#if entry.item.system.evasionBonus}} +{{entry.item.system.evasionBonus}}{{/if}}</div>
+        <div class='armor-worn'>
+          <input type='checkbox' data-item-field='system.worn' {{checked entry.item.system.worn}} {{#unless @root.editable}}disabled{{/unless}} />
+        </div>
+        <div class='item-controls'>
+          {{#if (and @root.editable entry.slotsTotal)}}
+            <a class='item-control add-ornament' data-action='addOrnament' aria-label='{{localize "ABSOLUTION.Weapon.AddOrnament"}}'>
+              <i class='fas fa-plus'></i>
+            </a>
+          {{/if}}
+          <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=entry.item.name}}' data-action='viewDoc'>
+            <i class='fas fa-edit'></i>
+          </a>
+          {{#if @root.editable}}
+            <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=entry.item.name}}' data-action='deleteDoc'>
+              <i class='fas fa-trash'></i>
+            </a>
+          {{/if}}
+        </div>
+      </li>
+    {{/if}}
+  {{/each}}
+</ol>

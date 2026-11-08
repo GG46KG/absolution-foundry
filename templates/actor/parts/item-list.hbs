@@ -1,0 +1,78 @@
+{{!
+  A table of one item type.
+  Parameters:
+    type          Item type created by the add button
+    items         [{item, summary, subEntry}] from AbsolutionActorSheet#_prepareItems;
+                  subEntry rows (ornaments on a weapon) are indented under the row above
+    title         Heading of the table
+    choiceKey     Optional system field shown as a dropdown, e.g. 'actionType'
+    choices       {value: label} for that dropdown
+    summaryLabel  Heading of the description column
+    fieldKey      Optional system field shown as an input, e.g. 'uses'
+    fieldLabel    Heading of that column
+    fieldType     'number' or 'text'
+    newLabel      Optional label of the add button; defaults to "New [type]"
+}}
+<ol class='items-list'>
+  <li class='item flexrow items-header'>
+    <div class='item-name'>{{localize title}}</div>
+    {{#if choiceKey}}<div class='item-choice'>{{localize 'ABSOLUTION.Item.Feature.FIELDS.actionType.label'}}</div>{{/if}}
+    <div class='item-summary'>{{localize summaryLabel}}</div>
+    {{#if fieldKey}}<div class='item-field'>{{localize fieldLabel}}</div>{{/if}}
+    <div class='item-controls'>
+      {{#if @root.editable}}
+        <a
+          class='item-control item-create'
+          title='{{localize "DOCUMENT.Create" type=(localize (concat "TYPES.Item." type))}}'
+          data-action='createDoc'
+          data-document-class='Item'
+          data-type='{{type}}'
+        >
+          <i class='fas fa-plus'></i>
+          {{#if newLabel}}{{localize newLabel}}{{else}}{{localize 'DOCUMENT.New' type=(localize (concat 'TYPES.Item.' type))}}{{/if}}
+        </a>
+      {{/if}}
+    </div>
+  </li>
+  {{#each items as |entry|}}
+    <li
+      class='item flexrow {{#if entry.subEntry}}sub-entry{{/if}}'
+      data-item-id='{{entry.item.id}}'
+      data-drag='true'
+      data-document-class='Item'
+    >
+      <div class='item-name'>
+        {{#if entry.subEntry}}<i class='fa-solid fa-turn-up fa-rotate-90 sub-entry-marker'></i>{{/if}}
+        <div>{{entry.item.name}}</div>
+      </div>
+      {{#if ../choiceKey}}
+        <div class='item-choice'>
+          <select data-item-field='system.{{../choiceKey}}' {{#unless @root.editable}}disabled{{/unless}}>
+            {{selectOptions ../choices selected=(lookup entry.item.system ../choiceKey) localize=true blank=''}}
+          </select>
+        </div>
+      {{/if}}
+      <div class='item-summary' title='{{entry.summary}}'>{{entry.summary}}</div>
+      {{#if ../fieldKey}}
+        <div class='item-field'>
+          <input
+            type='{{../fieldType}}'
+            data-item-field='system.{{../fieldKey}}'
+            value='{{lookup entry.item.system ../fieldKey}}'
+            {{#unless @root.editable}}disabled{{/unless}}
+          />
+        </div>
+      {{/if}}
+      <div class='item-controls'>
+        <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=entry.item.name}}' data-action='viewDoc'>
+          <i class='fas fa-edit'></i>
+        </a>
+        {{#if @root.editable}}
+          <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=entry.item.name}}' data-action='deleteDoc'>
+            <i class='fas fa-trash'></i>
+          </a>
+        {{/if}}
+      </div>
+    </li>
+  {{/each}}
+</ol>

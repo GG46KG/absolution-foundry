@@ -1,0 +1,143 @@
+<header class='sheet-header'>
+  {{! Vow features, traits and equipment have no image }}
+  {{#unless (or (eq item.type 'feature') (eq item.type 'trait') (eq item.type 'equipment'))}}
+    <img
+      class='profile-img'
+      src='{{item.img}}'
+      data-edit='img'
+      data-action='onEditImage'
+      title='{{item.name}}'
+    />
+  {{/unless}}
+  <div class='header-fields'>
+    <div class='document-name'>
+      <input name='name' type='text' value='{{item.name}}' placeholder='Name' />
+    </div>
+    <div class='grid grid-2col'>
+      {{#if (or (eq item.type 'feature') (eq item.type 'trait') (eq item.type 'equipment'))}}
+        <div class='resource'>
+          <label class='resource-label'>{{localize 'ABSOLUTION.Item.Feature.FIELDS.actionType.label'}}</label>
+          <select name='system.actionType'>
+            {{selectOptions choices.actionTypes selected=system.actionType localize=true blank=''}}
+          </select>
+        </div>
+      {{/if}}
+      {{#if (or (eq item.type 'feature') (eq item.type 'trait'))}}
+        <div class='resource'>
+          <label class='resource-label'>{{localize 'ABSOLUTION.Item.Feature.FIELDS.source.label'}}</label>
+          <select name='system.source'>
+            {{selectOptions choices.featureSources selected=system.source localize=true}}
+          </select>
+        </div>
+      {{else if (eq item.type 'equipment')}}
+        <div class='resource'>
+          <label class='resource-label'>{{localize 'ABSOLUTION.Item.Equipment.FIELDS.uses.label'}}</label>
+          <input type='text' name='system.uses' value='{{system.uses}}' />
+        </div>
+      {{else if (eq item.type 'weapon')}}
+        <div class='resource'>
+          <label class='resource-label'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.category.label'}}</label>
+          <select name='system.category'>
+            {{selectOptions choices.weaponCategories selected=system.category localize=true}}
+          </select>
+        </div>
+        {{#if system.isOrnament}}
+          <div class='resource'>
+            <label class='resource-label'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.kind.label'}}</label>
+            <select name='system.kind'>
+              {{selectOptions choices.ornamentKinds selected=system.kind localize=true}}
+            </select>
+          </div>
+          {{#if (eq system.kind 'discharge')}}
+            <div class='resource'>
+              <label class='resource-label'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.charges.label'}}</label>
+              <div class='charges-pair'>
+                <input type='number' name='system.charges.value' value='{{system.charges.value}}' min='0' />
+                <span>/</span>
+                <input type='number' name='system.charges.max' value='{{system.charges.max}}' min='0' />
+              </div>
+            </div>
+          {{else if spentLabel}}
+            <div class='resource weapon-flags'>
+              <label><input type='checkbox' name='system.spent' {{checked system.spent}} /> {{localize spentLabel}}</label>
+            </div>
+          {{/if}}
+          <div class='resource'>
+            <label class='resource-label'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.rarity.label'}}</label>
+            <select name='system.rarity'>
+              {{selectOptions choices.ornamentRarities selected=system.rarity localize=true}}
+            </select>
+          </div>
+          <div class='resource'>
+            <label class='resource-label'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.catalyst.label'}}</label>
+            <select name='system.catalyst'>
+              {{selectOptions choices.catalysts selected=system.catalyst localize=true blank=(localize 'ABSOLUTION.Catalyst.None')}}
+            </select>
+          </div>
+          {{#if system.weightUses}}
+            <div class='resource'>
+              <label class='resource-label'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.weightUses.label'}}</label>
+              <input type='text' name='system.weightUses' value='{{system.weightUses}}' />
+            </div>
+          {{/if}}
+        {{else}}
+          <div class='resource'>
+            <label class='resource-label'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.weight.label'}}</label>
+            <select name='system.weight'>
+              {{selectOptions choices.weaponWeights selected=system.weight localize=true}}
+            </select>
+          </div>
+          <div class='resource weapon-flags'>
+            <label><input type='checkbox' name='system.attuned' {{checked system.attuned}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.attuned.label'}}</label>
+            <label><input type='checkbox' name='system.wielding' {{checked system.wielding}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.wielding.label'}}</label>
+            <label><input type='checkbox' name='system.broken' {{checked system.broken}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.broken.label'}}</label>
+          </div>
+        {{/if}}
+        {{#if choices.attachTargets}}
+          <div class='resource'>
+            <label class='resource-label'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.attachedTo.label'}}</label>
+            <select name='system.attachedTo'>
+              {{selectOptions choices.attachTargets selected=system.attachedTo blank=(localize 'ABSOLUTION.Item.Weapon.NotAttached')}}
+            </select>
+          </div>
+        {{/if}}
+      {{else if (eq item.type 'armor')}}
+        <div class='resource'>
+          <label class='resource-label'>{{localize 'ABSOLUTION.Item.Armor.FIELDS.weight.label'}}</label>
+          <select name='system.weight'>
+            {{selectOptions choices.armorWeights selected=system.weight localize=true}}
+          </select>
+        </div>
+        <div class='resource'>
+          <label class='resource-label'>{{localize 'ABSOLUTION.Item.Armor.FIELDS.modification.label'}}</label>
+          <select name='system.modification'>
+            {{selectOptions choices.armorModifications selected=system.modification localize=true blank=(localize 'ABSOLUTION.ArmorModification.None')}}
+          </select>
+        </div>
+        {{#if (eq system.modification 'engraved')}}
+          <div class='resource'>
+            <label class='resource-label'>{{localize 'ABSOLUTION.Item.Armor.FIELDS.engravedSlot.label'}}</label>
+            <select name='system.engravedSlot'>
+              {{selectOptions choices.engravedSlots selected=system.engravedSlot localize=true}}
+            </select>
+          </div>
+        {{/if}}
+        <div class='resource weapon-flags'>
+          <label><input type='checkbox' name='system.worn' {{checked system.worn}} /> {{localize 'ABSOLUTION.Item.Armor.FIELDS.worn.label'}}</label>
+          <label><input type='checkbox' name='system.broken' {{checked system.broken}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.broken.label'}}</label>
+        </div>
+      {{else if (eq item.type 'belonging')}}
+        <div class='resource'>
+          <label class='resource-label'>{{localize 'ABSOLUTION.Item.Belonging.FIELDS.quantity.label'}}</label>
+          <input type='number' name='system.quantity' value='{{system.quantity}}' min='0' />
+        </div>
+      {{/if}}
+    </div>
+    {{#if (or (eq item.type 'feature') (eq item.type 'trait') (eq item.type 'equipment') system.isOrnament)}}
+      <div class='resource'>
+        <label class='resource-label'>{{localize 'ABSOLUTION.Item.Feature.FIELDS.dice.label'}}</label>
+        <input type='text' name='system.dice' value='{{system.dice}}' placeholder='{{localize "ABSOLUTION.Item.Feature.DicePlaceholder"}}' />
+      </div>
+    {{/if}}
+  </div>
+</header>

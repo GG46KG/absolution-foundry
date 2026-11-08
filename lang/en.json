@@ -1,0 +1,722 @@
+{
+  "ABSOLUTION": {
+    "Attribute": {
+      "Power": "Power",
+      "Fortitude": "Fortitude",
+      "Knowledge": "Knowledge",
+      "Faith": "Faith"
+    },
+    "Skill": {
+      "Agility": "Agility",
+      "Alchemy": "Alchemy",
+      "Charisma": "Charisma",
+      "Craft": "Craft",
+      "Dexterity": "Dexterity",
+      "Divination": "Divination",
+      "Engineering": "Engineering",
+      "HunterLore": "Hunter Lore",
+      "Intuition": "Intuition",
+      "Medicine": "Medicine",
+      "Nature": "Nature",
+      "Pathfinding": "Pathfinding",
+      "Perception": "Perception",
+      "Records": "Records",
+      "Strength": "Strength",
+      "Psychokinesis": "Psychokinesis",
+      "Theurgy": "Theurgy"
+    },
+    "Lineage": {
+      "Yager": "Yager",
+      "Garoux": "Garoux",
+      "Vikhane": "Vikhane",
+      "Maigo": "Maigo",
+      "Samee": "Samee",
+      "Bridde": "Bridde",
+      "Shadowkin": "Shadowkin",
+      "Ketari": "Ketari",
+      "Colonial": "Colonial",
+      "PenitentBeast": "Penitent Beast",
+      "Sunfolk": "Sunfolk",
+      "Zeelander": "Zeelander",
+      "Leszhoth": "Leszhoth",
+      "Aposkion": "Aposkion",
+      "Kripdovi": "Kripdovi"
+    },
+    "Vow": {
+      "Novice": "Novice",
+      "Evangelist": "Evangelist",
+      "Confessor": "Confessor",
+      "Judge": "Judge",
+      "Reliquarian": "Reliquarian",
+      "Archivist": "Archivist",
+      "PlagueDoctor": "Plague Doctor",
+      "Paladin": "Paladin",
+      "Magos": "Magos",
+      "Hellstalker": "Hellstalker",
+      "Helion": "Helion",
+      "AshReaper": "Ash Reaper",
+      "KnightTemplar": "Knight Templar",
+      "PenitentBeast": "Penitent Beast",
+      "Ranger": "Ranger",
+      "Mechanist": "Mechanist",
+      "Strategist": "Strategist",
+      "Phantom": "Phantom",
+      "HedgePriest": "Hedge-Priest",
+      "Inkmage": "Inkmage",
+      "Martialist": "Martialist",
+      "Blackblade": "Blackblade",
+      "Rudie": "Rudie",
+      "Psyknight": "Psyknight"
+    },
+    "Resource": {
+      "Leadership": "Leadership",
+      "Bellflowers": "Bellflowers",
+      "Order": "Order",
+      "Spirit": "Spirit",
+      "PotentialEnergy": "Potential Energy",
+      "Focus": "Focus",
+      "Vigilance": "Vigilance",
+      "Spite": "Spite",
+      "Zeal": "Zeal",
+      "Grit": "Grit",
+      "Frenzy": "Frenzy",
+      "Flow": "Flow",
+      "MachinaStamina": "Machina Stamina",
+      "Opportunities": "Opportunities",
+      "MirrorStamina": "Mirror Stamina",
+      "Inspiration": "Inspiration",
+      "Natura": "Natura",
+      "Soul": "Soul",
+      "Curse": "Curse"
+    },
+    "StaminaGrowth": {
+      "None": "None",
+      "Slow": "Slow",
+      "Normal": "Normal",
+      "Fast": "Fast",
+      "Exceptional": "Exceptional"
+    },
+    "Status": {
+      "Healthy": "Healthy",
+      "FreshWounds": "Fresh Wounds",
+      "Mended": "Mended",
+      "Triaged": "Triaged"
+    },
+    "StatusEffect": {
+      "Sunder": {
+        "Name": "Sunder",
+        "Description": "Condition. Damage dealt to this character can't be reduced, ignoring effects like Damage Reduction."
+      },
+      "Exhaustion": {
+        "Name": "Exhaustion",
+        "Description": "Condition. On their turn, can only take one Half Action and can't take Full Actions. Movement is not affected."
+      },
+      "Stagger": {
+        "Name": "Stagger",
+        "Description": "Condition. Can only make one attack per turn and can't take Interrupts."
+      },
+      "Blind": {
+        "Name": "Blind",
+        "Description": "Condition. Can't see. Misses all attacks and can only target adjacent squares with abilities."
+      },
+      "Immobilized": {
+        "Name": "Immobilized",
+        "Description": "Condition. Can't move, including the standard move and Sprint."
+      },
+      "Impairment": {
+        "Name": "Impairment",
+        "Description": "Condition. Deals half damage and provides halved Stamina recovery to themself and others."
+      },
+      "Hemorrhage": {
+        "Name": "Hemorrhage",
+        "Description": "Condition. Each Full Action, Fast Action or Interrupt (or each attack made as part of one) deals 1/10 of maximum Stamina (rounded down, minimum 1) as Piercing Nature damage, bypassing Barrier."
+      },
+      "Invisible": {
+        "Name": "Invisible",
+        "Description": "Condition. Can't be targeted by characters who can't perceive Invisible creatures. Has Advantage on all attacks. Lost after taking an action that affects another character, unless otherwise specified."
+      },
+      "Burn": {
+        "Name": "Burn",
+        "Description": "Condition. At the start of each turn, take Piercing Fire damage equal to twice the points of Burn. Fortitude Save at the end of each turn: lose 1 point per Hit."
+      },
+      "Electrocution": {
+        "Name": "Electrocution",
+        "Description": "Condition. Can't take Interrupts. At the start of each turn, take Piercing Shock damage equal to the points of Electrocution. Fortitude Save at the end of each turn: lose 1 point per Hit."
+      },
+      "Toxic": {
+        "Name": "Toxic",
+        "Description": "Condition. Can't make Attacks. At the start of each turn, take Piercing Nature damage equal to the points of Toxic. Fortitude Save at the end of each turn: lose 1 point per Hit."
+      },
+      "Agony": {
+        "Name": "Agony",
+        "Description": "Condition. Can't use Talents. At the start of each turn, take Piercing Psychic damage equal to the points of Agony. Fortitude Save at the end of each turn: lose 1 point per Hit."
+      },
+      "Stun": {
+        "Name": "Stun",
+        "Description": "Condition. Unable to act. Resistance is 0 until the Stun ends."
+      },
+      "Haste": {
+        "Name": "Haste",
+        "Description": "Condition. Can take any Half Action as a Free Action 1/Turn. When Haste ends, Exhausted until the end of their next turn."
+      },
+      "Berserk": {
+        "Name": "Berserk",
+        "Description": "Condition. Must move as close to the nearest character as possible and use all actions to Attack the nearest character; can't take any other actions. May make a Fast Attack as a Free Action once per turn, and must if able. When Berserk ends, Exhausted until the end of their next turn."
+      },
+      "Slow": {
+        "Name": "Slow",
+        "Description": "Condition. Doesn't receive their Standard Movement on their turn."
+      },
+      "Terror": {
+        "Name": "Terror",
+        "Description": "Condition. Can't willingly move closer to the source of their fear, and must use their Standard Movement to run from it at the start of their turn. Can't target the source with Actions or respond to it with Interrupts."
+      },
+      "Mangle": {
+        "Name": "Mangle",
+        "Description": "Condition. Can't regain Stamina by any means except Knockout Rolls."
+      },
+      "Concussion": {
+        "Name": "Concussion",
+        "Description": "Status Effect. Becomes Incapacitated the next time they would make a Knockout Roll. Cured when the character begins a Rest or Downtime."
+      },
+      "Exposed": {
+        "Name": "Exposed",
+        "Description": "Status Effect. Vulnerable to Attacks of Opportunity. Cured with the Patch action and some Trait or Vow abilities."
+      },
+      "Grappled": {
+        "Name": "Grappled",
+        "Description": "Status Effect. Grappled or snared by another character: movement and attacks are restricted, and harder to hit with Ranged attacks. See the Grapple action."
+      },
+      "Prone": {
+        "Name": "Prone",
+        "Description": "Status Effect. Ranged attacks against them have Disadvantage; Melee attacks against them have Advantage. Each space moved costs 2. Dropping Prone is a Free Action; standing up takes the Standard Movement or a Half Action."
+      },
+      "Incapacitated": {
+        "Name": "Incapacitated",
+        "Description": "Status Effect. Knocked out by their injuries and unable to act."
+      },
+      "Dead": {
+        "Name": "Dead",
+        "Description": "Status Effect. Killed by their Wounds."
+      }
+    },
+    "ActionType": {
+      "Interrupt": "Interrupt",
+      "Stance": "Stance",
+      "FreeAction": "Free Action",
+      "HalfAction": "Half Action",
+      "FullAction": "Full Action",
+      "Passive": "Passive",
+      "Camp": "Camp",
+      "Downtime": "Downtime"
+    },
+    "FeatureSource": {
+      "VowFeature": "Vow Feature",
+      "Trait": "Trait",
+      "Lineage": "Lineage",
+      "Other": "Other"
+    },
+    "WeaponCategory": {
+      "Weapon": "Weapon",
+      "Spinel": "Spinel",
+      "Turquoise": "Turquoise",
+      "Jade": "Jade",
+      "Gold": "Gold",
+      "Clockwork": "Clockwork",
+      "Innate": "Innate"
+    },
+    "WeaponWeight": {
+      "OffHand": "Off-Hand",
+      "MainHand": "Main-Hand",
+      "TwoHand": "Two-Hand"
+    },
+    "WeaponProperty": {
+      "Archaeotech": "Archaeotech",
+      "Bulky": "Bulky",
+      "Consecrated": "Consecrated",
+      "Defender": "Defender",
+      "Focus": "Focus",
+      "Heavy": "Heavy",
+      "Honed": "Honed",
+      "Piercing": "Piercing",
+      "Precise": "Precise",
+      "Quality": "Quality",
+      "Ranged": "Ranged",
+      "Reach": "Reach",
+      "SlowLoad": "Slow Load",
+      "Weakened": "Weakened"
+    },
+    "SlotType": {
+      "Prismatic": "Prismatic",
+      "Spinel": "Spinel",
+      "Turquoise": "Turquoise",
+      "Jade": "Jade",
+      "Gold": "Gold",
+      "Clockwork": "Clockwork",
+      "Pearl": "Pearl"
+    },
+    "ArmorWeight": {
+      "Light": "Light",
+      "Medium": "Medium",
+      "Heavy": "Heavy"
+    },
+    "ArmorModification": {
+      "None": "None (basic armor)",
+      "Banded": "Banded",
+      "Trimmed": "Trimmed",
+      "Spiked": "Spiked",
+      "Belted": "Belted",
+      "Plated": "Plated",
+      "Articulated": "Articulated",
+      "Engraved": "Engraved",
+      "Effect": {
+        "banded": "Banded: +1 Armor Rating.",
+        "trimmed": "Trimmed: Speed penalty reduced by 1 (minimum 0).",
+        "spiked": "Spiked: when an attack lands on the wearer, the attacker is Mangled until the end of the turn. Critical Attacks bypass this.",
+        "belted": "Belted: the wearer can have an additional Hunter's Tool ready for use.",
+        "plated": "Plated: Damage Reduction (Physical) from Armor Rating equals the full Armor Rating.",
+        "articulated": "Articulated: no Evasion penalty; armor with no Evasion penalty gives +1 Evasion instead.",
+        "engraved": "Engraved: has a Spinel or Jade Slot."
+      }
+    },
+    "Armor": {
+      "Evasion": {
+        "full": "Full",
+        "half": "Halved",
+        "none": "None"
+      }
+    },
+    "OrnamentKind": {
+      "Standard": "Standard",
+      "Discharge": "Discharge",
+      "Evocation": "Evocation",
+      "Shatter": "Shatter",
+      "Ritual": "Ritual",
+      "Pneumatic": "Pneumatic",
+      "Latch": "Latch",
+      "Engine": "Engine",
+      "Spent": {
+        "Evocation": "Spent",
+        "Shatter": "Shattered",
+        "Pneumatic": "Depressurized",
+        "Latch": "Discharged",
+        "Engine": "Spent"
+      }
+    },
+    "Rarity": {
+      "Common": "Common",
+      "Uncommon": "Uncommon",
+      "Rare": "Rare",
+      "Exotic": "Exotic",
+      "Legendary": "Legendary"
+    },
+    "Catalyst": {
+      "None": "None",
+      "Elemental": "Elemental Catalyst",
+      "Shaping": "Shaping Catalyst",
+      "Multifaceted": "Multifaceted Catalyst"
+    },
+    "Weapon": {
+      "Damage": "Damage",
+      "Slots": "Slots",
+      "Properties": "Properties",
+      "Attack": "Attack",
+      "AttackWith": "Attacks with",
+      "RollDamage": "Roll damage",
+      "Notes": {
+        "Piercing": "Piercing: ignores Damage Reduction.",
+        "Precise": "Precise: deals an extra 1d6 Physical damage on a critical attack.",
+        "Defender": "Defender: half damage (minimum 1) on normal attacks.",
+        "Focus": "Focus: normal attacks are Improvised and deal 1 Physical damage.",
+        "Broken": "This weapon is Broken and provides no benefits.",
+        "Critical": "Critical attack.",
+        "PreciseApplied": "Precise: +1d6 Physical damage for the critical attack.",
+        "BulkyAdjacent": "Bulky: an enemy is adjacent, so this attack has Disadvantage.",
+        "BulkyUnknown": "Bulky: Disadvantage if any enemy is adjacent. There's no token on the scene to check."
+      },
+      "AddOrnament": "Add Ornament",
+      "NewOrnament": "New Ornament",
+      "CannotRollDamage": "You don't own that weapon, so you can't roll its damage."
+    },
+    "Ornament": {
+      "Problem": {
+        "noSlot": "No free slot",
+        "duplicate": "Duplicate on this weapon",
+        "goldLimit": "Only one Gold ornament can be active"
+      }
+    },
+    "Combat": {
+      "HandOff": "Act next",
+      "StartRound": "Act first in round {round}",
+      "Acted": "Has acted this round",
+      "ActedUndo": "Has acted this round. Click to undo.",
+      "ChooseTitle": "Popcorn Initiative",
+      "ChooseNext": "Who acts next?",
+      "ChooseFirst": "Everyone has acted. Who acts first in round {round}?",
+      "Choose": "Choose"
+    },
+    "Check": {
+      "Title": "{label} Check",
+      "Heading": "{label} Check",
+      "Difficulty": "Difficulty",
+      "NoDifficulty": "None",
+      "Edge": "Edge",
+      "Mode": "Roll with",
+      "Normal": "Normal",
+      "Advantage": "Advantage",
+      "Disadvantage": "Disadvantage",
+      "AutoHits": "Automatic Hits",
+      "Roll": "Roll",
+      "Dice": "{dice}d6",
+      "EdgeValue": "Edge {edge}",
+      "AutoHitsValue": "{hits} Automatic Hits",
+      "DifficultyValue": "Difficulty {difficulty}",
+      "Hits": "{hits} Hits",
+      "Success": "Success",
+      "Failure": "Failure",
+      "Critical": "Critical Success",
+      "NoDice": "No dice to roll: automatic failure."
+    },
+    "Knockout": {
+      "Label": "KO",
+      "Title": "Knockout Roll",
+      "Roll": "Knockout Roll",
+      "FleshWound": {
+        "Title": "Flesh Wound",
+        "Text": "The attack leaves only a flesh wound, and {name} recovers Stamina with no further penalty.",
+        "Quote": "Fight on, {name}. Death hasn't come yet."
+      },
+      "ImpairingWound": {
+        "Title": "Impairing Wound",
+        "Text": "{name} suffers an impairment, and rolls to determine the nature of the injury.",
+        "Quote": "The claws of Sin dig deeper into you, {name}."
+      },
+      "Concussion": {
+        "Title": "Concussion",
+        "Text": "At only {wounds} Wounds, {name} is <i>Concussed</i>.",
+        "Quote": "It's getting close now, {name}. Stay standing, if you still can."
+      },
+      "Knockout": {
+        "Title": "Knockout",
+        "Text": "{name} succumbs to their Wounds and is <i>Incapacitated</i>.",
+        "Quote": "It's all going dark..."
+      },
+      "DeepWound": {
+        "Title": "Deep Wound",
+        "Text": "One Wound becomes a Grievous Wound."
+      },
+      "VitalBlow": {
+        "Title": "Vital Blow",
+        "Text": "{name} is <i>Exhausted</i> until the end of their next turn."
+      },
+      "Daze": {
+        "Title": "Daze",
+        "Text": "{name} is <i>Impaired</i> until the end of their next turn."
+      }
+    },
+    "SheetLabels": {
+      "Actor": "Absolution Actor Sheet",
+      "Item": "Absolution Item Sheet"
+    },
+    "Actor": {
+      "Tabs": {
+        "Character": "Character",
+        "Skills": "Skills",
+        "Features": "Features",
+        "Inventory": "Inventory",
+        "Backstory": "Backstory",
+        "Effects": "Effects"
+      },
+      "Sections": {
+        "Attributes": "Attributes",
+        "Defenses": "Defenses",
+        "Resources": "Resources",
+        "Stamina": "Stamina",
+        "Wounds": "Wounds",
+        "Skills": "Skills",
+        "Interests": "Interests",
+        "SkillRanks": "Skill Ranks",
+        "VowFeatures": "Vow Features",
+        "Traits": "Traits",
+        "Equipment": "Equipment",
+        "WeaponsAndOrnaments": "Weapons and Ornaments",
+        "Belongings": "Belongings and Materials",
+        "Connections": "Connections",
+        "Armor": "Armor"
+      },
+      "SelectLineage": "Select a Lineage",
+      "SelectVow": "Select a Vow",
+      "NoInterest": "None",
+      "Resistance": "Resistance",
+      "StaminaBase": "Base Stamina",
+      "StaminaGrowth": "Stamina Growth",
+      "StaminaMax": "Max Stamina",
+      "Ranks": "Ranks",
+      "Aptitude": "Aptitude",
+      "StartingRanks": "Starting Ranks",
+      "RanksPerLevel": "Ranks per Level",
+      "RanksToAssign": "Ranks to Assign",
+      "AddConnection": "Add Connection",
+      "DeleteConnection": "Delete Connection",
+      "base": {
+        "FIELDS": {
+          "biography": {
+            "label": "Backstory"
+          },
+          "speed": {
+            "label": "Speed"
+          },
+          "armor": {
+            "label": "Armor Rating"
+          },
+          "evasion": {
+            "label": "Evasion"
+          },
+          "stamina": {
+            "value": {
+              "label": "Current Stamina"
+            },
+            "max": {
+              "label": "Max Stamina"
+            }
+          },
+          "barrier": {
+            "label": "Barrier"
+          },
+          "wounds": {
+            "normal": {
+              "label": "Normal Wounds"
+            },
+            "grievous": {
+              "label": "Grievous Wounds"
+            },
+            "mortal": {
+              "label": "Mortal Wound"
+            },
+            "status": {
+              "label": "Status"
+            }
+          }
+        }
+      },
+      "Character": {
+        "FIELDS": {
+          "level": {
+            "label": "Level"
+          },
+          "lineage": {
+            "label": "Lineage"
+          },
+          "vow": {
+            "label": "Vow"
+          },
+          "stamina": {
+            "value": {
+              "label": "Current Stamina"
+            },
+            "bonus": {
+              "label": "Bonus Stamina"
+            }
+          },
+          "tough": {
+            "label": "Tough"
+          },
+          "resource": {
+            "label": "Main Resource"
+          },
+          "otherResource": {
+            "label": {
+              "label": "Other Resource"
+            }
+          },
+          "morale": {
+            "label": "Morale"
+          },
+          "wellRead": {
+            "label": "Well Read"
+          },
+          "interests": {
+            "special": {
+              "skill": {
+                "label": "Special Interest"
+              }
+            },
+            "extra": {
+              "skill": {
+                "label": "Extra Interest"
+              }
+            }
+          },
+          "ranksFromTraits": {
+            "label": "Ranks from Traits"
+          },
+          "connections": {
+            "element": {
+              "name": {
+                "label": "Name"
+              },
+              "relationship": {
+                "label": "Relationship"
+              },
+              "notes": {
+                "label": "Notes"
+              }
+            }
+          }
+        }
+      },
+      "NPC": {
+        "FIELDS": {
+          "cr": {
+            "label": "CR"
+          }
+        },
+        "xp": {
+          "label": "XP"
+        }
+      },
+      "Name": "Name",
+      "NewFeature": "New Feature",
+      "Rearrange": "Rearrange",
+      "NewEquipment": "New Equipment",
+      "NewWeapon": "New Weapon",
+      "NewBelonging": "New Belonging",
+      "NewArmor": "New Armor",
+      "Wearing": "Wearing {name}",
+      "WearingMany": "(only one set of armor counts)"
+    },
+    "Item": {
+      "Tabs": {
+        "Description": "Description",
+        "Effects": "Effects"
+      },
+      "base": {
+        "FIELDS": {
+          "description": {
+            "label": "Description"
+          }
+        }
+      },
+      "Feature": {
+        "FIELDS": {
+          "actionType": {
+            "label": "Type"
+          },
+          "flavor": {
+            "label": "Flavor Text"
+          },
+          "dice": {
+            "label": "Roll"
+          },
+          "source": {
+            "label": "Source"
+          }
+        },
+        "DicePlaceholder": "Blank for none. Dice for a check (3, @power + 1) or a formula (4d6, 3d6 + @power)",
+        "BadDice": "{name}: \"{formula}\" isn't a roll Foundry can make. Use a number of dice for a check, such as 3 or @power + 1, or a formula such as 4d6 or 3d6 + @power.",
+        "ToChat": "Send to chat"
+      },
+      "Trait": {
+        "FIELDS": {}
+      },
+      "Equipment": {
+        "FIELDS": {
+          "description": {
+            "label": "Effect"
+          },
+          "uses": {
+            "label": "Uses"
+          }
+        }
+      },
+      "Weapon": {
+        "FIELDS": {
+          "description": {
+            "label": "Properties and Slots / Effect"
+          },
+          "category": {
+            "label": "Type"
+          },
+          "weightUses": {
+            "label": "Uses"
+          },
+          "attachedTo": {
+            "label": "Attached to"
+          },
+          "weight": {
+            "label": "Weight"
+          },
+          "attuned": {
+            "label": "Attuned"
+          },
+          "broken": {
+            "label": "Broken"
+          },
+          "wielding": {
+            "label": "Wielding"
+          },
+          "kind": {
+            "label": "Kind"
+          },
+          "charges": {
+            "label": "Charges"
+          },
+          "rarity": {
+            "label": "Rarity"
+          },
+          "catalyst": {
+            "label": "Catalyst"
+          },
+          "dice": {
+            "label": "Roll"
+          }
+        },
+        "NotAttached": "Not attached"
+      },
+      "Belonging": {
+        "FIELDS": {
+          "quantity": {
+            "label": "Amount"
+          }
+        }
+      },
+      "Armor": {
+        "FIELDS": {
+          "weight": {
+            "label": "Weight"
+          },
+          "modification": {
+            "label": "Modification"
+          },
+          "engravedSlot": {
+            "label": "Engraved Slot"
+          },
+          "worn": {
+            "label": "Worn"
+          }
+        }
+      }
+    },
+    "Effect": {
+      "Source": "Source",
+      "Toggle": "Toggle Effect",
+      "Temporary": "Temporary Effects",
+      "Passive": "Passive Effects",
+      "Inactive": "Inactive Effects"
+    }
+  },
+  "TYPES": {
+    "Actor": {
+      "character": "Character",
+      "npc": "NPC"
+    },
+    "Item": {
+      "feature": "Vow Feature",
+      "trait": "Trait",
+      "equipment": "Equipment",
+      "weapon": "Weapon or Ornament",
+      "belonging": "Belonging or Material",
+      "armor": "Armor"
+    }
+  }
+}

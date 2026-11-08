@@ -1,0 +1,145 @@
+{{! Character Tab: the stat columns of the Absolution character sheet. Skills are on their own tab. }}
+<section class='tab stats {{tab.cssClass}}' data-group='primary' data-tab='stats'>
+  <div class='stats-grid'>
+
+    <div class='stats-column'>
+      <fieldset>
+        <legend>{{localize 'ABSOLUTION.Actor.Sections.Attributes'}}</legend>
+        {{#each system.attributes as |attribute key|}}
+          <div class='stat-row'>
+            <a class='roll-die' data-action='roll' data-roll-type='attribute' data-key='{{key}}' aria-label='{{localize "ABSOLUTION.Check.Roll"}}'><i class='fa-solid fa-dice-d6'></i></a>
+            <label>{{attribute.label}}</label>
+            <input type='number' name='system.attributes.{{key}}.value' value='{{attribute.value}}' min='0' />
+          </div>
+        {{/each}}
+      </fieldset>
+
+      <fieldset>
+        <legend>{{localize 'ABSOLUTION.Actor.Sections.Defenses'}}</legend>
+        {{#if system.wornArmor.name}}
+          <div class='stat-row armor-worn {{#if (gt system.wornArmor.count 1)}}warning{{/if}}'>
+            <span>
+              {{localize 'ABSOLUTION.Actor.Wearing' name=system.wornArmor.name}}
+              {{#if (gt system.wornArmor.count 1)}}{{localize 'ABSOLUTION.Actor.WearingMany'}}{{/if}}
+            </span>
+          </div>
+        {{/if}}
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.base.FIELDS.speed.label'}}</label>
+          <input type='number' name='system.speed' value='{{system.speed}}' min='0' />
+          {{#if (ne system.speedTotal system.speed)}}<span class='derived adjusted'><i class='fa-solid fa-arrow-right'></i> {{system.speedTotal}}</span>{{/if}}
+        </div>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.base.FIELDS.armor.label'}}</label>
+          <input type='number' name='system.armor' value='{{system.armor}}' min='0' />
+          {{#if (ne system.armorTotal system.armor)}}<span class='derived adjusted'><i class='fa-solid fa-arrow-right'></i> {{system.armorTotal}}</span>{{/if}}
+        </div>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.base.FIELDS.evasion.label'}}</label>
+          <input type='number' name='system.evasion' value='{{system.evasion}}' />
+          {{#if (ne system.evasionTotal system.evasion)}}<span class='derived adjusted'><i class='fa-solid fa-arrow-right'></i> {{system.evasionTotal}}</span>{{/if}}
+        </div>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.Resistance'}}</label>
+          <span class='derived'>{{system.resistance}}</span>
+        </div>
+      </fieldset>
+
+      {{#if isCharacter}}
+        <fieldset>
+          <legend>{{localize 'ABSOLUTION.Actor.Sections.Resources'}}</legend>
+          <div class='stat-row'>
+            <label>{{system.resource.label}}</label>
+            <div class='pair'>
+              <input type='number' name='system.resource.value' value='{{system.resource.value}}' min='0' />
+              <span>/</span>
+              <input type='number' name='system.resource.max' value='{{system.resource.max}}' min='0' />
+            </div>
+          </div>
+          <div class='stat-row'>
+            <input
+              type='text'
+              class='label-input'
+              name='system.otherResource.label'
+              value='{{system.otherResource.label}}'
+              placeholder='{{localize "ABSOLUTION.Actor.Character.FIELDS.otherResource.label.label"}}'
+            />
+            <div class='pair'>
+              <input type='number' name='system.otherResource.value' value='{{system.otherResource.value}}' min='0' />
+              <span>/</span>
+              <input type='number' name='system.otherResource.max' value='{{system.otherResource.max}}' min='0' />
+            </div>
+          </div>
+          <div class='stat-row'>
+            <label>{{localize 'ABSOLUTION.Actor.Character.FIELDS.morale.label'}}</label>
+            <input type='number' name='system.morale' value='{{system.morale}}' />
+          </div>
+        </fieldset>
+      {{/if}}
+    </div>
+
+    <div class='stats-column'>
+      <fieldset>
+        <legend>{{localize 'ABSOLUTION.Actor.Sections.Stamina'}}</legend>
+        {{#if isCharacter}}
+          <div class='stat-row'>
+            <label>{{localize 'ABSOLUTION.Actor.StaminaBase'}}</label>
+            <span class='derived'>{{system.stamina.base}}</span>
+          </div>
+          <div class='stat-row'>
+            <label>{{localize 'ABSOLUTION.Actor.StaminaGrowth'}}</label>
+            <span class='derived'>{{system.stamina.growth}}</span>
+          </div>
+          <div class='stat-row'>
+            <label>{{localize 'ABSOLUTION.Actor.Character.FIELDS.stamina.bonus.label'}}</label>
+            <input type='number' name='system.stamina.bonus' value='{{system.stamina.bonus}}' />
+          </div>
+          <div class='stat-row'>
+            <label>{{localize 'ABSOLUTION.Actor.Character.FIELDS.tough.label'}}</label>
+            <input type='checkbox' name='system.tough' {{checked system.tough}} />
+          </div>
+          <div class='stat-row'>
+            <label>{{localize 'ABSOLUTION.Actor.StaminaMax'}}</label>
+            <span class='derived'>{{system.stamina.max}}</span>
+          </div>
+        {{else}}
+          <div class='stat-row'>
+            <label>{{localize 'ABSOLUTION.Actor.base.FIELDS.stamina.max.label'}}</label>
+            <input type='number' name='system.stamina.max' value='{{system.stamina.max}}' min='0' />
+          </div>
+        {{/if}}
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.base.FIELDS.stamina.value.label'}}</label>
+          <input type='number' name='system.stamina.value' value='{{system.stamina.value}}' min='0' />
+        </div>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.base.FIELDS.barrier.label'}}</label>
+          <input type='number' name='system.barrier' value='{{system.barrier}}' min='0' />
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>{{localize 'ABSOLUTION.Actor.Sections.Wounds'}}</legend>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.base.FIELDS.wounds.normal.label'}}</label>
+          <input type='number' name='system.wounds.normal' value='{{system.wounds.normal}}' min='0' />
+        </div>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.base.FIELDS.wounds.grievous.label'}}</label>
+          <input type='number' name='system.wounds.grievous' value='{{system.wounds.grievous}}' min='0' />
+        </div>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.base.FIELDS.wounds.status.label'}}</label>
+          <select name='system.wounds.status'>
+            {{selectOptions choices.statuses selected=system.wounds.status localize=true}}
+          </select>
+        </div>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.base.FIELDS.wounds.mortal.label'}}</label>
+          <input type='checkbox' name='system.wounds.mortal' {{checked system.wounds.mortal}} />
+        </div>
+      </fieldset>
+    </div>
+
+  </div>
+</section>

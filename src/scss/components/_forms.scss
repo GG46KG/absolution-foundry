@@ -1,0 +1,87 @@
+.item-form {
+  font-family: $font-primary;
+}
+
+.sheet-header {
+  flex: 0 0 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+
+  .profile-img {
+    flex: 0 0 100px;
+    height: 100px;
+    margin-right: 10px;
+  }
+
+  .header-fields {
+    flex: 1;
+  }
+}
+
+.sheet-tabs {
+  flex: 0 0 auto;
+}
+
+// The open tab takes the remaining height and scrolls, so a long tab can't
+// squeeze the header and tab bar out of view.
+.window-content > .tab {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-top: 20px;
+}
+
+.sheet-body,
+.sheet-body .tab,
+.sheet-body .tab .editor {
+  height: 100%;
+}
+
+.tab.biography {
+  flex: 1;
+
+  .editor {
+    height: 100%;
+  }
+}
+
+.tox {
+  .tox-editor-container {
+    background: $c-white;
+  }
+
+  .tox-edit-area {
+    padding: 0 8px;
+  }
+}
+
+// Item description: the editor fills the space above the flavor text
+.window-content > .tab.active[data-tab='description'] {
+  display: flex;
+  flex-direction: column;
+
+  prose-mirror {
+    flex: 1;
+    min-height: 150px;
+  }
+}
+
+// Label above a feature's description editor
+.item-description-label {
+  flex: 0 0 auto;
+  margin-bottom: 4px;
+}
+
+// Flavor text under an item's description editor
+.item-flavor {
+  flex: 0 0 auto;
+  margin-top: 8px;
+
+  input {
+    width: 100%;
+  }
+}

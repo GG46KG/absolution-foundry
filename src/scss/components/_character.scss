@@ -1,0 +1,626 @@
+// -----------------------------------------
+// Header indicators
+// -----------------------------------------
+
+.indicators {
+  margin-top: 8px;
+  gap: 8px;
+}
+
+.indicator {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  padding: 4px 8px 6px;
+  border: $border-groove;
+  border-radius: 4px;
+
+  .indicator-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .indicator-label {
+    white-space: nowrap;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 12px;
+  }
+
+  .indicator-value {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px;
+
+    input {
+      width: 72px;
+      height: 44px;
+      font-size: 28px;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
+
+  // In this column layout the .roll-die flex basis would set the height, so
+  // give it the full height of the value inputs and center the icon in it.
+  .knockout-roll {
+    flex: 0 0 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    font-size: 24px;
+  }
+
+  .indicator-max {
+    font-size: 24px;
+    font-weight: bold;
+    opacity: 0.8;
+  }
+}
+
+// -----------------------------------------
+// Character tab
+// -----------------------------------------
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  align-items: start;
+}
+
+.stats-column {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.stats fieldset {
+  margin: 0;
+  padding: 4px 6px 6px;
+  border: $border-groove;
+
+  legend {
+    font-weight: bold;
+    padding: 0 4px;
+  }
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 28px;
+
+  > label,
+  > .label-input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  > input[type='number'] {
+    flex: 0 0 52px;
+    text-align: center;
+  }
+
+  > select {
+    flex: 0 0 auto;
+    max-width: 55%;
+  }
+
+  .pair {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: 0 0 auto;
+
+    input {
+      width: 44px;
+      text-align: center;
+    }
+  }
+}
+
+// Die button on rows that can be rolled
+.roll-die {
+  flex: 0 0 18px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0.75;
+
+  &:hover,
+  &:focus {
+    opacity: 1;
+    text-shadow: 0 0 6px $c-red;
+  }
+}
+
+.derived {
+  flex: 0 0 52px;
+  text-align: center;
+  font-weight: bold;
+
+  &.negative {
+    color: $c-red;
+  }
+}
+
+.skill-row {
+  display: grid;
+  grid-template-columns: 18px 32px minmax(0, 1fr) 44px 36px;
+  align-items: center;
+  gap: 4px;
+  min-height: 26px;
+
+  &.skill-header {
+    font-size: 11px;
+    font-weight: bold;
+    min-height: 18px;
+  }
+
+  .skill-attribute {
+    font-size: 10px;
+    opacity: 0.7;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .skill-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .skill-ranks,
+  .skill-aptitude {
+    text-align: center;
+  }
+}
+
+// -----------------------------------------
+// Item tables and connections
+// -----------------------------------------
+
+.features,
+.inventory {
+  .items-list + .items-list {
+    margin-top: 8px;
+  }
+}
+
+.items-list {
+  .item-choice {
+    flex: 0 0 120px;
+    padding: 0 4px;
+  }
+
+  .item-summary {
+    flex: 3;
+    min-width: 0;
+    padding: 0 4px;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .item-field {
+    flex: 0 0 90px;
+    padding: 0 4px;
+
+    input {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  &.connections {
+    margin: 0 0 12px;
+
+    .connection-name,
+    .connection-relationship {
+      flex: 1;
+      margin-right: 4px;
+    }
+
+    .connection-notes {
+      flex: 2;
+    }
+  }
+}
+
+// Every item table: header labels centered both ways on one line, a
+// controls column wide enough for "New ..." and Rearrange, and compact
+// inline fields so rows stay one line tall.
+.items-list {
+  .item-controls {
+    flex: 0 0 150px;
+    align-items: center;
+  }
+
+  .items-header {
+    height: auto;
+    min-height: 30px;
+    align-items: stretch;
+
+    > div,
+    .item-name {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .item-controls {
+      gap: 6px;
+
+      a {
+        margin: 0;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .item:not(.items-header) {
+    min-height: 32px;
+
+    .item-name {
+      padding-left: 6px;
+    }
+
+    input,
+    select {
+      height: 26px;
+      padding: 0 4px;
+      font-size: 13px;
+    }
+  }
+}
+
+// Vow feature, trait and equipment rows
+.action-list {
+  .item-source {
+    flex: 0 0 100px;
+    padding: 0 4px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .item-action-type {
+    flex: 0 0 120px;
+    padding: 0 4px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .item-buttons {
+    display: flex;
+    flex: 0 0 56px;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+
+    .roll-die {
+      flex: 0 0 auto;
+    }
+  }
+}
+
+// Rearrange toggle: rows show a handle and can be dragged into a new order
+.action-list {
+  .rearrange-toggle {
+    padding: 2px 4px;
+    border-radius: 3px;
+
+    &.active {
+      background: $c-red;
+      color: $c-white;
+    }
+  }
+
+  &.rearranging .item:not(.items-header) {
+    cursor: grab;
+  }
+
+  .drag-handle {
+    flex: 0 0 14px;
+    margin-right: 4px;
+    opacity: 0.7;
+  }
+}
+
+// Ornaments listed under the weapon they're attached to
+.items-list .item.sub-entry {
+  .item-name {
+    padding-left: 22px;
+  }
+
+  .sub-entry-marker {
+    margin-right: 6px;
+    font-size: 11px;
+    opacity: 0.6;
+  }
+}
+
+// Weapons and Ornaments, and Armor. Both tables share their first three
+// columns (col-1 to col-3), and the rest add up to the same width as the
+// ornament row's spacer, so ornament rows line up in either table.
+.weapon-list,
+.armor-list {
+  .col-1 {
+    flex: 0 0 84px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .col-2 {
+    flex: 0 0 72px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .col-3 {
+    flex: 0 0 96px;
+    font-size: 12px;
+    text-align: center;
+
+    .slot-icon {
+      margin: 0 1px;
+      font-size: 11px;
+    }
+  }
+
+  // Attuned 76 + Wielding 76 + buttons 56, or Speed 60 + Evasion 72 + Worn 76.
+  // Ornaments use the last 56 for their own buttons.
+  .col-spacer {
+    flex: 0 0 152px;
+  }
+
+  .item-buttons {
+    display: flex;
+    flex: 0 0 56px;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .ornament-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+
+    input[type='number'] {
+      width: 36px;
+    }
+
+    .spent-toggle {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+    }
+  }
+
+  .item.ornament.spent .name-stack {
+    opacity: 0.55;
+  }
+}
+
+.armor-list {
+  .armor-speed {
+    flex: 0 0 60px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .armor-evasion {
+    flex: 0 0 72px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .armor-worn {
+    flex: 0 0 76px;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.weapon-list {
+
+  .weapon-attuned,
+  .weapon-wielding {
+    flex: 0 0 76px;
+    display: flex;
+    justify-content: center;
+
+    &.over-limit {
+      color: $c-red;
+    }
+  }
+
+  .name-stack {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .item-detail {
+    font-size: 11px;
+    opacity: 0.75;
+    white-space: normal;
+  }
+
+  .broken-tag {
+    margin-left: 4px;
+    padding: 0 4px;
+    border-radius: 3px;
+    font-size: 10px;
+    text-transform: uppercase;
+    background: $c-red;
+    color: $c-white;
+  }
+
+  .item.broken .name-stack,
+  .item.broken .col-2 {
+    opacity: 0.55;
+  }
+
+  .slot-problem {
+    color: $c-red;
+  }
+
+  .rearrange-toggle {
+    padding: 2px 4px;
+    border-radius: 3px;
+
+    &.active {
+      background: $c-red;
+      color: $c-white;
+    }
+  }
+
+  &.rearranging .item:not(.items-header) {
+    cursor: grab;
+  }
+
+  .drag-handle {
+    flex: 0 0 14px;
+    margin-right: 4px;
+    opacity: 0.7;
+  }
+}
+
+// Weapon sheet: damage summary and the properties and slots grids
+.weapon-summary {
+  flex: 0 0 auto;
+  margin-bottom: 6px;
+}
+
+.weapon-grid {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px 12px;
+  margin: 0 0 8px;
+  padding: 4px 8px 8px;
+  border: $border-groove;
+
+  legend {
+    font-weight: bold;
+    padding: 0 4px;
+  }
+
+  .weapon-grid-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    input[type='number'] {
+      width: 44px;
+      flex: 0 0 44px;
+      text-align: center;
+    }
+  }
+}
+
+.weapon-flags {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+// Armor rows reuse the weapons table's name, tag and rearrange styles
+.armor-list {
+  .name-stack {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .item-detail {
+    font-size: 11px;
+    opacity: 0.75;
+    white-space: normal;
+  }
+
+  .broken-tag {
+    margin-left: 4px;
+    padding: 0 4px;
+    border-radius: 3px;
+    font-size: 10px;
+    text-transform: uppercase;
+    background: $c-red;
+    color: $c-white;
+  }
+
+  .item.broken .name-stack,
+  .item.broken .col-2 {
+    opacity: 0.55;
+  }
+
+  .slot-problem {
+    color: $c-red;
+  }
+
+  .rearrange-toggle {
+    padding: 2px 4px;
+    border-radius: 3px;
+
+    &.active {
+      background: $c-red;
+      color: $c-white;
+    }
+  }
+
+  &.rearranging .item:not(.items-header) {
+    cursor: grab;
+  }
+
+  .drag-handle {
+    flex: 0 0 14px;
+    margin-right: 4px;
+    opacity: 0.7;
+  }
+}
+
+// Character tab: armor- and Defender-adjusted values next to the base ones
+.stat-row {
+  .derived.adjusted {
+    flex: 0 0 auto;
+    font-size: 13px;
+
+    i {
+      font-size: 10px;
+      opacity: 0.7;
+    }
+  }
+
+  &.armor-worn {
+    font-size: 12px;
+    font-style: italic;
+
+    &.warning {
+      color: $c-red;
+    }
+  }
+}
+
+// Ornament sheet: charges left / maximum
+.charges-pair {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  input {
+    width: 60px;
+  }
+}

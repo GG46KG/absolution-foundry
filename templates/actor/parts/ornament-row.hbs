@@ -1,0 +1,67 @@
+{{!
+  One ornament in the Weapons and Ornaments or Armor table.
+  Parameters:
+    entry   Ornament row from AbsolutionActorSheet#_prepareItems
+    listId  'weapons' or 'armor', for the Rearrange toggle
+  Cells line up with the first three columns of both tables (Weight, then
+  Damage or Armor Rating, then Slots); the spacer covers the rest.
+}}
+<li
+  class='item flexrow ornament {{#if entry.subEntry}}sub-entry{{/if}} {{#if entry.problem}}has-problem{{/if}} {{#if entry.item.system.spent}}spent{{/if}}'
+  data-item-id='{{entry.item.id}}'
+  data-drag='true'
+  data-document-class='Item'
+>
+  <div class='item-name'>
+    {{#if (lookup @root.rearranging listId)}}<i class='fa-solid fa-grip-vertical drag-handle'></i>{{/if}}
+    {{#if entry.subEntry}}<i class='fa-solid fa-turn-up fa-rotate-90 sub-entry-marker'></i>{{/if}}
+    <div class='name-stack'>
+      <div>{{entry.item.name}}</div>
+      <div class='item-detail'>
+        {{#if entry.kindLabel}}{{entry.kindLabel}} &middot; {{/if}}{{entry.rarityLabel}}{{#if entry.item.system.weightUses}} &middot; {{entry.item.system.weightUses}}{{/if}}
+      </div>
+    </div>
+  </div>
+  <div class='col-1'>{{entry.categoryLabel}}</div>
+  <div class='col-2 ornament-state'>
+    {{#if entry.tracksCharges}}
+      <input type='number' data-item-field='system.charges.value' value='{{entry.item.system.charges.value}}' min='0' {{#unless @root.editable}}disabled{{/unless}} />
+      <span>/ {{entry.chargesMax}}</span>
+    {{else if entry.tracksSpent}}
+      <label class='spent-toggle'>
+        <input type='checkbox' data-item-field='system.spent' {{checked entry.item.system.spent}} {{#unless @root.editable}}disabled{{/unless}} />
+        {{entry.spentLabel}}
+      </label>
+    {{/if}}
+  </div>
+  <div class='col-3'>
+    {{#if entry.problem}}
+      <span class='slot-problem'><i class='fa-solid fa-triangle-exclamation'></i> {{entry.problemLabel}}</span>
+    {{else if entry.subEntry}}
+      {{entry.slotLabel}}
+    {{else}}
+      <span class='item-detail'>{{localize 'ABSOLUTION.Item.Weapon.NotAttached'}}</span>
+    {{/if}}
+  </div>
+  <div class='col-spacer'></div>
+  <div class='item-buttons'>
+    <a class='item-control' data-action='chatItem' aria-label='{{localize "ABSOLUTION.Item.Feature.ToChat"}}'>
+      <i class='fa-solid fa-comment'></i>
+    </a>
+    {{#if entry.item.system.dice}}
+      <a class='item-control roll-die' data-action='rollItem' aria-label='{{localize "ABSOLUTION.Check.Roll"}}'>
+        <i class='fa-solid fa-dice-d6'></i>
+      </a>
+    {{/if}}
+  </div>
+  <div class='item-controls'>
+    <a class='item-control item-edit' title='{{localize "DOCUMENT.Update" type=entry.item.name}}' data-action='viewDoc'>
+      <i class='fas fa-edit'></i>
+    </a>
+    {{#if @root.editable}}
+      <a class='item-control item-delete' title='{{localize "DOCUMENT.Delete" type=entry.item.name}}' data-action='deleteDoc'>
+        <i class='fas fa-trash'></i>
+      </a>
+    {{/if}}
+  </div>
+</li>

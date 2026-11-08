@@ -1,0 +1,67 @@
+{{! Skills Tab }}
+<section class='tab skills {{tab.cssClass}}' data-group='primary' data-tab='skills'>
+  <div class='stats-grid'>
+
+    <div class='stats-column'>
+      <fieldset>
+        <legend>{{localize 'ABSOLUTION.Actor.Sections.Skills'}}</legend>
+        <div class='skill-row skill-header'>
+          <span></span>
+          <span class='skill-attribute'></span>
+          <span class='skill-name'></span>
+          <span class='skill-ranks'>{{localize 'ABSOLUTION.Actor.Ranks'}}</span>
+          <span class='skill-aptitude'>{{localize 'ABSOLUTION.Actor.Aptitude'}}</span>
+        </div>
+        {{#each system.skills as |skill key|}}
+          <div class='skill-row'>
+            <a class='roll-die' data-action='roll' data-roll-type='skill' data-key='{{key}}' aria-label='{{localize "ABSOLUTION.Check.Roll"}}'><i class='fa-solid fa-dice-d6'></i></a>
+            <span class='skill-attribute'>{{skill.attributeLabel}}</span>
+            <label class='skill-name'>{{skill.label}}</label>
+            <input class='skill-ranks' type='number' name='system.skills.{{key}}.ranks' value='{{skill.ranks}}' min='0' />
+            <span class='skill-aptitude derived'>{{skill.aptitude}}</span>
+          </div>
+        {{/each}}
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.Character.FIELDS.wellRead.label'}}</label>
+          <input type='checkbox' name='system.wellRead' {{checked system.wellRead}} />
+        </div>
+      </fieldset>
+    </div>
+
+    <div class='stats-column'>
+      <fieldset>
+        <legend>{{localize 'ABSOLUTION.Actor.Sections.Interests'}}</legend>
+        {{#each system.interests as |interest key|}}
+          <div class='stat-row'>
+            <label>{{localize (concat 'ABSOLUTION.Actor.Character.FIELDS.interests.' key '.skill.label')}}</label>
+            <select name='system.interests.{{key}}.skill'>
+              {{selectOptions @root.choices.skills selected=interest.skill blank=(localize 'ABSOLUTION.Actor.NoInterest')}}
+            </select>
+            <span class='derived'>{{#if interest.value}}{{interest.value}}{{else}}&ndash;{{/if}}</span>
+          </div>
+        {{/each}}
+      </fieldset>
+
+      <fieldset>
+        <legend>{{localize 'ABSOLUTION.Actor.Sections.SkillRanks'}}</legend>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.StartingRanks'}}</label>
+          <span class='derived'>{{system.ranks.starting}}</span>
+        </div>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.RanksPerLevel'}}</label>
+          <span class='derived'>{{system.ranks.perLevel}}</span>
+        </div>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.Character.FIELDS.ranksFromTraits.label'}}</label>
+          <input type='number' name='system.ranksFromTraits' value='{{system.ranksFromTraits}}' />
+        </div>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.RanksToAssign'}}</label>
+          <span class='derived {{#if (lt system.ranks.toAssign 0)}}negative{{/if}}'>{{system.ranks.toAssign}}</span>
+        </div>
+      </fieldset>
+    </div>
+
+  </div>
+</section>
