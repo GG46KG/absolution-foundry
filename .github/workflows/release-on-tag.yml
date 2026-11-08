@@ -29,6 +29,9 @@ jobs:
       with:
         artifacts: absolution.zip,system.json
         tag: ${{ github.ref_name }}
+        # The manifest URL reads releases/latest, so each tagged release must
+        # become latest even if an older tag (v1.2) has a higher number
+        makeLatest: true
         allowUpdates: true
         omitDraftDuringUpdate: true
         omitPrereleaseDuringUpdate: true

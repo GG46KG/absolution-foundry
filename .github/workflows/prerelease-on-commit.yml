@@ -16,7 +16,7 @@ jobs:
 
     - name: Move latest tag
       run: |
-        git push origin :latest
+        git push origin :latest || true  # nothing to delete the first time
         git tag latest
         git push origin latest
 
