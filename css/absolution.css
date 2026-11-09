@@ -1047,6 +1047,34 @@
   margin: 0 1px;
   font-size: 11px;
 }
+.absolution .weapon-list .col-3 .slot-icon.slot-prismatic,
+.absolution .armor-list .col-3 .slot-icon.slot-prismatic {
+  color: #c8a2c8;
+}
+.absolution .weapon-list .col-3 .slot-icon.slot-spinel,
+.absolution .armor-list .col-3 .slot-icon.slot-spinel {
+  color: #e0457b;
+}
+.absolution .weapon-list .col-3 .slot-icon.slot-turquoise,
+.absolution .armor-list .col-3 .slot-icon.slot-turquoise {
+  color: #3cc4c0;
+}
+.absolution .weapon-list .col-3 .slot-icon.slot-jade,
+.absolution .armor-list .col-3 .slot-icon.slot-jade {
+  color: #3fae6a;
+}
+.absolution .weapon-list .col-3 .slot-icon.slot-gold,
+.absolution .armor-list .col-3 .slot-icon.slot-gold {
+  color: #e2b83c;
+}
+.absolution .weapon-list .col-3 .slot-icon.slot-clockwork,
+.absolution .armor-list .col-3 .slot-icon.slot-clockwork {
+  color: #e8892b;
+}
+.absolution .weapon-list .col-3 .slot-icon.slot-pearl,
+.absolution .armor-list .col-3 .slot-icon.slot-pearl {
+  color: #cfc6b4;
+}
 .absolution .weapon-list .col-spacer,
 .absolution .armor-list .col-spacer {
   flex: 0 0 152px;

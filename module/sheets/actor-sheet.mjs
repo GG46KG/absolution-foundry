@@ -306,6 +306,9 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
         slotLabel: localize(config.slotTypes[row.slot]?.label),
         problemLabel: row.problem ? localize(`ABSOLUTION.Ornament.Problem.${row.problem}`) : '',
         slotIcons: (row.slots ?? []).map((sl) => ({
+          type: sl.type,
+          // Clockwork slots are gears; the rest are gems
+          icon: sl.type === 'clockwork' ? 'fa-gear' : 'fa-gem',
           filled: !!sl.ornament,
           title: `${localize(config.slotTypes[sl.type].label)}${sl.ornament ? `: ${sl.ornament.name}` : ''}`,
         })),

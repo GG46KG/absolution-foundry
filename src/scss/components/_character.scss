@@ -424,6 +424,35 @@
     .slot-icon {
       margin: 0 1px;
       font-size: 11px;
+
+      // Each slot type in the colour of its material
+      &.slot-prismatic {
+        color: #c8a2c8; // lilac
+      }
+
+      &.slot-spinel {
+        color: #e0457b;
+      }
+
+      &.slot-turquoise {
+        color: #3cc4c0;
+      }
+
+      &.slot-jade {
+        color: #3fae6a;
+      }
+
+      &.slot-gold {
+        color: #e2b83c;
+      }
+
+      &.slot-clockwork {
+        color: #e8892b; // orange
+      }
+
+      &.slot-pearl {
+        color: #cfc6b4;
+      }
     }
   }
 

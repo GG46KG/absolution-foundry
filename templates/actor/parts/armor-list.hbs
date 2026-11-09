@@ -57,7 +57,7 @@
         <div class='col-2'>+{{entry.item.system.armorRating}}</div>
         <div class='col-3 slot-icons'>
           {{#each entry.slotIcons}}
-            <i class='fa-{{#if this.filled}}solid{{else}}regular{{/if}} fa-gem slot-icon' title='{{this.title}}'></i>
+            <i class='fa-{{#if this.filled}}solid{{else}}regular{{/if}} {{this.icon}} slot-icon slot-{{this.type}}' title='{{this.title}}'></i>
           {{else}}
             <span class='item-detail'>&ndash;</span>
           {{/each}}
