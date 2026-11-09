@@ -1,5 +1,10 @@
 // Light values. `.theme-light` repeats them so a sheet set to the light theme
 // inside a dark interface still gets light-theme colors.
+:root {
+  // The same in both themes, see $border-groove
+  --absolution-c-border: rgba(118, 118, 200, 0.6);
+}
+
 :root,
 .theme-light {
   --absolution-c-text: #191813;
@@ -36,4 +41,5 @@ $c-beige: var(--absolution-c-beige);
 $c-tan: var(--absolution-c-tan);
 
 $c-groove: var(--absolution-c-groove);
+$c-border: var(--absolution-c-border);
 $c-red: var(--absolution-c-red);

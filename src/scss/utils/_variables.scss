@@ -2,4 +2,7 @@ $padding-sm: 5px;
 $padding-md: 10px;
 $padding-lg: 20px;
 
-$border-groove: 2px groove $c-groove;
+// Section and indicator borders: a thin blue-violet line, partly see-through
+// so it shows on dark and light sheets alike, whatever theme classes the
+// Foundry version applies
+$border-groove: 1px solid $c-border;
