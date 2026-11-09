@@ -13,4 +13,5 @@ foundry
 
 # Absolution
 build/
-./prototype
+# Rules documents and prototypes: kept locally, not in the repo
+/prototype/
