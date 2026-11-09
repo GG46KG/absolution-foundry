@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- New system logo (cross and ABSOLUTION in the Core Rules title font, "Foundry VTT System" beneath), replacing the boilerplate anvil image.
 - Character sheet rebuilt from the Absolution Character Sheet spreadsheet: attributes, defenses, resources, stamina, wounds, skills, interests and skill ranks, with vow and lineage data in `CONFIG.ABSOLUTION`.
 - New item types: Vow Feature, Trait, Equipment, Weapon or Ornament, Belonging or Material. Replaces the boilerplate Gear, Feature and Spell types.
 - Connections table on the Backstory tab.

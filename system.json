@@ -76,8 +76,8 @@
   "media": [
     {
       "type": "setup",
-      "url": "systems/absolution/assets/anvil-impact.png",
-      "thumbnail": "systems/absolution/assets/anvil-impact.png"
+      "url": "systems/absolution/assets/absolution-logo.png",
+      "thumbnail": "systems/absolution/assets/absolution-logo.png"
     }
   ],
   "version": "0.1.2",
@@ -103,7 +103,7 @@
   "socket": false,
   "manifest": "https://github.com/GG46KG/absolution-foundry/releases/latest/download/system.json",
   "download": "https://github.com/GG46KG/absolution-foundry/releases/latest/download/absolution.zip",
-  "background": "systems/absolution/assets/anvil-impact.png",
+  "background": "systems/absolution/assets/absolution-logo.png",
   "grid": {
     "type": 2,
     "distance": 1,
