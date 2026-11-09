@@ -1,4 +1,6 @@
 
+import { actionTypeChoices } from '../helpers/action-types.mjs';
+
 const { api, sheets } = foundry.applications;
 
 /**
@@ -16,6 +18,11 @@ export class AbsolutionItemSheet extends api.HandlebarsApplicationMixin(
   /** @override */
   static DEFAULT_OPTIONS = {
     classes: ['absolution', 'item'],
+    // Wide enough for two fields with Override boxes side by side, and the
+    // weapon's Attuned / Wielding / Broken boxes on one line
+    position: {
+      width: 680,
+    },
     actions: {
       onEditImage: this._onEditImage,
       viewDoc: this._viewEffect,
@@ -72,7 +79,8 @@ export class AbsolutionItemSheet extends api.HandlebarsApplicationMixin(
       systemFields: this.document.system.schema.fields,
       // Dropdown choices, as {value: label}
       choices: {
-        actionTypes: CONFIG.ABSOLUTION.actionTypes,
+        attributes: CONFIG.ABSOLUTION.attributes,
+        actionTypes: actionTypeChoices(this.item.parent?.type, this.item.system.actionType),
         weaponCategories: CONFIG.ABSOLUTION.weaponCategories,
         featureSources: CONFIG.ABSOLUTION.featureSources,
         weaponWeights: Object.fromEntries(
@@ -102,6 +110,9 @@ export class AbsolutionItemSheet extends api.HandlebarsApplicationMixin(
     };
 
     // Ornaments: the name of this kind's used-up state, e.g. "Shattered"
+    // NPC features have no source; NPC attacks have a fixed damage
+    context.showSource = this.item.parent?.type !== 'npc';
+    context.showDamage = CONFIG.ABSOLUTION.attackActionTypes.includes(this.item.system.actionType);
     context.spentLabel = CONFIG.ABSOLUTION.ornamentKinds[this.item.system.kind]?.spentLabel ?? null;
     if (this.item.type === 'armor') {
       const system = this.item.system;
@@ -124,15 +135,21 @@ export class AbsolutionItemSheet extends api.HandlebarsApplicationMixin(
       context.modificationEffects = [...new Set(system.modificationList.map((m) => m.modification))];
     }
 
-    // Weapon properties and slots, as rows for the weapon sheet
-    if (this.item.type === 'weapon' && !this.item.system.isOrnament) {
-      const { weaponProperties, slotTypes } = CONFIG.ABSOLUTION;
-      context.weaponProperties = Object.entries(weaponProperties).map(([key, p]) => ({
+    // Weapon properties and slots, as rows for the weapon sheet. Ornaments
+    // that apply properties to their weapon get the property rows too.
+    const system = this.item.system;
+    const isWeapon = this.item.type === 'weapon' && !system.isOrnament;
+    if (isWeapon || (this.item.type === 'weapon' && system.appliesProperties)) {
+      context.weaponProperties = Object.entries(CONFIG.ABSOLUTION.weaponProperties).map(([key, p]) => ({
         key,
         label: p.label,
         rated: p.rated,
-        value: this.item.system.properties[key],
+        value: system.properties[key],
       }));
+    }
+    if (isWeapon) {
+      const { slotTypes } = CONFIG.ABSOLUTION;
+      context.isWeapon = true;
       context.slotTypes = Object.entries(slotTypes).map(([key, s]) => ({
         key,
         label: s.label,

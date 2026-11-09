@@ -46,8 +46,17 @@ export default class AbsolutionWeapon extends AbsolutionItemBase {
         return obj;
       }, {})
     );
-    // Automatic Hits added to attacks with this weapon
+    // Automatic Hits added to attacks with this weapon, used when overridden
+    // (ornaments that apply properties always add theirs)
+    schema.autoHitsOverride = new fields.BooleanField();
     schema.autoHits = new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 });
+    // The attribute attacks use, in place of Power or Faith, when overridden
+    schema.attackAttributeOverride = new fields.BooleanField();
+    schema.attackAttributeChoice = new fields.StringField({
+      required: true,
+      initial: 'power',
+      choices: () => config.attributes,
+    });
     schema.attuned = new fields.BooleanField();
     // In hand: Defender X adds to Armor Rating only while wielded
     schema.wielding = new fields.BooleanField();
@@ -70,6 +79,8 @@ export default class AbsolutionWeapon extends AbsolutionItemBase {
     schema.spent = new fields.BooleanField();
     schema.rarity = new fields.StringField({ required: true, initial: 'common', choices: () => config.ornamentRarities });
     schema.catalyst = new fields.StringField({ required: true, blank: true });
+    // The ornament adds its properties and Automatic Hits to its weapon
+    schema.appliesProperties = new fields.BooleanField();
     // The ornament's roll, read the same way as a vow feature's Roll field
     schema.dice = new fields.StringField({ required: true, blank: true });
     // Older free-text uses, kept so existing notes aren't lost
@@ -86,10 +97,50 @@ export default class AbsolutionWeapon extends AbsolutionItemBase {
     return CONFIG.ABSOLUTION.ornamentCategories.includes(this.category);
   }
 
+  /**
+   * Weapons saved with Automatic Hits before the Override box existed keep
+   * them: the box starts ticked.
+   * @override
+   */
+  static migrateData(source) {
+    if (source.autoHitsOverride === undefined && source.autoHits > 0) source.autoHitsOverride = true;
+    return super.migrateData(source);
+  }
+
+  /**
+   * Ornaments attached to this weapon that add their properties to it.
+   * @returns {Item[]}
+   */
+  get propertyOrnaments() {
+    const id = this.parent?.id;
+    const items = this.parent?.actor?.items;
+    if (!id || !items) return [];
+    return items.filter(
+      (item) =>
+        item.type === 'weapon' &&
+        item.system.isOrnament &&
+        item.system.appliesProperties &&
+        item.system.attachedTo === id
+    );
+  }
+
   prepareDerivedData() {
     if (this.isOrnament) return;
     const config = CONFIG.ABSOLUTION;
-    const p = this.properties;
+
+    // The weapon's own properties plus those of ornaments that apply theirs:
+    // ratings add together, on/off properties are on if any has them. The
+    // stored properties stay the weapon's own; everything below uses these.
+    const ornaments = this.propertyOrnaments;
+    const p = Object.fromEntries(
+      Object.entries(config.weaponProperties).map(([key, property]) => {
+        const values = [this.properties[key], ...ornaments.map((o) => o.system.properties[key])];
+        return [key, property.rated ? values.reduce((sum, v) => sum + (v || 0), 0) : values.some(Boolean)];
+      })
+    );
+    this.effectiveProperties = p;
+    this.effectiveAutoHits =
+      (this.autoHitsOverride ? this.autoHits : 0) + ornaments.reduce((sum, o) => sum + (o.system.autoHits || 0), 0);
 
     // Damage: Weakened steps the weight's base damage down the ladder, then
     // Honed adds to it (half, rounded down, for Off-Hand weapons). With
@@ -115,8 +166,12 @@ export default class AbsolutionWeapon extends AbsolutionItemBase {
     this.damage = { base, formula, halved, label: halved ? `½ (${formula})` : formula };
 
     // Attacks use Faith if Consecrated, otherwise Power. Focus weapons make
-    // Improvised Attacks, which always use Power.
-    this.attackAttribute = p.consecrated && !p.focus ? 'faith' : 'power';
+    // Improvised Attacks, which always use Power. Override picks any attribute.
+    this.attackAttribute = this.attackAttributeOverride
+      ? this.attackAttributeChoice
+      : p.consecrated && !p.focus
+        ? 'faith'
+        : 'power';
     this.attackEdge = p.quality - p.heavy - (p.archaeotech ? 1 : 0);
 
     // Slots, including Focus's innate Spinel slots (two on Two-Hand weapons)
@@ -126,11 +181,28 @@ export default class AbsolutionWeapon extends AbsolutionItemBase {
     );
 
     // Readable property list, e.g. ["Ranged 5", "Quality 2", "Consecrated"]
-    this.propertyLabels = Object.entries(config.weaponProperties)
-      .filter(([key]) => p[key])
+    this.propertyLabels = AbsolutionWeapon.propertyLabels(p);
+    // What each ornament adds, for the weapon sheet
+    this.ornamentBonuses = ornaments.map((o) => {
+      const labels = AbsolutionWeapon.propertyLabels(o.system.properties);
+      if (o.system.autoHits) {
+        labels.push(`${game.i18n.localize('ABSOLUTION.Check.AutoHits')} ${o.system.autoHits}`);
+      }
+      return { name: o.name, labels };
+    });
+  }
+
+  /**
+   * A readable list of properties, e.g. ["Ranged 5", "Quality 2", "Consecrated"].
+   * @param {object} properties   Property values by key
+   * @returns {string[]}
+   */
+  static propertyLabels(properties) {
+    return Object.entries(CONFIG.ABSOLUTION.weaponProperties)
+      .filter(([key]) => properties[key])
       .map(([key, property]) => {
         const label = game.i18n.localize(property.label);
-        return property.rated ? `${label} ${p[key]}` : label;
+        return property.rated ? `${label} ${properties[key]}` : label;
       });
   }
 }

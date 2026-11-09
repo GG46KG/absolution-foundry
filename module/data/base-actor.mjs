@@ -65,7 +65,7 @@ export default class AbsolutionActorBase extends foundry.abstract
     for (const item of this.parent?.items ?? []) {
       const s = item.system;
       if (s.broken) continue;
-      if (item.type === 'weapon' && !s.isOrnament && s.wielding) defender += s.properties.defender;
+      if (item.type === 'weapon' && !s.isOrnament && s.wielding) defender += (s.effectiveProperties ?? s.properties).defender;
       if (item.type === 'armor' && s.worn) worn.push(item);
     }
     // Only one set of armor counts; wearing more is flagged on the sheet

@@ -1,5 +1,5 @@
 import { promptCheck, rollCheck } from '../helpers/check.mjs';
-import { rollKnockout } from '../helpers/knockout.mjs';
+import { rollKnockout, npcWound } from '../helpers/knockout.mjs';
 import { materialForFreeSlot, nestOrnaments } from '../helpers/ornaments.mjs';
 import { actorHasAdjacentEnemy } from '../helpers/adjacency.mjs';
 
@@ -61,6 +61,12 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
     },
     stats: {
       template: 'systems/absolution/templates/actor/stats.hbs',
+      templates: ['systems/absolution/templates/actor/parts/damage-reduction.hbs'],
+    },
+    // The NPC stat block, in place of the Character tab
+    npcStats: {
+      template: 'systems/absolution/templates/actor/npc-stats.hbs',
+      templates: ['systems/absolution/templates/actor/parts/damage-reduction.hbs'],
     },
     skills: {
       template: 'systems/absolution/templates/actor/skills.hbs',
@@ -100,7 +106,8 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
         options.parts.push('stats', 'skills', 'features', 'inventory', 'biography');
         break;
       case 'npc':
-        options.parts.push('stats', 'inventory', 'biography');
+        // NPCs have features (no source) and no inventory
+        options.parts.push('npcStats', 'features', 'biography');
         break;
     }
   }
@@ -148,6 +155,30 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
     };
     // Suggestions for the Damage Reduction table's Type column
     context.damageTypes = Object.values(CONFIG.ABSOLUTION.damageTypes).map((key) => game.i18n.localize(key));
+    if (this.actor.type === 'npc') {
+      const config = CONFIG.ABSOLUTION;
+      const system = this.actor.system;
+      context.choices.npcThreats = Object.fromEntries(
+        Object.entries(config.npcThreats).map(([k, v]) => [k, v.label])
+      );
+      context.creatureTypes = config.creatureTypes.map((key) => game.i18n.localize(key));
+      // The stat block: each statistic's TR expression and its value
+      const labels = {
+        ...config.attributes,
+        stamina: 'ABSOLUTION.Actor.StaminaMax',
+        armor: 'ABSOLUTION.Actor.base.FIELDS.armor.label',
+        resistance: 'ABSOLUTION.Actor.Resistance',
+        speed: 'ABSOLUTION.Actor.base.FIELDS.speed.label',
+      };
+      context.statRows = Object.keys(system.statBlock).map((key) => ({
+        key,
+        label: labels[key],
+        expression: system.statBlock[key],
+        value: system.statValues[key],
+        error: system.statErrors[key],
+        roll: key in config.attributes,
+      }));
+    }
     if (context.isCharacter) {
       // Uses the derived labels, so Leszhoth see Psychokinesis
       context.choices.skills = Object.fromEntries(
@@ -165,6 +196,7 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
   async _preparePartContext(partId, context) {
     switch (partId) {
       case 'stats':
+      case 'npcStats':
       case 'skills':
       case 'features':
       case 'inventory':
@@ -201,7 +233,7 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
     const tabGroup = 'primary';
     // Default tab for first time it's rendered this session
     if (!this.tabGroups[tabGroup])
-      this.tabGroups[tabGroup] = parts.includes('stats') ? 'stats' : 'biography';
+      this.tabGroups[tabGroup] = parts.includes('stats') || parts.includes('npcStats') ? 'stats' : 'biography';
     return parts.reduce((tabs, partId) => {
       const tab = {
         cssClass: '',
@@ -220,6 +252,10 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
         case 'stats':
           tab.id = 'stats';
           tab.label += 'Character';
+          break;
+        case 'npcStats':
+          tab.id = 'stats';
+          tab.label += 'StatBlock';
           break;
         case 'skills':
           tab.id = 'skills';
@@ -545,18 +581,19 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
   static async _onWeaponAttack(event, target) {
     const weapon = this._getEmbeddedDocument(target);
     if (!weapon) return;
-    const { attackAttribute, attackEdge, autoHits } = weapon.system;
+    const { attackAttribute, attackEdge, effectiveAutoHits: autoHits } = weapon.system;
     const check = {
       actor: this.actor,
       label: weapon.name,
       subtitle: game.i18n.localize('ABSOLUTION.Check.Attack'),
+      description: await weapon.enrichedDescription(),
       dice: Math.max(1, this.actor.system.attributes[attackAttribute]?.value ?? 1),
       edge: attackEdge,
       autoHits,
       weapon,
       notes: [],
     };
-    if (weapon.system.properties.bulky) {
+    if (weapon.system.effectiveProperties.bulky) {
       const adjacent = actorHasAdjacentEnemy(this.actor);
       if (adjacent) {
         check.mode = 'disadvantage';
@@ -643,6 +680,8 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
    */
   static async _onKnockout(event, target) {
     event.preventDefault();
+    // Chaff and Mortal Threats don't make Knockout Rolls
+    if (this.actor.type === 'npc' && this.actor.system.threat !== 'threat') return npcWound(this.actor);
     const shown = (field) => {
       const input = this.element.querySelector(`[data-field="${field}"]`);
       const value = input ? input.valueAsNumber : foundry.utils.getProperty(this.actor, field);
@@ -991,6 +1030,12 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
    */
   async _onDropItemCreate(itemData, event) {
     itemData = itemData instanceof Array ? itemData : [itemData];
+    // NPCs only have features
+    if (this.actor.type === 'npc') {
+      const kept = itemData.filter((item) => ['feature', 'trait'].includes(item.type));
+      if (kept.length < itemData.length) ui.notifications.warn('ABSOLUTION.Actor.NpcFeaturesOnly', { localize: true });
+      itemData = kept;
+    }
     return this.actor.createEmbeddedDocuments('Item', itemData);
   }
 

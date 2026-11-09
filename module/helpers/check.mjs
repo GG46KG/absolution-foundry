@@ -45,6 +45,10 @@ export function evaluateCheck({ faces, threshold, autoHits = 0, difficulty = nul
  * @param {string} options.label          What is being checked, e.g. "Medicine"
  * @param {string} [options.subtitle]     The line under it on the chat card,
  *                                        e.g. "Skill Check"; defaults to "Check"
+ * @param {string} [options.description]  Enriched HTML shown under the subtitle,
+ *                                        e.g. the rolled item's description
+ * @param {string} [options.footer]       HTML at the bottom of the card, e.g. an
+ *                                        NPC attack's damage
  * @param {number} options.dice           Dice before Edge
  * @param {number} [options.edge]         Edge gained (or lost, if negative)
  * @param {number} [options.morale]       Morale spent: 1 more Edge each. The
@@ -56,12 +60,12 @@ export function evaluateCheck({ faces, threshold, autoHits = 0, difficulty = nul
  *                                        that knows whether the attack was critical
  * @returns {Promise<ChatMessage>}
  */
-export async function rollCheck({ actor, label, subtitle, dice, edge = 0, morale = 0, mode = 'normal', autoHits = 0, difficulty = null, weapon = null }) {
+export async function rollCheck({ actor, label, subtitle, description = '', footer = '', dice, edge = 0, morale = 0, mode = 'normal', autoHits = 0, difficulty = null, weapon = null }) {
   const totalEdge = edge + morale;
   const pool = dice + totalEdge;
   const threshold = HIT_ON[mode] ?? HIT_ON.normal;
   const speaker = ChatMessage.getSpeaker({ actor });
-  const details = { label, subtitle, pool, edge: totalEdge, morale, mode, autoHits, difficulty };
+  const details = { label, subtitle, description, footer, pool, edge: totalEdge, morale, mode, autoHits, difficulty };
 
   // Zero or fewer dice: automatic failure, nothing to roll.
   if (pool <= 0) {
@@ -109,7 +113,7 @@ function stepper(name, value, { min, max } = {}) {
  * @param {string[]} [options.notes]   Lines shown at the top of the dialog, e.g. why Disadvantage is set
  * @returns {Promise<ChatMessage|null>}   null if the dialog was closed
  */
-export async function promptCheck({ actor, label, subtitle, dice, edge = 0, autoHits = 0, mode: startMode = 'normal', notes = [], weapon = null }) {
+export async function promptCheck({ actor, label, subtitle, description = '', footer = '', dice, edge = 0, autoHits = 0, mode: startMode = 'normal', notes = [], weapon = null }) {
   const i18n = (k) => game.i18n.localize(`ABSOLUTION.Check.${k}`);
   // Only characters have Morale, and only the actor's owners can spend it
   const morale = actor?.isOwner && Number.isInteger(actor.system?.morale) ? Math.max(0, actor.system.morale) : null;
@@ -178,7 +182,7 @@ export async function promptCheck({ actor, label, subtitle, dice, edge = 0, auto
   });
   if (!options) return null;
   if (options.morale) await actor.update({ 'system.morale': morale - options.morale });
-  return rollCheck({ actor, label, subtitle, dice, weapon, ...options });
+  return rollCheck({ actor, label, subtitle, description, footer, dice, weapon, ...options });
 }
 
 /**
@@ -187,7 +191,7 @@ export async function promptCheck({ actor, label, subtitle, dice, edge = 0, auto
  * @param {object} [result]     From {@link evaluateCheck}; omitted for an automatic failure
  * @returns {string}
  */
-function checkFlavor({ label, subtitle, pool, edge, morale = 0, mode, autoHits, difficulty }, result) {
+function checkFlavor({ label, subtitle, description = '', footer = '', pool, edge, morale = 0, mode, autoHits, difficulty }, result) {
   const i18n = (k, data) => game.i18n.format(`ABSOLUTION.Check.${k}`, data);
   const parts = [i18n('Dice', { dice: Math.max(pool, 0) })];
   if (edge) parts.push(i18n('EdgeValue', { edge: edge > 0 ? `+${edge}` : edge }));
@@ -210,7 +214,9 @@ function checkFlavor({ label, subtitle, pool, edge, morale = 0, mode, autoHits, 
   return `<div class="absolution-card absolution-check">
     <h2>- ${escape(label)} -</h2>
     <div class="card-subtitle">${escape(subtitle ?? game.i18n.localize('ABSOLUTION.Check.Check'))}</div>
+    ${description ? `<div class="card-description">${description}</div>` : ''}
     <p class="absolution-check-details">${parts.join(' &middot; ')}</p>
     ${outcome ? `<p class="absolution-check-outcome ${outcomeClass}">${outcome}</p>` : ''}
+    ${footer}
   </div>`;
 }

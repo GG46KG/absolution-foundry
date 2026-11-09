@@ -15,7 +15,29 @@ export class AbsolutionCombat extends Combat {
    * @returns {number}
    */
   activations(combatant) {
-    return Math.max(1, combatant.getFlag('absolution', 'activations') ?? 1);
+    return Math.max(1, combatant.getFlag('absolution', 'activations') ?? this.defaultActivations(combatant));
+  }
+
+  /**
+   * Activations before the GM changes them: from an NPC's threat trait
+   * (Threat 2, Mortal Threat 2, or 3 against 5 or more hostile characters),
+   * otherwise 1.
+   * @param {Combatant} combatant
+   * @returns {number}
+   */
+  defaultActivations(combatant) {
+    const trait = CONFIG.ABSOLUTION.npcThreats?.[combatant.actor?.system?.threat];
+    if (!trait || combatant.actor?.type !== 'npc') return 1;
+    if (trait.crowd) {
+      const side = Math.sign(combatant.token?.disposition ?? 0);
+      const hostile = side
+        ? this.combatants.filter(
+            (c) => c !== combatant && !c.isDefeated && Math.sign(c.token?.disposition ?? 0) === -side
+          ).length
+        : 0;
+      if (hostile >= trait.crowd.size) return trait.crowd.activations;
+    }
+    return trait.activations;
   }
 
   /**
@@ -55,6 +77,7 @@ export class AbsolutionCombat extends Combat {
    */
   async changeActivations(combatant, change) {
     if (!game.user.isGM) return;
+    // Changes start from what the combatant has now, threat trait included
     const activations = Math.max(1, this.activations(combatant) + change);
     return combatant.setFlag('absolution', 'activations', activations);
   }

@@ -1,5 +1,6 @@
 import { promptCheck, rollCheck } from '../helpers/check.mjs';
 import { createChatMessage } from '../helpers/chat.mjs';
+import { replaceTrExpressions } from '../helpers/threat.mjs';
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -96,21 +97,33 @@ export class AbsolutionItem extends Item {
    * @returns {Promise<ChatMessage>}
    */
   async toChat() {
-    const { description, flavor } = this.system;
+    const { flavor } = this.system;
     const subtitle = this.#subtitle();
-    const effect = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-      description ?? '',
-      { rollData: this.getRollData(), relativeTo: this }
-    );
+    const effect = await this.enrichedDescription();
     const escape = foundry.utils.escapeHTML;
     const content = `<div class="absolution-card">
       <h2>- ${escape(this.name)} -</h2>
       <div class="card-subtitle">${escape(subtitle)}</div>
       ${effect}
+      ${this.#damageLine()}
       ${flavor ? `<hr/><div class="card-quote">${escape(flavor)}</div>` : ''}
     </div>`;
 
     return createChatMessage({ speaker: ChatMessage.getSpeaker({ actor: this.actor }), content });
+  }
+
+  /**
+   * This item's description as HTML for a chat card, with links and inline
+   * rolls enriched. Empty when the description has no text.
+   * @returns {Promise<string>}
+   */
+  async enrichedDescription() {
+    const description = this.#withTr(this.system.description ?? '');
+    if (!description.replace(/<[^>]*>/g, '').trim()) return '';
+    return foundry.applications.ux.TextEditor.implementation.enrichHTML(description, {
+      rollData: this.getRollData(),
+      relativeTo: this,
+    });
   }
 
   /**
@@ -128,13 +141,21 @@ export class AbsolutionItem extends Item {
       const roll = new Roll(formula, this.actor?.getRollData() ?? {});
       if (roll.isDeterministic) {
         const dice = Math.trunc(roll.evaluateSync().total);
-        const check = { actor: this.actor, label: this.name, subtitle: this.#subtitle(), dice };
+        const description = await this.enrichedDescription();
+        const check = {
+          actor: this.actor,
+          label: this.name,
+          subtitle: this.#subtitle(),
+          description,
+          footer: this.#damageLine(),
+          dice,
+        };
         return quick ? rollCheck(check) : promptCheck(check);
       }
       await roll.evaluate();
       return roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: this.#cardHeading(),
+        flavor: this.#cardHeading(await this.enrichedDescription()),
       });
     } catch (err) {
       ui.notifications.warn(
@@ -166,10 +187,8 @@ export class AbsolutionItem extends Item {
   async rollDamage({ critical = false } = {}) {
     const damage = this.system.damage;
     if (!damage?.formula) return null;
-    const p = this.system.properties;
-    const attribute = game.i18n.localize(
-      `ABSOLUTION.Attribute.${this.system.attackAttribute === 'faith' ? 'Faith' : 'Power'}`
-    );
+    const p = this.system.effectiveProperties ?? this.system.properties;
+    const attribute = game.i18n.localize(CONFIG.ABSOLUTION.attributes[this.system.attackAttribute] ?? '');
     const attributeDamage = this.attributeDamage;
     const precise = critical && p.precise;
     // Inside Defender's halving the attribute isn't tagged with its name
@@ -203,16 +222,42 @@ export class AbsolutionItem extends Item {
   }
 
   /**
-   * The name and action type at the top of this feature's chat cards.
+   * The name and action type at the top of this feature's chat cards, and
+   * its description if given.
+   * @param {string} [description]   Enriched description HTML
    * @returns {string}
    */
-  #cardHeading() {
+  #cardHeading(description = '') {
     const subtitle = this.#subtitle();
     const escape = foundry.utils.escapeHTML;
     return `<div class="absolution-card">
       <h2>- ${escape(this.name)} -</h2>
       <div class="card-subtitle">${escape(subtitle)}</div>
+      ${description ? `<div class="card-description">${description}</div>` : ''}
+      ${this.#damageLine()}
     </div>`;
+  }
+
+  /**
+   * For an NPC's items, replace bracketed Threat Rating expressions such as
+   * "[ 3 + 2tr ]" with their value at the NPC's TR.
+   * @param {string} text
+   * @returns {string}
+   */
+  #withTr(text) {
+    return this.actor?.type === 'npc' ? replaceTrExpressions(text, this.actor.system?.tr ?? 1) : text;
+  }
+
+  /**
+   * An NPC attack's fixed damage, centred in italics at the bottom of its
+   * chat cards. Empty for anything else.
+   * @returns {string}
+   */
+  #damageLine() {
+    const { actionType, damage } = this.system;
+    if (!damage?.trim() || !CONFIG.ABSOLUTION.attackActionTypes.includes(actionType)) return '';
+    const text = game.i18n.format('ABSOLUTION.Item.Feature.DamageLine', { damage: this.#withTr(damage.trim()) });
+    return `<div class="card-damage">${foundry.utils.escapeHTML(text)}</div>`;
   }
 
   /**
@@ -228,6 +273,8 @@ export class AbsolutionItem extends Item {
       if (kind && kind !== 'standard') parts.push(config.ornamentKinds[kind]?.label);
       return parts.filter(Boolean).map((key) => game.i18n.localize(key)).join(' · ');
     }
-    return game.i18n.localize(config.actionTypes[actionType] ?? `TYPES.Item.${this.type}`);
+    // NPCs have no vows, so their untyped features are just "Feature"
+    const fallback = this.actor?.type === 'npc' ? 'ABSOLUTION.Item.Feature.NpcFeature' : `TYPES.Item.${this.type}`;
+    return game.i18n.localize(config.actionTypes[actionType] ?? fallback);
   }
 }

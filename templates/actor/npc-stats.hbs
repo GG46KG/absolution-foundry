@@ -1,0 +1,55 @@
+{{! NPC Stat Block Tab: laid out like the Bestiary's entries. Statistics are TR expressions. }}
+<section class='tab stats npc-stats {{tab.cssClass}}' data-group='primary' data-tab='stats'>
+  <div class='stats-grid'>
+
+    <div class='stats-column'>
+      <fieldset>
+        <legend>{{localize 'ABSOLUTION.Actor.Sections.Threat'}}</legend>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.NPC.FIELDS.tr.label'}}</label>
+          <input type='number' name='system.tr' value='{{system.tr}}' min='1' />
+        </div>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.NPC.FIELDS.threat.label'}}</label>
+          <select class='wide-input' name='system.threat'>
+            {{selectOptions choices.npcThreats selected=system.threat localize=true}}
+          </select>
+        </div>
+        <p class='threat-text'>{{localize system.threatTrait.text}}</p>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.NPC.FIELDS.creatureType.label'}}</label>
+          <input type='text' class='wide-input' name='system.creatureType' value='{{system.creatureType}}' list='absolution-creature-types' />
+          <datalist id='absolution-creature-types'>
+            {{#each creatureTypes as |label|}}<option value='{{label}}'></option>{{/each}}
+          </datalist>
+        </div>
+        <div class='stat-row'>
+          <label>{{localize 'ABSOLUTION.Actor.NPC.FIELDS.size.label'}}</label>
+          <input type='text' class='short-input' name='system.size' value='{{system.size}}' />
+        </div>
+      </fieldset>
+
+      {{> 'systems/absolution/templates/actor/parts/damage-reduction.hbs'}}
+    </div>
+
+    <div class='stats-column'>
+      <fieldset class='stat-block'>
+        <legend>{{localize 'ABSOLUTION.Actor.Sections.Statistics'}}</legend>
+        <p class='stat-block-hint'>{{localize 'ABSOLUTION.Actor.NPC.StatHint'}}</p>
+        {{#each statRows as |row|}}
+          <div class='stat-row {{#if row.error}}stat-error{{/if}}'>
+            {{#if row.roll}}
+              <a class='roll-die' data-action='roll' data-roll-type='attribute' data-key='{{row.key}}' aria-label='{{localize "ABSOLUTION.Check.Roll"}}'><i class='fa-solid fa-dice-d6'></i></a>
+            {{/if}}
+            <label>{{localize row.label}}</label>
+            <input type='text' class='stat-expression' name='system.statBlock.{{row.key}}' value='{{row.expression}}' />
+            <span class='derived' title='{{#if row.error}}{{localize "ABSOLUTION.Actor.NPC.BadExpression"}}{{/if}}'>
+              {{#if row.error}}<i class='fa-solid fa-triangle-exclamation'></i>{{else}}{{row.value}}{{/if}}
+            </span>
+          </div>
+        {{/each}}
+      </fieldset>
+    </div>
+
+  </div>
+</section>

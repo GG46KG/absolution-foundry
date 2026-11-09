@@ -10,6 +10,8 @@
  * - otherwise: Knockout
  */
 
+import { createChatMessage } from './chat.mjs';
+
 /**
  * Decide a knockout result.
  * @param {object} knockout
@@ -75,4 +77,33 @@ export async function rollKnockout({ actor, wounds, grievous }) {
   </div>`;
 
   return roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor });
+}
+
+/**
+ * What happens to an NPC that doesn't make Knockout Rolls when it receives a
+ * Wound (Bestiary threat traits):
+ * - Chaff is Incapacitated.
+ * - A Mortal Threat restores its Stamina and has Exposed cleared.
+ * Posts a card like a Knockout roll's.
+ * @param {Actor} actor
+ * @returns {Promise<ChatMessage|null>}
+ */
+export async function npcWound(actor) {
+  const threat = actor.system.threat;
+  const format = (key) => game.i18n.format(`ABSOLUTION.NpcWound.${key}`, { name: actor.name });
+  let key;
+  if (threat === 'chaff') {
+    await actor.toggleStatusEffect('incapacitated', { active: true });
+    key = 'Chaff';
+  } else if (threat === 'mortalThreat') {
+    await actor.update({ 'system.stamina.value': actor.system.stamina.max });
+    await actor.toggleStatusEffect('exposed', { active: false });
+    key = 'MortalThreat';
+  } else return null;
+  const content = `<div class="absolution-card">
+    <h2>- ${foundry.utils.escapeHTML(format(`${key}.Title`))} -</h2>
+    <div class="card-subtitle">${foundry.utils.escapeHTML(game.i18n.localize(CONFIG.ABSOLUTION.npcThreats[threat].label))}</div>
+    ${format(`${key}.Text`)}
+  </div>`;
+  return createChatMessage({ speaker: ChatMessage.getSpeaker({ actor }), content });
 }

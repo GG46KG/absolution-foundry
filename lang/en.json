@@ -102,6 +102,30 @@
       "Mended": "Mended",
       "Triaged": "Triaged"
     },
+    "NpcThreat": {
+      "Chaff": "Chaff",
+      "ChaffText": "Doesn't make Knockout Rolls: it's Incapacitated upon losing all Stamina. Immune to the movement restricting effect of Ironheart Stance.",
+      "Threat": "Threat",
+      "ThreatText": "Takes 2 turns per Round and makes Knockout Rolls normally when receiving Wounds.",
+      "MortalThreat": "Mortal Threat",
+      "MortalThreatText": "Takes 2 turns per Round, or 3 when facing 5 or more hostile characters. When it receives a Wound, it restores Stamina without a Knockout Roll and has Exposed cleared."
+    },
+    "NpcWound": {
+      "Chaff": {
+        "Title": "Incapacitated",
+        "Text": "{name} falls, Incapacitated. Chaff makes no Knockout Rolls."
+      },
+      "MortalThreat": {
+        "Title": "Unbroken",
+        "Text": "{name} shrugs off the Wound: its Stamina is restored and Exposed is cleared."
+      }
+    },
+    "CreatureType": {
+      "VenialBeast": "Venial Beast",
+      "BeastOfSin": "Beast of Sin",
+      "Risen": "Risen",
+      "Construct": "Construct"
+    },
     "StatusEffect": {
       "Sunder": {
         "Name": "Sunder",
@@ -255,7 +279,10 @@
       "FullAction": "Full Action",
       "Passive": "Passive",
       "Camp": "Camp",
-      "Downtime": "Downtime"
+      "Downtime": "Downtime",
+      "Attack": "Attack",
+      "FullAttack": "Full Attack",
+      "ApexAction": "Apex Action"
     },
     "FeatureSource": {
       "VowFeature": "Vow Feature",
@@ -397,7 +424,8 @@
       },
       "AddOrnament": "Add Ornament",
       "NewOrnament": "New Ornament",
-      "CannotRollDamage": "You don't own that weapon, so you can't roll its damage."
+      "CannotRollDamage": "You don't own that weapon, so you can't roll its damage.",
+      "FromOrnament": "From {name}: "
     },
     "Ornament": {
       "Problem": {
@@ -493,7 +521,8 @@
         "Features": "Features",
         "Inventory": "Inventory",
         "Backstory": "Backstory",
-        "Effects": "Effects"
+        "Effects": "Effects",
+        "StatBlock": "Stat Block"
       },
       "Sections": {
         "Attributes": "Attributes",
@@ -510,7 +539,9 @@
         "WeaponsAndOrnaments": "Weapons and Ornaments",
         "Belongings": "Belongings and Materials",
         "Connections": "Connections",
-        "Armor": "Armor"
+        "Armor": "Armor",
+        "Threat": "Threat",
+        "Statistics": "Statistics"
       },
       "SelectLineage": "Select a Lineage",
       "SelectVow": "Select a Vow",
@@ -635,13 +666,21 @@
       },
       "NPC": {
         "FIELDS": {
-          "cr": {
-            "label": "CR"
+          "tr": {
+            "label": "Threat Rating (TR)"
+          },
+          "threat": {
+            "label": "Threat Type"
+          },
+          "creatureType": {
+            "label": "Creature Type"
+          },
+          "size": {
+            "label": "Size"
           }
         },
-        "xp": {
-          "label": "XP"
-        }
+        "StatHint": "Write each as a number or a TR expression, e.g. 20 + 4tr, 2tr - 2, or 1 + ^½tr (½ rounds down; ^ rounds up).",
+        "BadExpression": "Not a number or TR expression"
       },
       "Name": "Name",
       "NewFeature": "New Feature",
@@ -652,7 +691,8 @@
       "NewArmor": "New Armor",
       "ModifiedByArmor": "Modified by Armor",
       "Wearing": "Wearing {name}",
-      "WearingMany": "(only one set of armor counts)"
+      "WearingMany": "(only one set of armor counts)",
+      "NpcFeaturesOnly": "NPCs only have features. Only the features and traits were added."
     },
     "Item": {
       "Tabs": {
@@ -679,11 +719,17 @@
           },
           "source": {
             "label": "Source"
+          },
+          "damage": {
+            "label": "Damage"
           }
         },
         "DicePlaceholder": "Blank for none. Dice for a check (3, @power + 1) or a formula (4d6, 3d6 + @power)",
         "BadDice": "{name}: \"{formula}\" isn't a roll Foundry can make. Use a number of dice for a check, such as 3 or @power + 1, or a formula such as 4d6 or 3d6 + @power.",
-        "ToChat": "Send to chat"
+        "ToChat": "Send to chat",
+        "DamagePlaceholder": "e.g. 8 Physical, or 2d6 + 3 Fire",
+        "DamageLine": "Damage: {damage}",
+        "NpcFeature": "Feature"
       },
       "Trait": {
         "FIELDS": {}
@@ -747,6 +793,21 @@
           },
           "autoHits": {
             "label": "Automatic Hits"
+          },
+          "appliesProperties": {
+            "label": "Applies Property to Weapon"
+          },
+          "autoHitsOverride": {
+            "label": "Override"
+          },
+          "attackAttribute": {
+            "label": "Attack Attribute"
+          },
+          "attackAttributeOverride": {
+            "label": "Override"
+          },
+          "attackAttributeChoice": {
+            "label": "Attack Attribute"
           }
         },
         "NotAttached": "Not attached",

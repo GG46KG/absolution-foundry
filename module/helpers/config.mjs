@@ -130,7 +130,26 @@ ABSOLUTION.actionTypes = {
   passive: 'ABSOLUTION.ActionType.Passive',
   camp: 'ABSOLUTION.ActionType.Camp',
   downtime: 'ABSOLUTION.ActionType.Downtime',
+  attack: 'ABSOLUTION.ActionType.Attack',
+  fullAttack: 'ABSOLUTION.ActionType.FullAttack',
+  apexAction: 'ABSOLUTION.ActionType.ApexAction',
 };
+
+/**
+ * Action types only characters' features use, and only NPCs' features use.
+ * Unowned features can pick any.
+ * @type {{character: string[], npc: string[]}}
+ */
+ABSOLUTION.actorOnlyActionTypes = {
+  character: ['camp', 'downtime'],
+  npc: ['attack', 'fullAttack', 'apexAction'],
+};
+
+/**
+ * NPC action types that are attacks, with a fixed Damage on their cards.
+ * @type {string[]}
+ */
+ABSOLUTION.attackActionTypes = ['attack', 'fullAttack'];
 
 /**
  * Where a vow feature or trait comes from.
@@ -376,6 +395,34 @@ ABSOLUTION.statusEffects = [
     flags: { absolution: { kind } },
   };
 });
+
+/**
+ * NPC threat traits (Bestiary). Each sets how many turns the NPC takes each
+ * round and what happens when it receives a Wound. Mortal Threats take more
+ * turns against a crowd of hostile characters.
+ * @type {Object}
+ */
+ABSOLUTION.npcThreats = {
+  chaff: { label: 'ABSOLUTION.NpcThreat.Chaff', text: 'ABSOLUTION.NpcThreat.ChaffText', activations: 1 },
+  threat: { label: 'ABSOLUTION.NpcThreat.Threat', text: 'ABSOLUTION.NpcThreat.ThreatText', activations: 2 },
+  mortalThreat: {
+    label: 'ABSOLUTION.NpcThreat.MortalThreat',
+    text: 'ABSOLUTION.NpcThreat.MortalThreatText',
+    activations: 2,
+    crowd: { size: 5, activations: 3 },
+  },
+};
+
+/**
+ * Creature types in the Bestiary, suggested for NPCs' Creature Type.
+ * @type {string[]}
+ */
+ABSOLUTION.creatureTypes = [
+  'ABSOLUTION.CreatureType.VenialBeast',
+  'ABSOLUTION.CreatureType.BeastOfSin',
+  'ABSOLUTION.CreatureType.Risen',
+  'ABSOLUTION.CreatureType.Construct',
+];
 
 /**
  * Damage types (core rules, "Damage Types").

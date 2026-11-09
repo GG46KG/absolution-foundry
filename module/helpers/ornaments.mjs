@@ -42,7 +42,7 @@ export function placeOrnaments(weapon, ornaments) {
     // Its own material first, then the shared slots
     let slot = take(material);
     if (!slot && ['spinel', 'turquoise', 'jade'].includes(material)) slot = take('prismatic');
-    if (!slot && material === 'clockwork' && weapon.system.properties?.archaeotech && !clockworkInPrismatic) {
+    if (!slot && material === 'clockwork' && (weapon.system.effectiveProperties ?? weapon.system.properties)?.archaeotech && !clockworkInPrismatic) {
       slot = take('prismatic');
       if (slot) clockworkInPrismatic = true;
     }

@@ -23,12 +23,20 @@
         </div>
       {{/if}}
       {{#if (or (eq item.type 'feature') (eq item.type 'trait'))}}
-        <div class='resource'>
-          <label class='resource-label'>{{localize 'ABSOLUTION.Item.Feature.FIELDS.source.label'}}</label>
-          <select name='system.source'>
-            {{selectOptions choices.featureSources selected=system.source localize=true}}
-          </select>
-        </div>
+        {{#if showSource}}
+          <div class='resource'>
+            <label class='resource-label'>{{localize 'ABSOLUTION.Item.Feature.FIELDS.source.label'}}</label>
+            <select name='system.source'>
+              {{selectOptions choices.featureSources selected=system.source localize=true}}
+            </select>
+          </div>
+        {{/if}}
+        {{#if showDamage}}
+          <div class='resource'>
+            <label class='resource-label'>{{localize 'ABSOLUTION.Item.Feature.FIELDS.damage.label'}}</label>
+            <input type='text' name='system.damage' value='{{system.damage}}' placeholder='{{localize "ABSOLUTION.Item.Feature.DamagePlaceholder"}}' />
+          </div>
+        {{/if}}
       {{else if (eq item.type 'equipment')}}
         <div class='resource'>
           <label class='resource-label'>{{localize 'ABSOLUTION.Item.Equipment.FIELDS.uses.label'}}</label>
@@ -99,11 +107,41 @@
               </select>
             {{/if}}
           </div>
+          {{! Automatic Hits and Attack Attribute show what the weapon works out
+              until Override is ticked }}
           <div class='resource'>
-            <label class='resource-label'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.autoHits.label'}}</label>
-            <input type='number' name='system.autoHits' value='{{system.autoHits}}' min='0' />
+            <div class='label-with-toggle'>
+              <label class='resource-label'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.autoHits.label'}}</label>
+              <label class='inline-toggle'>
+                <input type='checkbox' name='system.autoHitsOverride' {{checked system.autoHitsOverride}} />
+                {{localize 'ABSOLUTION.WeaponWeight.Override'}}
+              </label>
+            </div>
+            {{#if system.autoHitsOverride}}
+              <input type='number' name='system.autoHits' value='{{system.autoHits}}' min='0' />
+            {{else}}
+              <input type='number' value='{{system.effectiveAutoHits}}' disabled />
+            {{/if}}
           </div>
-          <div class='resource weapon-flags'>
+          <div class='resource'>
+            <div class='label-with-toggle'>
+              <label class='resource-label'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.attackAttribute.label'}}</label>
+              <label class='inline-toggle'>
+                <input type='checkbox' name='system.attackAttributeOverride' {{checked system.attackAttributeOverride}} />
+                {{localize 'ABSOLUTION.WeaponWeight.Override'}}
+              </label>
+            </div>
+            {{#if system.attackAttributeOverride}}
+              <select name='system.attackAttributeChoice'>
+                {{selectOptions choices.attributes selected=system.attackAttributeChoice localize=true}}
+              </select>
+            {{else}}
+              <select disabled>
+                {{selectOptions choices.attributes selected=system.attackAttribute localize=true}}
+              </select>
+            {{/if}}
+          </div>
+          <div class='resource weapon-flags full-row'>
             <label><input type='checkbox' name='system.attuned' {{checked system.attuned}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.attuned.label'}}</label>
             <label><input type='checkbox' name='system.wielding' {{checked system.wielding}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.wielding.label'}}</label>
             <label><input type='checkbox' name='system.broken' {{checked system.broken}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.broken.label'}}</label>

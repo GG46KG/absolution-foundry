@@ -63,43 +63,7 @@
         </div>
       </fieldset>
 
-      <fieldset class='damage-reduction'>
-        <legend>{{localize 'ABSOLUTION.DamageReduction.Title'}}</legend>
-        <div class='dr-row dr-header'>
-          <span class='dr-value'>{{localize 'ABSOLUTION.DamageReduction.Amount'}}</span>
-          <span class='dr-type'>{{localize 'ABSOLUTION.DamageReduction.Type'}}</span>
-          <span class='dr-source'>{{localize 'ABSOLUTION.DamageReduction.Source'}}</span>
-          <span class='dr-controls'>
-            {{#if editable}}
-              <a data-action='addDamageReduction' aria-label='{{localize "ABSOLUTION.DamageReduction.Add"}}'><i class='fas fa-plus'></i></a>
-            {{/if}}
-          </span>
-        </div>
-        {{! Worked out from Armor Rating; change Armor Rating or armor to change these }}
-        {{#each system.armorReductions as |row|}}
-          <div class='dr-row dr-auto'>
-            <span class='dr-value'>{{row.value}}</span>
-            <span class='dr-type'>{{row.type}}</span>
-            <span class='dr-source'>{{row.source}}</span>
-            <span class='dr-controls'><i class='fa-solid fa-lock'></i></span>
-          </div>
-        {{/each}}
-        {{#each system.damageReductions as |row index|}}
-          <div class='dr-row'>
-            <input class='dr-value' type='number' name='system.damageReductions.{{index}}.value' value='{{row.value}}' min='0' />
-            <input class='dr-type' type='text' name='system.damageReductions.{{index}}.type' value='{{row.type}}' list='absolution-damage-types' placeholder='{{localize "ABSOLUTION.DamageReduction.TypePlaceholder"}}' />
-            <input class='dr-source' type='text' name='system.damageReductions.{{index}}.source' value='{{row.source}}' />
-            <span class='dr-controls'>
-              {{#if @root.editable}}
-                <a data-action='deleteDamageReduction' data-index='{{index}}' aria-label='{{localize "ABSOLUTION.DamageReduction.Delete"}}'><i class='fas fa-trash'></i></a>
-              {{/if}}
-            </span>
-          </div>
-        {{/each}}
-        <datalist id='absolution-damage-types'>
-          {{#each damageTypes as |label|}}<option value='{{label}}'></option>{{/each}}
-        </datalist>
-      </fieldset>
+      {{> 'systems/absolution/templates/actor/parts/damage-reduction.hbs'}}
     </div>
 
     <div class='stats-column'>

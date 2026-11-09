@@ -17,13 +17,27 @@
       <p class='weapon-summary item-detail-text'>{{localize 'ABSOLUTION.Armor.MediumMasteryEffect'}}</p>
     {{/if}}
   {{/if}}
-  {{#if weaponProperties}}
+  {{#if isWeapon}}
     <div class='weapon-summary'>
       {{localize 'ABSOLUTION.Weapon.Damage'}}: <strong>{{system.damage.label}}</strong>
-      &middot; {{localize 'ABSOLUTION.Weapon.AttackWith'}} <strong>{{localize (concat 'ABSOLUTION.Attribute.' (ifThen (eq system.attackAttribute 'faith') 'Faith' 'Power'))}}</strong>
+      &middot; {{localize 'ABSOLUTION.Weapon.AttackWith'}} <strong>{{localize (lookup choices.attributes system.attackAttribute)}}</strong>
       &middot; {{localize 'ABSOLUTION.Check.Edge'}} <strong>{{system.attackEdge}}</strong>
-      {{#if system.autoHits}}&middot; {{localize 'ABSOLUTION.Check.AutoHits'}} <strong>{{system.autoHits}}</strong>{{/if}}
+      {{#if system.effectiveAutoHits}}&middot; {{localize 'ABSOLUTION.Check.AutoHits'}} <strong>{{system.effectiveAutoHits}}</strong>{{/if}}
     </div>
+    {{#each system.ornamentBonuses as |bonus|}}
+      <p class='weapon-summary item-detail-text'>
+        {{localize 'ABSOLUTION.Weapon.FromOrnament' name=bonus.name}}{{#each bonus.labels}}{{#if @index}}, {{/if}}{{this}}{{/each}}
+      </p>
+    {{/each}}
+  {{/if}}
+  {{! Ornaments: the properties and Automatic Hits they add to their weapon }}
+  {{#if system.isOrnament}}
+    <label class='applies-properties'>
+      <input type='checkbox' name='system.appliesProperties' {{checked system.appliesProperties}} />
+      {{localize 'ABSOLUTION.Item.Weapon.FIELDS.appliesProperties.label'}}
+    </label>
+  {{/if}}
+  {{#if weaponProperties}}
     <fieldset class='weapon-grid'>
       <legend>{{localize 'ABSOLUTION.Weapon.Properties'}}</legend>
       {{#each weaponProperties}}
@@ -36,7 +50,15 @@
           <span>{{localize this.label}}{{#if this.rated}} X{{/if}}</span>
         </label>
       {{/each}}
+      {{#if system.isOrnament}}
+        <label class='weapon-grid-item'>
+          <input type='number' name='system.autoHits' value='{{system.autoHits}}' min='0' />
+          <span>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.autoHits.label'}}</span>
+        </label>
+      {{/if}}
     </fieldset>
+  {{/if}}
+  {{#if isWeapon}}
     <fieldset class='weapon-grid'>
       <legend>{{localize 'ABSOLUTION.Weapon.Slots'}}</legend>
       {{#each slotTypes}}

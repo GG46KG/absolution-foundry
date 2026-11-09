@@ -272,6 +272,14 @@
   text-align: center;
   border: none;
 }
+.absolution-card .card-description {
+  margin-bottom: 8px;
+}
+.absolution-card .card-damage {
+  margin: 8px 0 4px;
+  font-style: italic;
+  text-align: center;
+}
 .absolution-card .card-subtitle {
   margin-bottom: 10px;
   font-size: 14px;
@@ -824,15 +832,17 @@
 .absolution .stats-column {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12px;
   min-width: 0;
 }
-.absolution .stats fieldset {
+.absolution .stats fieldset,
+.absolution .skills fieldset {
   margin: 0;
-  padding: 4px 6px 6px;
+  padding: 6px 8px 8px;
   border: 2px groove var(--absolution-c-groove);
 }
-.absolution .stats fieldset legend {
+.absolution .stats fieldset legend,
+.absolution .skills fieldset legend {
   font-weight: bold;
   padding: 0 4px;
 }
@@ -840,7 +850,8 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  min-height: 28px;
+  min-height: 32px;
+  margin-bottom: 6px;
 }
 .absolution .stat-row > label,
 .absolution .stat-row > .label-input {
@@ -888,7 +899,8 @@
   grid-template-columns: 18px 32px minmax(0, 1fr) 44px 36px;
   align-items: center;
   gap: 4px;
-  min-height: 26px;
+  min-height: 32px;
+  margin-bottom: 6px;
 }
 .absolution .skill-row.skill-header {
   font-size: 11px;
@@ -1184,6 +1196,17 @@
   flex: 0 0 auto;
   margin-bottom: 6px;
 }
+.absolution .applies-properties {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 8px;
+  font-weight: bold;
+}
+.absolution .applies-properties input {
+  margin: 0;
+}
 .absolution .weapon-grid {
   flex: 0 0 auto;
   display: grid;
@@ -1219,7 +1242,8 @@
   gap: 4px;
   white-space: nowrap;
 }
-.absolution .armor-traits {
+.absolution .armor-traits,
+.absolution .full-row {
   grid-column: 1/-1;
 }
 .absolution .armor-list .name-stack {
@@ -1288,6 +1312,28 @@
 }
 .absolution .charges-pair input {
   width: 60px;
+}
+.absolution .npc-stats .threat-text,
+.absolution .npc-stats .stat-block-hint {
+  margin: 2px 0 10px;
+  font-size: 12px;
+  font-style: italic;
+  opacity: 0.8;
+}
+.absolution .npc-stats .stat-row > .wide-input {
+  flex: 0 0 60%;
+  max-width: 60%;
+}
+.absolution .npc-stats .short-input {
+  flex: 0 0 52px;
+  text-align: center;
+}
+.absolution .npc-stats .stat-expression {
+  flex: 0 0 45%;
+  text-align: center;
+}
+.absolution .npc-stats .stat-error .derived {
+  color: var(--absolution-c-red);
 }
 .absolution .damage-reduction .dr-row {
   display: flex;

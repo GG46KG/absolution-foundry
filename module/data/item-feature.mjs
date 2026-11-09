@@ -22,6 +22,8 @@ export default class AbsolutionFeature extends AbsolutionActionItem {
       initial: this.defaultSource,
       choices: () => CONFIG.ABSOLUTION.featureSources,
     });
+    // NPC attacks: the damage they deal, printed on their chat cards
+    schema.damage = new fields.StringField({ required: true, blank: true });
 
     return schema;
   }

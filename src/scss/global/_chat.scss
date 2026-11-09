@@ -36,6 +36,18 @@
     border: none;
   }
 
+  // The rolled item's description, between the subtitle and the result
+  .card-description {
+    margin-bottom: 8px;
+  }
+
+  // An NPC attack's fixed damage, at the bottom above the flavor text
+  .card-damage {
+    margin: 8px 0 4px;
+    font-style: italic;
+    text-align: center;
+  }
+
   .card-subtitle {
     margin-bottom: 10px;
     font-size: 14px;
