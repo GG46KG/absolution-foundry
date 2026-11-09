@@ -1,6 +1,6 @@
 {
   "name": "absolution",
-  "version": "0.1.0",
+  "version": "2.4.0",
   "description": "CSS compiler for the Absolution system",
   "scripts": {
     "build": "sass src/scss/absolution.scss css/absolution.css --style=expanded --no-source-map",
