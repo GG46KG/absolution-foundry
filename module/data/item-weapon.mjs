@@ -25,6 +25,10 @@ export default class AbsolutionWeapon extends AbsolutionItemBase {
       initial: 'mainHand',
       choices: () => config.weaponWeights,
     });
+    // Override: the weapon's base damage is typed in instead of coming from
+    // its weight, for weapons that don't follow the weight table
+    schema.weightOverride = new fields.BooleanField();
+    schema.baseDamage = new fields.StringField({ required: true, blank: true });
     // Copies of a rated property add together, so each stores its total
     schema.properties = new fields.SchemaField(
       Object.entries(config.weaponProperties).reduce((obj, [key, property]) => {
@@ -85,13 +89,21 @@ export default class AbsolutionWeapon extends AbsolutionItemBase {
     const p = this.properties;
 
     // Damage: Weakened steps the weight's base damage down the ladder, then
-    // Honed adds to it (half, rounded down, for Off-Hand weapons).
-    const baseStep = config.weaponWeights[this.weight]?.damageStep ?? 3;
-    const step = Math.max(0, baseStep - p.weakened);
-    const { dice, bonus } = config.damageLadder[step];
-    const honed = this.weight === 'offHand' ? Math.floor(p.honed / 2) : p.honed;
-    const total = step > 0 ? bonus + honed : 0;
-    const base = dice ? (total ? `${dice}+${total}` : dice) : String(total);
+    // Honed adds to it (half, rounded down, for Off-Hand weapons). With
+    // Override, the typed base damage is used instead and Honed adds to it;
+    // Weakened, a step down the weight ladder, doesn't apply.
+    let base;
+    if (this.weightOverride) {
+      const typed = this.baseDamage.trim() || '0';
+      base = p.honed ? `${typed}+${p.honed}` : typed;
+    } else {
+      const baseStep = config.weaponWeights[this.weight]?.damageStep ?? 3;
+      const step = Math.max(0, baseStep - p.weakened);
+      const { dice, bonus } = config.damageLadder[step];
+      const honed = this.weight === 'offHand' ? Math.floor(p.honed / 2) : p.honed;
+      const total = step > 0 ? bonus + honed : 0;
+      base = dice ? (total ? `${dice}+${total}` : dice) : String(total);
+    }
     // Normal attacks: Focus weapons deal 1. Defender weapons halve the
     // attack's total damage (minimum 1), so the halving is applied when
     // damage is rolled, after Attack Attribute Damage and the rest are added.

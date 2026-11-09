@@ -85,3 +85,23 @@
     width: 100%;
   }
 }
+
+// A field label with a small checkbox on the same line, e.g. Weight / Override
+.label-with-toggle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+
+  .inline-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+
+    input {
+      margin: 0;
+    }
+  }
+}

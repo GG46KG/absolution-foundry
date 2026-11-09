@@ -82,10 +82,22 @@
           {{/if}}
         {{else}}
           <div class='resource'>
-            <label class='resource-label'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.weight.label'}}</label>
-            <select name='system.weight'>
-              {{selectOptions choices.weaponWeights selected=system.weight localize=true}}
-            </select>
+            <div class='label-with-toggle'>
+              <label class='resource-label'>
+                {{#if system.weightOverride}}{{localize 'ABSOLUTION.Item.Weapon.FIELDS.baseDamage.label'}}{{else}}{{localize 'ABSOLUTION.Item.Weapon.FIELDS.weight.label'}}{{/if}}
+              </label>
+              <label class='inline-toggle'>
+                <input type='checkbox' name='system.weightOverride' {{checked system.weightOverride}} />
+                {{localize 'ABSOLUTION.WeaponWeight.Override'}}
+              </label>
+            </div>
+            {{#if system.weightOverride}}
+              <input type='text' name='system.baseDamage' value='{{system.baseDamage}}' placeholder='{{localize "ABSOLUTION.Item.Weapon.BaseDamagePlaceholder"}}' />
+            {{else}}
+              <select name='system.weight'>
+                {{selectOptions choices.weaponWeights selected=system.weight localize=true}}
+              </select>
+            {{/if}}
           </div>
           <div class='resource weapon-flags'>
             <label><input type='checkbox' name='system.attuned' {{checked system.attuned}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.attuned.label'}}</label>

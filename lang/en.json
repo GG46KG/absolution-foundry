@@ -275,7 +275,8 @@
     "WeaponWeight": {
       "OffHand": "Off-Hand",
       "MainHand": "Main-Hand",
-      "TwoHand": "Two-Hand"
+      "TwoHand": "Two-Hand",
+      "Override": "Override"
     },
     "WeaponProperty": {
       "Archaeotech": "Archaeotech",
@@ -737,9 +738,16 @@
           },
           "dice": {
             "label": "Roll"
+          },
+          "weightOverride": {
+            "label": "Override"
+          },
+          "baseDamage": {
+            "label": "Base Damage"
           }
         },
-        "NotAttached": "Not attached"
+        "NotAttached": "Not attached",
+        "BaseDamagePlaceholder": "e.g. 2d6 or 1d8+2"
       },
       "Belonging": {
         "FIELDS": {

@@ -295,7 +295,11 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
       return {
         ...row,
         weightLabel: localize(
-          row.item.type === 'armor' ? config.armorWeights[s.weight]?.label : config.weaponWeights[s.weight]?.label
+          row.item.type === 'armor'
+            ? config.armorWeights[s.weight]?.label
+            : s.weightOverride
+              ? 'ABSOLUTION.WeaponWeight.Override'
+              : config.weaponWeights[s.weight]?.label
         ),
         categoryLabel: localize(config.weaponCategories[s.category]),
         damageLabel: damageLabel(row.item),

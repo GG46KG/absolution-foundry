@@ -484,6 +484,22 @@
 .absolution .item-flavor input {
   width: 100%;
 }
+.absolution .label-with-toggle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.absolution .label-with-toggle .inline-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.absolution .label-with-toggle .inline-toggle input {
+  margin: 0;
+}
 .absolution .resource-label {
   font-weight: bold;
 }
