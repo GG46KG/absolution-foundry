@@ -744,6 +744,9 @@
           },
           "baseDamage": {
             "label": "Base Damage"
+          },
+          "autoHits": {
+            "label": "Automatic Hits"
           }
         },
         "NotAttached": "Not attached",

@@ -22,6 +22,7 @@
       {{localize 'ABSOLUTION.Weapon.Damage'}}: <strong>{{system.damage.label}}</strong>
       &middot; {{localize 'ABSOLUTION.Weapon.AttackWith'}} <strong>{{localize (concat 'ABSOLUTION.Attribute.' (ifThen (eq system.attackAttribute 'faith') 'Faith' 'Power'))}}</strong>
       &middot; {{localize 'ABSOLUTION.Check.Edge'}} <strong>{{system.attackEdge}}</strong>
+      {{#if system.autoHits}}&middot; {{localize 'ABSOLUTION.Check.AutoHits'}} <strong>{{system.autoHits}}</strong>{{/if}}
     </div>
     <fieldset class='weapon-grid'>
       <legend>{{localize 'ABSOLUTION.Weapon.Properties'}}</legend>

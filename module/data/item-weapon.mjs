@@ -2,8 +2,9 @@ import AbsolutionItemBase from './base-item.mjs';
 
 /**
  * A weapon or ornament (Equipment rules, "Weapons" and "Ornaments"). The
- * category decides which: Weapon and Innate are weapons, the five ornament
- * materials are ornaments. Ornaments attach to a weapon on the same actor.
+ * category decides which: Weapon is a weapon; the five ornament materials and
+ * Innate are ornaments. Ornaments attach to a weapon on the same actor;
+ * Innate ones are built into it and take no slot.
  */
 export default class AbsolutionWeapon extends AbsolutionItemBase {
   static LOCALIZATION_PREFIXES = [
@@ -45,6 +46,8 @@ export default class AbsolutionWeapon extends AbsolutionItemBase {
         return obj;
       }, {})
     );
+    // Automatic Hits added to attacks with this weapon
+    schema.autoHits = new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 });
     schema.attuned = new fields.BooleanField();
     // In hand: Defender X adds to Armor Rating only while wielded
     schema.wielding = new fields.BooleanField();

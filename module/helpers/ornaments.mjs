@@ -6,6 +6,7 @@
  *   weapon.
  * - A weapon can't hold two copies of the same ornament.
  * - A character can only have one Gold ornament active across all their slots.
+ * - Innate ornaments are built into the weapon: they take no slot.
  */
 
 /**
@@ -30,6 +31,12 @@ export function placeOrnaments(weapon, ornaments) {
     const material = ornament.system.category;
     if (names.has(ornament.name)) {
       placed.set(ornament, { slot: null, problem: 'duplicate' });
+      continue;
+    }
+    // Innate ornaments are part of the weapon and need no slot
+    if (material === 'innate') {
+      names.add(ornament.name);
+      placed.set(ornament, { slot: 'innate', problem: null });
       continue;
     }
     // Its own material first, then the shared slots

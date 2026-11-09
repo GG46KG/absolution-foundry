@@ -485,19 +485,24 @@
   width: 100%;
 }
 .absolution .label-with-toggle {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
+  position: relative;
 }
 .absolution .label-with-toggle .inline-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0;
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 12px;
+  line-height: 1;
   white-space: nowrap;
+  transform: translateY(-50%);
 }
 .absolution .label-with-toggle .inline-toggle input {
+  --checkbox-size: 14px;
+  width: 14px;
+  height: 14px;
   margin: 0;
 }
 .absolution .resource-label {

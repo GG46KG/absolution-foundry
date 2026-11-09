@@ -159,10 +159,10 @@ ABSOLUTION.weaponCategories = {
 
 /**
  * Weapon categories that are ornaments. Ornaments attach to a weapon and list
- * under it.
+ * under it. Innate ornaments are part of the weapon and take no slot.
  * @type {string[]}
  */
-ABSOLUTION.ornamentCategories = ['spinel', 'turquoise', 'jade', 'gold', 'clockwork'];
+ABSOLUTION.ornamentCategories = ['spinel', 'turquoise', 'jade', 'gold', 'clockwork', 'innate'];
 
 /**
  * Weapon weights and their base damage, as a step on the damage ladder.

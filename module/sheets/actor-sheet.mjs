@@ -303,7 +303,7 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
         ),
         categoryLabel: localize(config.weaponCategories[s.category]),
         damageLabel: damageLabel(row.item),
-        slotLabel: localize(config.slotTypes[row.slot]?.label),
+        slotLabel: localize(row.slot === 'innate' ? config.weaponCategories.innate : config.slotTypes[row.slot]?.label),
         problemLabel: row.problem ? localize(`ABSOLUTION.Ornament.Problem.${row.problem}`) : '',
         slotIcons: (row.slots ?? []).map((sl) => ({
           type: sl.type,
@@ -545,13 +545,14 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
   static async _onWeaponAttack(event, target) {
     const weapon = this._getEmbeddedDocument(target);
     if (!weapon) return;
-    const { attackAttribute, attackEdge } = weapon.system;
+    const { attackAttribute, attackEdge, autoHits } = weapon.system;
     const check = {
       actor: this.actor,
       label: weapon.name,
       subtitle: game.i18n.localize('ABSOLUTION.Check.Attack'),
       dice: Math.max(1, this.actor.system.attributes[attackAttribute]?.value ?? 1),
       edge: attackEdge,
+      autoHits,
       weapon,
       notes: [],
     };

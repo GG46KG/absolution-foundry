@@ -99,6 +99,10 @@
               </select>
             {{/if}}
           </div>
+          <div class='resource'>
+            <label class='resource-label'>{{localize 'ABSOLUTION.Item.Weapon.FIELDS.autoHits.label'}}</label>
+            <input type='number' name='system.autoHits' value='{{system.autoHits}}' min='0' />
+          </div>
           <div class='resource weapon-flags'>
             <label><input type='checkbox' name='system.attuned' {{checked system.attuned}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.attuned.label'}}</label>
             <label><input type='checkbox' name='system.wielding' {{checked system.wielding}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.wielding.label'}}</label>

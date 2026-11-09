@@ -105,11 +105,11 @@ function stepper(name, value, { min, max } = {}) {
 /**
  * Ask for Difficulty, Edge, Morale to spend, Advantage and Automatic Hits,
  * then roll. Each point of Morale spent adds 1 Edge and comes off the actor.
- * @param {object} options          As for {@link rollCheck}; edge and mode fill in the dialog
+ * @param {object} options          As for {@link rollCheck}; edge, autoHits and mode fill in the dialog
  * @param {string[]} [options.notes]   Lines shown at the top of the dialog, e.g. why Disadvantage is set
  * @returns {Promise<ChatMessage|null>}   null if the dialog was closed
  */
-export async function promptCheck({ actor, label, subtitle, dice, edge = 0, mode: startMode = 'normal', notes = [], weapon = null }) {
+export async function promptCheck({ actor, label, subtitle, dice, edge = 0, autoHits = 0, mode: startMode = 'normal', notes = [], weapon = null }) {
   const i18n = (k) => game.i18n.localize(`ABSOLUTION.Check.${k}`);
   // Only characters have Morale, and only the actor's owners can spend it
   const morale = actor?.isOwner && Number.isInteger(actor.system?.morale) ? Math.max(0, actor.system.morale) : null;
@@ -136,7 +136,7 @@ export async function promptCheck({ actor, label, subtitle, dice, edge = 0, mode
       ${moraleGroup}
     </div>
     <div class="mode-toggle">${modeToggle}</div>
-    <div class="form-group"><label>${i18n('AutoHits')}</label>${stepper('autoHits', 0, { min: 0 })}</div>`;
+    <div class="form-group"><label>${i18n('AutoHits')}</label>${stepper('autoHits', autoHits, { min: 0 })}</div>`;
   const options = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.format('ABSOLUTION.Check.Title', { label }) },
     classes: ['absolution-check-dialog'],
