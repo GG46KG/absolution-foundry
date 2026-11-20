@@ -420,7 +420,8 @@
         "Critical": "Critical attack.",
         "PreciseApplied": "Precise: +1d6 Physical damage for the critical attack.",
         "BulkyAdjacent": "Bulky: an enemy is adjacent, so this attack has Disadvantage.",
-        "BulkyUnknown": "Bulky: Disadvantage if any enemy is adjacent. There's no token on the scene to check."
+        "BulkyUnknown": "Bulky: Disadvantage if any enemy is adjacent. There's no token on the scene to check.",
+        "AttributeDamageImpact": "Attack Attribute Damage: +{damage} (full {attribute}, Impact)."
       },
       "AddOrnament": "Add Ornament",
       "NewOrnament": "New Ornament",
@@ -471,7 +472,9 @@
       "Success": "Success",
       "Failure": "Failure",
       "Critical": "Critical Success",
-      "NoDice": "No dice to roll: automatic failure."
+      "NoDice": "No dice to roll: automatic failure.",
+      "Target": "Target: {name}, Resistance {resistance} as the Difficulty.",
+      "TargetFirst": "Target: {name}, Resistance {resistance} as the Difficulty (the first of your targets)."
     },
     "Knockout": {
       "Label": "KO",
@@ -810,10 +813,14 @@
           },
           "attackAttributeChoice": {
             "label": "Attack Attribute"
+          },
+          "impact": {
+            "label": "Impact"
           }
         },
         "NotAttached": "Not attached",
-        "BaseDamagePlaceholder": "e.g. 2d6 or 1d8+2"
+        "BaseDamagePlaceholder": "e.g. 2d6 or 1d8+2",
+        "ImpactHint": "Impact trait: Attack Attribute Damage is your full Attack Attribute with this Two-Handed weapon, instead of half."
       },
       "Belonging": {
         "FIELDS": {

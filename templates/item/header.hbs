@@ -144,6 +144,9 @@
           <div class='resource weapon-flags full-row'>
             <label><input type='checkbox' name='system.attuned' {{checked system.attuned}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.attuned.label'}}</label>
             <label><input type='checkbox' name='system.wielding' {{checked system.wielding}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.wielding.label'}}</label>
+            {{#if (eq system.weight 'twoHand')}}
+              <label title='{{localize "ABSOLUTION.Item.Weapon.ImpactHint"}}'><input type='checkbox' name='system.impact' {{checked system.impact}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.impact.label'}}</label>
+            {{/if}}
             <label><input type='checkbox' name='system.broken' {{checked system.broken}} /> {{localize 'ABSOLUTION.Item.Weapon.FIELDS.broken.label'}}</label>
           </div>
         {{/if}}

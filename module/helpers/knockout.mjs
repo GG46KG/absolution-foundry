@@ -40,6 +40,8 @@ export function knockoutResult({ total, wounds, grievous, impairment }) {
  * @returns {Promise<ChatMessage>}
  */
 export async function rollKnockout({ actor, wounds, grievous, stamina = actor.system.stamina?.value ?? 0 }) {
+  // A Knockout Roll comes from receiving a Wound, which counts in the roll
+  wounds += 1;
   const terms = [];
   if (wounds > 0) terms.push(`${wounds}d6cs<4`);
   if (grievous > 0 || !terms.length) terms.push(String(grievous));
@@ -62,10 +64,30 @@ export async function rollKnockout({ actor, wounds, grievous, stamina = actor.sy
     });
   const result = outcome.result.capitalize();
 
-  // The roll restores Stamina equal to Max Stamina, on top of what's left
+  // The roll restores Stamina equal to Max Stamina, on top of what's left.
+  // The new Wound is added; a Deep Wound makes one Grievous; being
+  // Incapacitated makes them all Grievous.
   const max = actor.system.stamina?.max ?? 0;
   const restored = stamina + max;
-  await actor.update({ 'system.stamina.value': restored });
+  let normal = wounds;
+  let grievousAfter = grievous;
+  if (outcome.impairment === 'deepWound' && normal > 0) {
+    normal -= 1;
+    grievousAfter += 1;
+  } else if (outcome.result === 'knockout') {
+    grievousAfter += normal;
+    normal = 0;
+  }
+  const update = {
+    'system.stamina.value': restored,
+    'system.wounds.normal': normal,
+    'system.wounds.grievous': grievousAfter,
+  };
+  // Healthy characters now have Fresh Wounds
+  if (actor.system.wounds?.status === 'healthy') update['system.wounds.status'] = 'freshWounds';
+  await actor.update(update);
+  if (outcome.result === 'knockout') await actor.toggleStatusEffect?.('incapacitated', { active: true });
+  if (outcome.result === 'concussion') await actor.toggleStatusEffect?.('concussion', { active: true });
   const staminaLine = `<div class="card-stamina">${game.i18n.format('ABSOLUTION.Knockout.StaminaRestored', {
     from: stamina,
     to: restored,
@@ -106,7 +128,11 @@ export async function npcWound(actor) {
     await actor.toggleStatusEffect('incapacitated', { active: true });
     key = 'Chaff';
   } else if (threat === 'mortalThreat') {
-    await actor.update({ 'system.stamina.value': actor.system.stamina.max });
+    // It still receives the Wound
+    await actor.update({
+      'system.stamina.value': actor.system.stamina.max,
+      'system.wounds.normal': (actor.system.wounds?.normal ?? 0) + 1,
+    });
     await actor.toggleStatusEffect('exposed', { active: false });
     key = 'MortalThreat';
   } else return null;

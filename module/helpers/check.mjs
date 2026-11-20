@@ -107,13 +107,30 @@ function stepper(name, value, { min, max } = {}) {
 }
 
 /**
+ * The Difficulty for an attack against the user's targeted token: its
+ * Resistance. With several targets, the first one counts.
+ * @returns {{difficulty: number, note: string}|null}   null when nothing with Resistance is targeted
+ */
+export function targetDifficulty() {
+  const targets = [...(game.user?.targets ?? [])];
+  const target = targets.find((t) => Number.isFinite(t.actor?.system?.resistance));
+  if (!target) return null;
+  const difficulty = target.actor.system.resistance;
+  const note = game.i18n.format(targets.length > 1 ? 'ABSOLUTION.Check.TargetFirst' : 'ABSOLUTION.Check.Target', {
+    name: foundry.utils.escapeHTML(target.name ?? target.actor.name),
+    resistance: difficulty,
+  });
+  return { difficulty, note };
+}
+
+/**
  * Ask for Difficulty, Edge, Morale to spend, Advantage and Automatic Hits,
  * then roll. Each point of Morale spent adds 1 Edge and comes off the actor.
- * @param {object} options          As for {@link rollCheck}; edge, autoHits and mode fill in the dialog
+ * @param {object} options          As for {@link rollCheck}; difficulty, edge, autoHits and mode fill in the dialog
  * @param {string[]} [options.notes]   Lines shown at the top of the dialog, e.g. why Disadvantage is set
  * @returns {Promise<ChatMessage|null>}   null if the dialog was closed
  */
-export async function promptCheck({ actor, label, subtitle, description = '', footer = '', dice, edge = 0, autoHits = 0, mode: startMode = 'normal', notes = [], weapon = null }) {
+export async function promptCheck({ actor, label, subtitle, description = '', footer = '', dice, edge = 0, autoHits = 0, difficulty = null, mode: startMode = 'normal', notes = [], weapon = null }) {
   const i18n = (k) => game.i18n.localize(`ABSOLUTION.Check.${k}`);
   // Only characters have Morale, and only the actor's owners can spend it
   const morale = actor?.isOwner && Number.isInteger(actor.system?.morale) ? Math.max(0, actor.system.morale) : null;
@@ -134,7 +151,7 @@ export async function promptCheck({ actor, label, subtitle, description = '', fo
   const content = `
     ${notes.map((n) => `<p class="check-note">${n}</p>`).join('')}
     <div class="form-group"><label>${i18n('Difficulty')}</label>
-      <input type="number" name="difficulty" min="0" placeholder="${i18n('NoDifficulty')}"></div>
+      <input type="number" name="difficulty" min="0" placeholder="${i18n('NoDifficulty')}"${Number.isFinite(difficulty) ? ` value="${difficulty}"` : ''}></div>
     <div class="check-steppers">
       <div class="stepper-group"><label>${i18n('Edge')}</label>${stepper('edge', edge)}</div>
       ${moraleGroup}

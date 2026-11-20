@@ -57,6 +57,9 @@ export default class AbsolutionWeapon extends AbsolutionItemBase {
       initial: 'power',
       choices: () => config.attributes,
     });
+    // Impact (trait): Two-Hand weapons deal the full Attack Attribute as
+    // Attack Attribute Damage, instead of half
+    schema.impact = new fields.BooleanField();
     schema.attuned = new fields.BooleanField();
     // In hand: Defender X adds to Armor Rating only while wielded
     schema.wielding = new fields.BooleanField();
@@ -144,6 +147,7 @@ export default class AbsolutionWeapon extends AbsolutionItemBase {
       })
     );
     this.effectiveProperties = p;
+    this.impactApplies = this.impact && this.weight === 'twoHand';
     this.effectiveAutoHits =
       (this.autoHitsOverride ? this.autoHits : 0) + ornaments.reduce((sum, o) => sum + (o.system.autoHits || 0), 0);
 

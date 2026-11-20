@@ -1,4 +1,4 @@
-import { promptCheck, rollCheck } from '../helpers/check.mjs';
+import { promptCheck, rollCheck, targetDifficulty } from '../helpers/check.mjs';
 import { rollKnockout, npcWound } from '../helpers/knockout.mjs';
 import { materialForFreeSlot, nestOrnaments } from '../helpers/ornaments.mjs';
 import { actorHasAdjacentEnemy } from '../helpers/adjacency.mjs';
@@ -593,6 +593,12 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
       weapon,
       notes: [],
     };
+    // Against a targeted token, its Resistance is the Difficulty
+    const target = targetDifficulty();
+    if (target) {
+      check.difficulty = target.difficulty;
+      check.notes.push(target.note);
+    }
     if (weapon.system.effectiveProperties.bulky) {
       const adjacent = actorHasAdjacentEnemy(this.actor);
       if (adjacent) {

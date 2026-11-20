@@ -1,4 +1,4 @@
-import { promptCheck, rollCheck } from '../helpers/check.mjs';
+import { promptCheck, rollCheck, targetDifficulty } from '../helpers/check.mjs';
 import { createChatMessage } from '../helpers/chat.mjs';
 import { replaceTrExpressions } from '../helpers/threat.mjs';
 
@@ -149,7 +149,14 @@ export class AbsolutionItem extends Item {
           description,
           footer: this.#damageLine(),
           dice,
+          notes: [],
         };
+        // NPC attacks against a targeted token: its Resistance is the Difficulty
+        const target = CONFIG.ABSOLUTION.attackActionTypes.includes(this.system.actionType) ? targetDifficulty() : null;
+        if (target) {
+          check.difficulty = target.difficulty;
+          check.notes.push(target.note);
+        }
         return quick ? rollCheck(check) : promptCheck(check);
       }
       await roll.evaluate();
@@ -173,7 +180,8 @@ export class AbsolutionItem extends Item {
   get attributeDamage() {
     if (this.type !== 'weapon' || this.system.isOrnament) return 0;
     const value = this.actor?.system?.attributes?.[this.system.attackAttribute]?.value ?? 0;
-    return Math.max(0, Math.floor(value / 2));
+    // Impact: the full attribute, instead of half
+    return Math.max(0, this.system.impactApplies ? value : Math.floor(value / 2));
   }
 
   /**
@@ -200,7 +208,11 @@ export class AbsolutionItem extends Item {
     const roll = new Roll(formula, this.actor?.getRollData() ?? {});
     await roll.evaluate();
     const notes = [
-      attributeDamage && game.i18n.format('ABSOLUTION.Weapon.Notes.AttributeDamage', { attribute, damage: attributeDamage }),
+      attributeDamage &&
+        game.i18n.format(
+          this.system.impactApplies ? 'ABSOLUTION.Weapon.Notes.AttributeDamageImpact' : 'ABSOLUTION.Weapon.Notes.AttributeDamage',
+          { attribute, damage: attributeDamage }
+        ),
       attributeDamage && this.system.weight === 'offHand' && 'ABSOLUTION.Weapon.Notes.OffHandFastAttack',
       critical && 'ABSOLUTION.Weapon.Notes.Critical',
       p.piercing && 'ABSOLUTION.Weapon.Notes.Piercing',
