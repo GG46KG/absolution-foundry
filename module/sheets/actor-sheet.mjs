@@ -594,10 +594,10 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
       notes: [],
     };
     // Against a targeted token, its Resistance is the Difficulty
-    const target = targetDifficulty();
-    if (target) {
-      check.difficulty = target.difficulty;
-      check.notes.push(target.note);
+    const targeted = targetDifficulty();
+    if (targeted) {
+      check.difficulty = targeted.difficulty;
+      check.notes.push(targeted.note);
     }
     if (weapon.system.effectiveProperties.bulky) {
       const adjacent = actorHasAdjacentEnemy(this.actor);
