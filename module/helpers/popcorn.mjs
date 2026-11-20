@@ -66,33 +66,54 @@ export function renderPopcornControls(app, element) {
  * @param {object[]} options   The menu entries, changed in place
  */
 export function popcornContextOptions(app, options) {
-  const removed = ['COMBATANT.ACTIONS.Reroll', 'COMBATANT.ACTIONS.Clear', 'COMBAT.InitiativeReroll'];
+  // Foundry 13 and 14 name these entries differently
+  const removed = [
+    'COMBATANT.ACTIONS.Reroll',
+    'COMBATANT.ACTIONS.Clear',
+    'COMBAT.CombatantReroll',
+    'COMBAT.CombatantClear',
+    'COMBAT.InitiativeReroll',
+  ];
   for (let i = options.length - 1; i >= 0; i--) {
     if (removed.includes(options[i].label ?? options[i].name)) options.splice(i, 1);
   }
   const combat = () => app.viewed;
-  const combatant = (li) => combat()?.combatants.get(li.dataset.combatantId);
+  // Foundry 13 can pass a jQuery object instead of the element
+  const combatant = (li) => combat()?.combatants.get((li?.[0] ?? li)?.dataset?.combatantId);
   const isPopcorn = () => !!combat()?.activations;
   options.unshift(
-    {
-      label: 'ABSOLUTION.Combat.AddActivation',
-      icon: 'fa-solid fa-plus',
-      visible: (li) => game.user.isGM && isPopcorn() && !!combatant(li),
-      onClick: (event, li) => combat().changeActivations(combatant(li), 1),
-    },
-    {
-      label: 'ABSOLUTION.Combat.RemoveActivation',
-      icon: 'fa-solid fa-minus',
-      visible: (li) => game.user.isGM && isPopcorn() && combatant(li) && combat().activations(combatant(li)) > 1,
-      onClick: (event, li) => combat().changeActivations(combatant(li), -1),
-    },
-    {
-      label: 'ABSOLUTION.Combat.UndoActivation',
-      icon: 'fa-solid fa-rotate-left',
-      visible: (li) => game.user.isGM && isPopcorn() && combatant(li) && combat().activationsUsed(combatant(li)) > 0,
-      onClick: (event, li) => combat().undoActivation(combatant(li)),
-    }
+    menuEntry('ABSOLUTION.Combat.AddActivation', 'fa-plus',
+      (li) => game.user.isGM && isPopcorn() && !!combatant(li),
+      (li) => combat().changeActivations(combatant(li), 1)),
+    menuEntry('ABSOLUTION.Combat.RemoveActivation', 'fa-minus',
+      (li) => game.user.isGM && isPopcorn() && !!combatant(li) && combat().activations(combatant(li)) > 1,
+      (li) => combat().changeActivations(combatant(li), -1)),
+    menuEntry('ABSOLUTION.Combat.UndoActivation', 'fa-rotate-left',
+      (li) => game.user.isGM && isPopcorn() && !!combatant(li) && combat().activationsUsed(combatant(li)) > 0,
+      (li) => combat().undoActivation(combatant(li)))
   );
+}
+
+/**
+ * A context menu entry both Foundry 13 and 14 understand: 14 reads label,
+ * visible and onClick; 13 reads name, condition and callback, and needs the
+ * icon as HTML (which 14 also accepts).
+ * @param {string} label         Localization key
+ * @param {string} icon          Font Awesome icon, e.g. 'fa-plus'
+ * @param {Function} visible     (li) => boolean
+ * @param {Function} click       (li) => any
+ * @returns {object}
+ */
+function menuEntry(label, icon, visible, click) {
+  return {
+    label,
+    name: label,
+    icon: `<i class="fa-solid ${icon}"></i>`,
+    visible,
+    condition: visible,
+    onClick: (event, li) => click(li),
+    callback: (li) => click(li),
+  };
 }
 
 /**

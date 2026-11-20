@@ -21,8 +21,9 @@ export default class AbsolutionActorBase extends foundry.abstract
     schema.armor = new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 });
     schema.evasion = new fields.NumberField({ ...requiredInteger, initial: 0 });
 
+    // Current Stamina can go below 0 (Knockout Rolls continue until it's above)
     schema.stamina = new fields.SchemaField({
-      value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
+      value: new fields.NumberField({ ...requiredInteger, initial: 0 }),
       max: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
     });
     schema.barrier = new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 });

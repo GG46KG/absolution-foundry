@@ -102,9 +102,12 @@ export default class AbsolutionWeapon extends AbsolutionItemBase {
    * them: the box starts ticked.
    * @override
    */
-  static migrateData(source) {
-    if (source.autoHitsOverride === undefined && source.autoHits > 0) source.autoHitsOverride = true;
-    return super.migrateData(source);
+  static migrateData(source, options) {
+    // Not on the partial changes Foundry also passes through here on update
+    if (!options?.partial && source.autoHitsOverride === undefined && source.autoHits > 0) {
+      source.autoHitsOverride = true;
+    }
+    return super.migrateData(source, options);
   }
 
   /**

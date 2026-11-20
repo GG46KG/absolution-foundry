@@ -17,8 +17,9 @@ export default class AbsolutionCharacter extends AbsolutionActorBase {
 
     // Characters derive maximum stamina from their vow, so only the current
     // value and any bonus are stored.
+    // Current Stamina can go below 0 (Knockout Rolls continue until it's above)
     schema.stamina = new fields.SchemaField({
-      value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0 }),
+      value: new fields.NumberField({ ...requiredInteger, initial: 0 }),
       bonus: new fields.NumberField({ ...requiredInteger, initial: 0 }),
     });
     schema.tough = new fields.BooleanField();
