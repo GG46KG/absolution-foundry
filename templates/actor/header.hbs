@@ -71,7 +71,7 @@
         </div>
         <div class='indicator-item'>
           <label class='indicator-label'>{{localize 'ABSOLUTION.Knockout.Label'}}</label>
-          <a class='roll-die knockout-roll' data-action='knockout' aria-label='{{localize "ABSOLUTION.Knockout.Roll"}}'><i class='fa-solid fa-dice-d6'></i></a>
+          <a class='roll-die knockout-roll {{#if (gt system.stamina.value 0)}}disabled{{/if}}' data-action='knockout' aria-label='{{localize "ABSOLUTION.Knockout.Roll"}}'><i class='fa-solid fa-dice-d6'></i></a>
         </div>
       </div>
     </div>

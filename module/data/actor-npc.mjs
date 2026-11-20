@@ -57,15 +57,17 @@ export default class AbsolutionNPC extends AbsolutionActorBase {
 
   /**
    * NPCs made before stat blocks keep their numbers as plain expressions.
-   * Foundry also runs this on the changes in each update; those are partial
-   * and must be left alone, or a change to one field would rebuild the stat
-   * block from defaults.
+   *
+   * Foundry also runs this on partial data: the changes in an update, and an
+   * unlinked token's own changes to its actor. Those hold only the fields that
+   * changed, so they must be left alone, or changing one field would rebuild
+   * the stat block from defaults. A whole old record has every one of these
+   * fields; partial data almost never does.
    * @override
    */
   static migrateData(source, options) {
-    if (options?.partial) return super.migrateData(source, options);
-    const old = ['attributes', 'stamina', 'armor', 'speed'].some((key) => source[key] !== undefined);
-    if (source.statBlock === undefined && old) {
+    const whole = ['attributes', 'stamina', 'armor', 'speed', 'wounds'].every((key) => source[key] !== undefined);
+    if (!options?.partial && whole && source.statBlock === undefined) {
       const a = source.attributes ?? {};
       source.statBlock = {
         power: String(a.power?.value ?? 1),

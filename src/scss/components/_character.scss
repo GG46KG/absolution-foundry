@@ -103,6 +103,12 @@
     justify-content: center;
     height: 44px;
     font-size: 24px;
+
+    // Knockout Rolls only once Stamina is 0 or below
+    &.disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
   }
 
   .indicator-max {

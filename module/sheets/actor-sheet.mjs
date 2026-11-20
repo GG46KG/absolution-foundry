@@ -680,17 +680,21 @@ export class AbsolutionActorSheet extends api.HandlebarsApplicationMixin(
    */
   static async _onKnockout(event, target) {
     event.preventDefault();
-    // Chaff and Mortal Threats don't make Knockout Rolls
-    if (this.actor.type === 'npc' && this.actor.system.threat !== 'threat') return npcWound(this.actor);
     const shown = (field) => {
       const input = this.element.querySelector(`[data-field="${field}"]`);
       const value = input ? input.valueAsNumber : foundry.utils.getProperty(this.actor, field);
-      return Math.max(0, value || 0);
+      return value || 0;
     };
+    // Only once Stamina is down to 0 or below
+    const stamina = shown('system.stamina.value');
+    if (stamina > 0) return ui.notifications.warn('ABSOLUTION.Knockout.NotDown', { localize: true });
+    // Chaff and Mortal Threats don't make Knockout Rolls
+    if (this.actor.type === 'npc' && this.actor.system.threat !== 'threat') return npcWound(this.actor);
     return rollKnockout({
       actor: this.actor,
-      wounds: shown('system.wounds.normal'),
-      grievous: shown('system.wounds.grievous'),
+      wounds: Math.max(0, shown('system.wounds.normal')),
+      grievous: Math.max(0, shown('system.wounds.grievous')),
+      stamina,
     });
   }
 

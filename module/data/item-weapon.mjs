@@ -103,8 +103,10 @@ export default class AbsolutionWeapon extends AbsolutionItemBase {
    * @override
    */
   static migrateData(source, options) {
-    // Not on the partial changes Foundry also passes through here on update
-    if (!options?.partial && source.autoHitsOverride === undefined && source.autoHits > 0) {
+    // Only on a whole weapon record, never on partial changes (an update, or
+    // an unlinked token's changes), which Foundry also passes through here
+    const whole = source.properties !== undefined && source.slots !== undefined;
+    if (!options?.partial && whole && source.autoHitsOverride === undefined && source.autoHits > 0) {
       source.autoHitsOverride = true;
     }
     return super.migrateData(source, options);

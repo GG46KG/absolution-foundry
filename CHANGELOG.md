@@ -22,7 +22,7 @@
 - Token status effects replaced with the core rules' Conditions and Status Effects, plus Incapacitated and Dead; each carries its rules text as its description. Also Ironheart (Damage Reduction (All) equal to the full Armor Rating), Vow Feature, and Hostile Effect 1–4 markers.
 - New scenes default to a hexagonal grid (rows, odd) measured in spaces (1 sp per hex). Bulky's adjacent-enemy check uses the scene's grid, so it works on hex and square grids.
 - Chat messages pick up the user's chat visibility through `core.messageMode` on Foundry 14 and `core.rollMode` on older versions.
-- Knockout rolls from the wounds box in the sheet header, ported from the prototype Knockout macro.
+- Knockout rolls from the wounds box in the sheet header, ported from the prototype Knockout macro. Stamina can go below 0; the KO button only works at 0 Stamina or below, and adds Max Stamina to current Stamina, shown on the card.
 - Popcorn initiative: the acting combatant picks who goes next. When nobody has an activation left, ending the turn starts a new round with nobody acting and everyone fresh, and the GM picks who starts. The GM can give a combatant extra activations per round (shown as used/total), take them away, and undo an activation, from the combatant's right-click menu. Initiative rolling, rerolling, clearing and resetting are gone.
 
 ## 0.1.0

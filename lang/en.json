@@ -508,7 +508,9 @@
       "Daze": {
         "Title": "Daze",
         "Text": "{name} is <i>Impaired</i> until the end of their next turn."
-      }
+      },
+      "NotDown": "Knockout Rolls are only made once Stamina is 0 or below.",
+      "StaminaRestored": "Stamina {from} → {to}"
     },
     "SheetLabels": {
       "Actor": "Absolution Actor Sheet",

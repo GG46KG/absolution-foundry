@@ -39,7 +39,7 @@ export function knockoutResult({ total, wounds, grievous, impairment }) {
  * @param {number} options.grievous    Grievous Wounds to add
  * @returns {Promise<ChatMessage>}
  */
-export async function rollKnockout({ actor, wounds, grievous }) {
+export async function rollKnockout({ actor, wounds, grievous, stamina = actor.system.stamina?.value ?? 0 }) {
   const terms = [];
   if (wounds > 0) terms.push(`${wounds}d6cs<4`);
   if (grievous > 0 || !terms.length) terms.push(String(grievous));
@@ -61,6 +61,15 @@ export async function rollKnockout({ actor, wounds, grievous }) {
       roll: impairment,
     });
   const result = outcome.result.capitalize();
+
+  // The roll restores Stamina equal to Max Stamina, on top of what's left
+  const max = actor.system.stamina?.max ?? 0;
+  const restored = stamina + max;
+  await actor.update({ 'system.stamina.value': restored });
+  const staminaLine = `<div class="card-stamina">${game.i18n.format('ABSOLUTION.Knockout.StaminaRestored', {
+    from: stamina,
+    to: restored,
+  })}</div>`;
   const impairmentBox = outcome.impairment
     ? `<div class="card-box">
         <div class="card-box-title">${impairment} - ${format(`${outcome.impairment.capitalize()}.Title`)}</div>
@@ -72,6 +81,7 @@ export async function rollKnockout({ actor, wounds, grievous }) {
     <div class="card-subtitle">${format('Title')}</div>
     ${format(`${result}.Text`)}
     ${impairmentBox}
+    ${staminaLine}
     <hr/>
     <div class="card-quote">${format(`${result}.Quote`)}</div>
   </div>`;

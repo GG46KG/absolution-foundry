@@ -279,6 +279,11 @@
 .absolution-card .card-description {
   margin-bottom: 8px;
 }
+.absolution-card .card-stamina {
+  margin-top: 8px;
+  font-weight: bold;
+  text-align: center;
+}
 .absolution-card .card-damage {
   margin: 8px 0 4px;
   font-style: italic;
@@ -821,6 +826,10 @@
   justify-content: center;
   height: 44px;
   font-size: 24px;
+}
+.absolution .indicator .knockout-roll.disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
 }
 .absolution .indicator .indicator-max {
   font-size: 24px;
